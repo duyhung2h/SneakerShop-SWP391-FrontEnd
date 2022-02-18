@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "sneakershopdatabase"
+  },
+  "targets": {
+    "sneakershopdatabase": {
+      "hosting": {
+        "SneakerShop-frontend": [
+          "sneakershopdatabase"
+        ]
+      }
+    }
+  }
+}

@@ -1,17 +1,48 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
+// Import the functions you need from the SDKs you need
+import { getAnalytics } from "firebase/analytics";
+import * as firebase from "firebase/compat";
+import { initializeApp, getApps, getApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-export const environment = {
-  production: false,
-  apiUrl: 'http://123.30.234.116:8082/api/'
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+    apiKey: "AIzaSyBbyI8wsydpZ-bNWGuvXTBCgA-73nsnLzw",
+    authDomain: "sneakershopdatabase.firebaseapp.com",
+    projectId: "sneakershopdatabase",
+    storageBucket: "sneakershopdatabase.appspot.com",
+    messagingSenderId: "466050280764",
+    appId: "1:466050280764:web:de6413c6432b19bb048239",
+    databaseURL: '/Product/zc1N53oYGzJn8inDes9q',
+    measurementId: "G-EKSEBW1EV8"
 };
 
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+export const environment = {
+    production: false,
+  firebase: {
+    projectId: 'sneakershopdatabase',
+    appId: '1:466050280764:web:de6413c6432b19bb048239',
+    storageBucket: 'sneakershopdatabase.appspot.com',
+    locationId: 'asia-southeast1',
+    apiKey: 'AIzaSyBbyI8wsydpZ-bNWGuvXTBCgA-73nsnLzw',
+    authDomain: 'sneakershopdatabase.firebaseapp.com',
+    messagingSenderId: '466050280764',
+    measurementId: 'G-EKSEBW1EV8',
+  },
+    apiUrl: "sneakershopdatabase.firebaseapp.com",
+    apiKey: "AIzaSyBbyI8wsydpZ-bNWGuvXTBCgA-73nsnLzw",
+    authDomain: "sneakershopdatabase.firebaseapp.com",
+    databaseURL: '/Product/zc1N53oYGzJn8inDes9q',
+    projectId: "sneakershopdatabase",
+    storageBucket: "sneakershopdatabase.appspot.com",
+    messagingSenderId: "466050280764"
+};
+
+// Initialize Firebase
+
+
+export const appDeploy = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+
+const analytics = getAnalytics(appDeploy);
+
