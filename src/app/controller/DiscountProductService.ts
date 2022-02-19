@@ -12,7 +12,7 @@ import { Product } from '../model/Product';
 export class DiscountProductService {
   constructor(private http: HttpClient) {
   }
-  getAllOfflineProduct(){
+  getAllOfflineProduct() {
     let lorem = " ipsum dolor sit amet consectetur adipisicing elit. Minima voluptatum velit mollitia dolorem facilis suscipit cumque, molestias ut ex magni natus laudantium totam quisquam odit consectetur reprehenderit non quae vitae? ipsum dolor sit amet consectetur adipisicing elit. Minima voluptatum velit mollitia dolorem facilis suscipit cumque, molestias ut ex magni natus laudantium totam quisquam odit consectetur reprehenderit non quae vitae?";
     let listProduct: DiscountProduct[];
     //test data
@@ -86,29 +86,28 @@ export class DiscountProductService {
   }
 
   async getAllProduct() {
- //   return await this.getAllOfflineProduct();
-     return await lastValueFrom<DiscountProduct[]>(this.http.get<DiscountProduct[]>
-     (`${environment.apiUrl}DiscountPro/get-all-discount-product`));
+    return await lastValueFrom<DiscountProduct[]>(this.http.get<DiscountProduct[]>
+      (`${environment.apiUrl}DiscountPro/get-all-discount-product`));
   }
 
   async getBestSellerProduct() {
     //   return await this.getAllOfflineProduct();
-        return await this.http.get<DiscountProduct[]>
-        (`${environment.apiUrl}DiscountPro/get-product-BestSeller`).toPromise();
+    return await this.http.get<DiscountProduct[]>
+      (`${environment.apiUrl}DiscountPro/get-product-BestSeller`).toPromise();
   }
   async getMostOrderedProduct(customerId: any) {
     //   return await this.getAllOfflineProduct();
-        return await this.http.get<DiscountProduct[]>
-        (`${environment.apiUrl}DiscountPro/get-6-product-mostByCus/${customerId}`).toPromise();
+    return await this.http.get<DiscountProduct[]>
+      (`${environment.apiUrl}DiscountPro/get-6-product-mostByCus/${customerId}`).toPromise();
   }
   async getRecentlyOrderedProduct(customerId: any) {
     //   return await this.getAllOfflineProduct();
-        return await this.http.get<DiscountProduct[]>
-        (`${environment.apiUrl}DiscountPro/get-6-product-nearByCus/${customerId}`).toPromise();
+    return await this.http.get<DiscountProduct[]>
+      (`${environment.apiUrl}DiscountPro/get-6-product-nearByCus/${customerId}`).toPromise();
   }
   async getSuggestedProduct(customerId: any) {
     //   return await this.getAllOfflineProduct();
-        return await this.http.get<DiscountProduct[]>
-        (`${environment.apiUrl}DiscountPro/get-product-suggest-ByCustomerId/${customerId}`).toPromise();
+    return await this.http.get<DiscountProduct[]>
+      (`${environment.apiUrl}DiscountPro/get-product-suggest-ByCustomerId/${customerId}`).toPromise();
   }
 }

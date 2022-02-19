@@ -40,10 +40,6 @@ export class ProductListComponent implements OnInit {
     private router: Router,
     private favoriteProductService: FavoriteProductService,
     private notifier: NotifierService) {
-      // alert()
-      try{this.notifier.notify('error', "Lỗi hiển thị list sản phẩm!")
-    alert("error1")}
-      catch{alert("error")}
       
     //lay user, kiem tra xem la user hay guest
     try {
@@ -62,24 +58,6 @@ export class ProductListComponent implements OnInit {
     console.log(this.guestIsViewing)
 
 
-
-    // // load data trong local storage, neu ko co thi tao moi
-    try {
-      this.listProduct = JSON.parse(localStorage['listProduct']);
-      this.listProduct = this.removeUnwantedProductFromList(this.listProduct);
-      if (this.listProduct != null) {
-        this.listPages();
-      }
-    } catch (err) {
-    }
-    try {
-      this.listProductFavorite = JSON.parse(localStorage['listProductFavorite']);
-    } catch (err) {
-    }
-    try {
-      this.listCart = JSON.parse(localStorage['listOrder']);
-    } catch (err) {
-    }
 
 
     // //tao moi neu localstorage ko co du lieu
@@ -131,7 +109,6 @@ export class ProductListComponent implements OnInit {
       this.isLoading.next(true);
       this.listPages();
     }, error => {
-      // alert()
       this.notifier.notify('error', "Lỗi hiển thị list sản phẩm!");
     });
   }

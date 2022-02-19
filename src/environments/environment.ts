@@ -8,18 +8,18 @@ import { initializeApp, getApps, getApp } from "firebase/app";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyBbyI8wsydpZ-bNWGuvXTBCgA-73nsnLzw",
-    authDomain: "sneakershopdatabase.firebaseapp.com",
-    projectId: "sneakershopdatabase",
-    storageBucket: "sneakershopdatabase.appspot.com",
-    messagingSenderId: "466050280764",
-    appId: "1:466050280764:web:de6413c6432b19bb048239",
-    databaseURL: '/Product/zc1N53oYGzJn8inDes9q',
-    measurementId: "G-EKSEBW1EV8"
+  apiKey: "AIzaSyBbyI8wsydpZ-bNWGuvXTBCgA-73nsnLzw",
+  authDomain: "sneakershopdatabase.firebaseapp.com",
+  projectId: "sneakershopdatabase",
+  storageBucket: "sneakershopdatabase.appspot.com",
+  messagingSenderId: "466050280764",
+  appId: "1:466050280764:web:de6413c6432b19bb048239",
+  databaseURL: '/Product/zc1N53oYGzJn8inDes9q',
+  measurementId: "G-EKSEBW1EV8"
 };
 
 export const environment = {
-    production: false,
+  production: false,
   firebase: {
     projectId: 'sneakershopdatabase',
     appId: '1:466050280764:web:de6413c6432b19bb048239',
@@ -30,13 +30,13 @@ export const environment = {
     messagingSenderId: '466050280764',
     measurementId: 'G-EKSEBW1EV8',
   },
-    apiUrl: "sneakershopdatabase.firebaseapp.com",
-    apiKey: "AIzaSyBbyI8wsydpZ-bNWGuvXTBCgA-73nsnLzw",
-    authDomain: "sneakershopdatabase.firebaseapp.com",
-    databaseURL: '/Product/zc1N53oYGzJn8inDes9q',
-    projectId: "sneakershopdatabase",
-    storageBucket: "sneakershopdatabase.appspot.com",
-    messagingSenderId: "466050280764"
+  apiUrl: "sneakershopdatabase.firebaseapp.com",
+  apiKey: "AIzaSyBbyI8wsydpZ-bNWGuvXTBCgA-73nsnLzw",
+  authDomain: "sneakershopdatabase.firebaseapp.com",
+  databaseURL: '/Product/zc1N53oYGzJn8inDes9q',
+  projectId: "sneakershopdatabase",
+  storageBucket: "sneakershopdatabase.appspot.com",
+  messagingSenderId: "466050280764"
 };
 
 // Initialize Firebase
