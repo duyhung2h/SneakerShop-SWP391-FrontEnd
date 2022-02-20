@@ -51,14 +51,12 @@ html {
     height: 100%;
     font-family: "Cairo", sans-serif;
     -webkit-font-smoothing: antialiased;
-    font-smoothing: antialiased;
 }
 
 body {
     height: 100%;
     font-family: "Cairo", sans-serif;
     -webkit-font-smoothing: antialiased;
-    font-smoothing: antialiased;
 }
 
 h1 {
@@ -687,6 +685,7 @@ ol {
             position: absolute;
             left: -35px;
             top: 50%;
+            transform: matrix();
             -webkit-transform: translateY(-35px);
             background: #ffffff;
         }
@@ -3598,6 +3597,7 @@ span.mat-radio-outer-circle {
                 position: relative;
                 left: 0;
                 top: 0;
+                transform: matrix();
                 -webkit-transform: translateY(0);
             }
             button.owl-next {

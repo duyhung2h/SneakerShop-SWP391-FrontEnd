@@ -9,12 +9,14 @@ import { Category } from 'src/app/model/Category';
 })
 export class HomepageComponent implements OnInit {
 
+  carouselWidth = 1000;
+
   listCategory: Category[] = [];
 
 
   images = [
     { path: './assets/img/carousel/slide1.jpg' },
-    { path: './assets/img/carousel/slide2.png' },
+    { path: './assets/img/carousel/slide2.jpg' },
     { path: './assets/img/carousel/slide3.png' },
     { path: './assets/img/carousel/slide4.png' },
     { path: './assets/img/carousel/slide5.png' }
