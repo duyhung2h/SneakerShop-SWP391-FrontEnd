@@ -164,29 +164,40 @@
                 width: 180px;
                 z-index: 9;
                 padding: 5px 0;
-                @include transition(all, .3s);
+                -webkit-transition: all, 0.3s;
+                -moz-transition: all, 0.3s;
+                -ms-transition: all, 0.3s;
+                -o-transition: all, 0.3s;
+                transition: all, 0.3s;
                 opacity: 0;
                 visibility: hidden;
                 li {
                     margin-right: 0;
                     display: block;
                     &:hover {
-                        &>a {
+                        >a {
                             color: $primary-color;
                         }
                     }
                     a {
                         text-transform: capitalize;
-                        color: $white-color;
+                        color: $main-text-color;
                         font-weight: 400;
                         padding: 5px 15px;
                     }
                 }
             }
-            &.active {
-                a {
-                    color: $primary-color;
-                }
+            a::after {
+                @include header__underline--after;
+                width: 0;
+                left: auto;
+                right: 0;
+            }
+            a::before {
+                @include header__underline--before;
+                width: 0;
+                left: auto;
+                right: 0;
             }
             &:hover {
                 .header__menu__dropdown {
@@ -194,22 +205,57 @@
                     opacity: 1;
                     visibility: visible;
                 }
-                &>a {
-                    color: $primary-color;
+                >a {
+                    color: darken($color: $main-text-color, $amount: 25%);
+                }
+                >a::after {
+                    left: 0;
+                    right: auto;
+                    width: 100% !important;
+                }
+                >a::before {
+                    left: 0;
+                    right: auto;
+                    width: 100% !important;
                 }
             }
             &:last-child {
                 margin-right: 0;
             }
             a {
-                font-size: 14px;
-                color: $heading-color-2;
+                text-decoration-line: none;
+                color: $main-text-color;
+                font-size: 15px;
                 text-transform: uppercase;
                 font-weight: 700;
                 letter-spacing: 2px;
-                @include transition(all, .3s);
+                -webkit-transition: all, 0.3s;
+                -moz-transition: all, 0.3s;
+                -ms-transition: all, 0.3s;
+                -o-transition: all, 0.3s;
+                transition: all, 0.3s;
                 padding: 5px 0;
                 display: block;
+            }
+        }
+        li.active {
+            &:hover {
+                >a::after {
+                    left: auto;
+                    right: 0;
+                    width: 0 !important;
+                }
+                >a::before {
+                    left: auto;
+                    right: 0;
+                    width: 100% !important;
+                }
+            }
+            >a::after {
+                @include header__underline--after;
+            }
+            >a::before {
+                @include header__underline--before;
             }
         }
     }
