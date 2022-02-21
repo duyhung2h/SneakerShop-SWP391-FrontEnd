@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { RouterModule } from '@angular/router';
 import {IvyCarouselModule} from 'angular-responsive-carousel';
@@ -28,6 +29,8 @@ import { provideMessaging,getMessaging } from '@angular/fire/messaging';
 import { providePerformance,getPerformance } from '@angular/fire/performance';
 import { provideRemoteConfig,getRemoteConfig } from '@angular/fire/remote-config';
 import { provideStorage,getStorage } from '@angular/fire/storage';
+import { CartlistComponent } from './view/cartlist/cartlist.component';
+import { OrdereditemlistComponent } from './view/_components/ordereditemlist/ordereditemlist.component';
 
 
 const customNotifierOptions: NotifierOptions = {
@@ -76,10 +79,13 @@ const customNotifierOptions: NotifierOptions = {
     HomepageComponent,
     HeaderComponent,
     FooterComponent,
-    ProductListComponent
+    ProductListComponent,
+    CartlistComponent,
+    OrdereditemlistComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     HttpClientModule,
     RouterModule,

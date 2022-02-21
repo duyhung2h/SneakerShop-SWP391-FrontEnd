@@ -48,18 +48,19 @@ h3,
 h4,
 h5,
 h6 {
-    margin: 0;
-    color: #111111;
+    // margin: 0;
     font-weight: 400;
-    font-family: 'Cairo', sans-serif;
+    text-transform: uppercase;
+    font-family: 'Roboto', sans-serif;
+    letter-spacing: 0.2em !important;
 }
 
 h1 {
-    font-size: 70px;
+    font: 600 70px/70px Roboto !important;
 }
 
 h2 {
-    font-size: 36px;
+    font: 500 36px/14px Roboto !important;
 }
 
 h3 {
@@ -80,8 +81,6 @@ h6 {
 
 p {
     font-size: 16px;
-    font-family: 'Cairo', sans-serif;
-    color: #6f6f6f;
     font-weight: 400;
     line-height: 26px;
     margin: 0 0 15px 0;
@@ -116,31 +115,40 @@ ol {
   Helper CSS
 -----------------------*/
 
-.section-title {
-    margin-bottom: 50px;
-    text-align: center;
-    h2 {
-        color: $normal-color;
-        font-weight: 700;
-        position: relative;
-        &:after {
-            position: absolute;
-            left: 0;
-            bottom: -15px;
-            right: 0;
-            height: 4px;
-            width: 80px;
-            background: $primary-color;
-            content: "";
-            margin: 0 auto;
-        }
-    }
-}
-
 .set-bg {
     background-repeat: no-repeat;
     background-size: cover;
     background-position: top center;
+}
+
+.section-title {
+    text-align: center;
+    h2 {
+        color: $main-text-color;
+        font-weight: 700;
+        position: relative;
+        // 
+        position: static;
+        left: 0;
+        margin: 0 auto;
+        display: block;
+        width: max-content;
+        background: $underline-color-after;
+        line-height: 1.3em !important;
+        margin-top: 1.5em;
+        padding-bottom: .15em;
+        height: .3em;
+        background-clip: content-box;
+        &:after {
+            display: flex;
+            content: "";
+            margin-top: -.15em;
+            margin-bottom: 1.5em;
+            height: .15em;
+            content-visibility: hidden;
+            background: $underline-color-after;
+        }
+    }
 }
 
 .spad {

@@ -6,10 +6,10 @@ $main-text-color: #ffffff;
 $secondary-text-color: #FF7BDA;
 // $underline-color-before: #845EC2;
 // $underline-color-after: #2FFFAD;
-$underline-color-before: #7ba13d;
-$underline-color-after: #d00052;
+$underline-color-before: #845EC2;
+$underline-color-after: #00BAAD;
 // $header-background-color: rgba(255, 255, 255, 0.3) !important;
-$header-background-color: rgba(0, 0, 0, 0.3) !important;
+$header-background-color: rgba(0, 0, 0, 0.3);
 $white-color: #ffffff;
 $heading-color: #111111;
 $para-color: #6f6f6f;
@@ -26,7 +26,7 @@ $fm-nunito: 'Nunito Sans',
 sans-serif;
 @mixin background__color {
     // background-image: linear-gradient(to right top, #6d327c, #485DA6, #00a1ba, #00BF98, #36C486);
-    background-image: linear-gradient(to right top, #000000, #36241a, #4e2316, #924518, #c43649);
+    background-image: linear-gradient(0deg, #581845, #900C3F, #C70039, #FF5733, #FFC300, #DAF7A6);
 }
 
 @mixin header__underline {

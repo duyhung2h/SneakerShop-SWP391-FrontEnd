@@ -230,7 +230,7 @@ export class ProductListComponent implements OnInit {
     }
     console.log(index)
     if (index > -1) {
-      this.listCart[index].orderonlqty += 1;
+      this.listCart[index].orderQuantity += 1;
       console.log("index > -1" + index);
       localStorage.setItem('listOrder', JSON.stringify(this.listCart));
       this.notifier.notify('success', "Đã thêm '" + product.product.name + "' vào giỏ hàng!");
@@ -238,7 +238,7 @@ export class ProductListComponent implements OnInit {
       const orderDetaiOn = new OrderDetail();
       orderDetaiOn.orderDetailId = product.product.productId;
       orderDetaiOn.discountProduct = product;
-      orderDetaiOn.orderonlqty = 1;
+      orderDetaiOn.orderQuantity = 1;
       if (product.voucher) {
         orderDetaiOn.price = product.product?.price
       } else {

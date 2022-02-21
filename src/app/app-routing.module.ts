@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { HomepageComponent } from 'src/app/view/homepage/homepage.component'
+import { CartlistComponent } from 'src/app/view/cartlist/cartlist.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,10 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomepageComponent
+  },
+  {
+    path: 'cart',
+    component: CartlistComponent
   },];
 
 @NgModule({

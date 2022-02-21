@@ -7,7 +7,7 @@
 <div class="humberger__menu__overlay" (click)="humbergerMenuOverlayOnClick()"></div>
 <div class="humberger__menu__wrapper">
     <div class="humberger__menu__logo">
-        <a href="#"><img src="img/logo.png" alt=""></a>
+        <a href="#"><img src="img/logo2.png" alt=""></a>
     </div>
     <div class="humberger__menu__cart">
         <ul *ngIf="userModel?.customer?.role?.roleId == 1">
@@ -69,12 +69,12 @@
 <!-- Humberger End -->
 
 <!-- Header Section Begin -->
-<mat-toolbar color="primary" class="header ">
-    <div class="container navbar ">
+<mat-toolbar color="primary" class="header position-fixed " style="z-index:1000000">
+    <div class="container navbar position-sticky">
         <div class="row ">
             <div class="col-lg-3 ">
                 <div class=" ">
-                    <a [routerLink]="['/home']"><img src="assets/img/logo.png " alt=" " class="header__logo "></a>
+                    <a [routerLink]="['/home']"><img src="assets/img/logo2.png " alt=" " class="header__logo "></a>
                 </div>
             </div>
             <div class="col-lg-5 ">
@@ -136,4 +136,8 @@
         </div>
     </div>
 </mat-toolbar>
+<mat-toolbar class="position-relative invisible">
+
+</mat-toolbar>
+
 <!-- Header Section End -->
