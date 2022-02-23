@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { BehaviorSubject } from 'rxjs';
 import { Category } from 'src/app/model/Category';
-import {DiscountProduct} from 'src/app/model/DiscountProduct'
+import { DiscountProduct } from 'src/app/model/DiscountProduct'
 import { OrderDetail } from 'src/app/model/OrderDetail';
 import { UserModel } from 'src/app/model/UserModel';
 import { AuthService } from 'src/app/controller/auth.service';
@@ -40,10 +40,12 @@ export class ProductListComponent implements OnInit {
     private router: Router,
     private favoriteProductService: FavoriteProductService,
     private notifier: NotifierService) {
-      
+
     //lay user, kiem tra xem la user hay guest
     try {
       this.userModel = this.authService.currentUserValue
+      console.log("%c current user value", 'color: orange;')
+      console.log({"current user value": this.authService.currentUserValue})
       if (this.userModel != null) {
         this.guestIsViewing = false;
       } else {
@@ -60,7 +62,7 @@ export class ProductListComponent implements OnInit {
 
 
 
-    // //tao moi neu localstorage ko co du lieu
+    //tao moi neu localstorage ko co du lieu
     try {
       if (this.listProduct.length == 0) {
         try {
@@ -91,6 +93,9 @@ export class ProductListComponent implements OnInit {
   }
 
   //remove product with status = 0
+  /**
+   * @param  {DiscountProduct[]} listProduct
+   */
   removeUnwantedProductFromList(listProduct: DiscountProduct[]) {
     listProduct.forEach((item, i) => {
       if (item.product?.status == 0) {
@@ -101,8 +106,12 @@ export class ProductListComponent implements OnInit {
   }
   loadData() {
     this.productService.getAllProduct().then(data => {
+      console.log("%c getAllProduct", 'color: blue;', data)
+      console.log("getAllProduct", data)
+      console.table([data])
+      
       this.listProduct = data;
-      if(this.listProduct.length == 0){
+      if (this.listProduct.length == 0) {
         this.notifier.notify('error', "Lỗi hiển thị list sản phẩm!");
       }
       this.listProduct = this.removeUnwantedProductFromList(this.listProduct);
@@ -131,7 +140,6 @@ export class ProductListComponent implements OnInit {
   //lam viec voi favorite
 
   loadProductFavorite() {
-    // this.DiscountProductService.getFavoriteProduct(this.userModel.customer?.customerId).then(data => {
     this.favoriteProductService.getFavoriteProduct(this.userModel.customer?.customerId).then(data => {
       console.log("getFavoriteProduct");
       console.log(data);
@@ -142,12 +150,13 @@ export class ProductListComponent implements OnInit {
       this.updateFavorite();
     });
   }
-
+  /**
+   * @param  {any} product
+   */
   checkFavorite(product: any) {
 
     let listProductFavorite: DiscountProduct[] = []
 
-    // this.DiscountProductService.getFavoriteProduct(this.userModel.customer?.customerId).then(data => {
     this.favoriteProductService.getFavoriteProduct(this.userModel.customer?.customerId).then(data => {
       console.log("getFavoriteProduct");
       console.log(data);
@@ -174,8 +183,10 @@ export class ProductListComponent implements OnInit {
     localStorage.setItem('listProductFavorite', JSON.stringify(this.listProductFavorite));
   }
 
+  /**
+   * @param  {any} product
+   */
   addFavorite(product: any) {
-    // this.DiscountProductService.getFavoriteProduct(this.userModel.customer?.customerId).then(data => {
     this.favoriteProductService.getFavoriteProduct(this.userModel.customer?.customerId).then(data => {
       console.log("getFavoriteProduct");
       console.log(data);
@@ -211,7 +222,9 @@ export class ProductListComponent implements OnInit {
   }
 
   //favorite: end
-
+  /**
+   * @param  {any} product
+   */
   addCart(product: any) {
 
     let index = -1;
@@ -254,11 +267,15 @@ export class ProductListComponent implements OnInit {
       this.notifier.notify('success', "Đã thêm '" + product.product.name + "' vào giỏ hàng!");
     }
   }
-
+  /**
+   * @param  {DiscountProduct|any} product
+   */
   viewDetail(product: DiscountProduct | any) {
     this.router.navigate(['/detail'], { queryParams: { DiscountProductId: product.DiscountProductId } });
   }
-
+  /**
+   * @param  {any} item
+   */
   priceAfterDiscount(item: any) {
     if (item.voucher) {
       return Math.floor(item.product.price - (item.product.price * item.voucher.discountPct) / 100);
@@ -295,12 +312,19 @@ export class ProductListComponent implements OnInit {
     str = str.replace(/!|@|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\;|\'|\"|\&|\#|\[|\]|~|\$|_|`|-|{|}|\||\\/g, " ");
     return str;
   }
-
+  /**
+   * @param  {any} txtSearch
+   * @param  {any} txtProduct
+   */
   comparionName(txtSearch: any, txtProduct: any) {
     txtSearch = this.removeVietnameseTones(txtSearch);
     txtProduct = this.removeVietnameseTones(txtProduct);
     return txtProduct.indexOf(txtSearch) > -1;
   }
+  /**
+   * @param  {any} listCate
+   * @param  {any} txtCategory
+   */
   comparionCategory(listCate: any, txtCategory: any) {
     return txtCategory.indexOf(listCate) > -1;
   }

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom } from 'rxjs';
 import { environment } from '../../environments/environment';
@@ -6,11 +6,21 @@ import { Attribute } from '../model/Attribute';
 import { Category } from '../model/Category';
 import { DiscountProduct } from "../model/DiscountProduct";
 import { Product } from '../model/Product';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 
+    'Access-Control-Allow-Origin':'http://localhost:4200',
+    'Authorization':'authkey',
+    'userid':'1'
+  })
+};
+
 @Injectable({
   providedIn: 'root'
 })
 export class DiscountProductService {
   constructor(private http: HttpClient) {
+    
   }
   getAllOfflineProduct() {
     let lorem = " ipsum dolor sit amet consectetur adipisicing elit. Minima voluptatum velit mollitia dolorem facilis suscipit cumque, molestias ut ex magni natus laudantium totam quisquam odit consectetur reprehenderit non quae vitae? ipsum dolor sit amet consectetur adipisicing elit. Minima voluptatum velit mollitia dolorem facilis suscipit cumque, molestias ut ex magni natus laudantium totam quisquam odit consectetur reprehenderit non quae vitae?";
@@ -86,8 +96,9 @@ export class DiscountProductService {
   }
 
   async getAllProduct() {
-    return await lastValueFrom<DiscountProduct[]>(this.http.get<DiscountProduct[]>
-      (`${environment.apiUrl}DiscountPro/get-all-discount-product`));
+    console.log("%c Call API :", 'color: blue;', (`${environment.apiUrl}api/product/get-all?page=2&pageSize=5&search=`))
+    return await lastValueFrom(this.http.get<DiscountProduct[]>
+      (`${environment.apiUrl}api/product/get-all?page=2&pageSize=5&search=`, httpOptions));
   }
 
   async getBestSellerProduct() {

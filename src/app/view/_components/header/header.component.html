@@ -61,6 +61,7 @@
                     <li [routerLinkActive]=" 'active' "><a href="# " [routerLink]="['/home'] ">Trang Chủ</a></li>
                     <li [routerLinkActive]=" 'active' "><a href="# " [routerLink]="['/menu'] ">Sản Phẩm</a></li>
                     <li [routerLinkActive]=" 'active' " *ngIf="userModel?.customer?.role?.roleId==1"><a href="# " [routerLink]="['/history'] ">Lịch sử</a></li>
+                    <li [routerLinkActive]=" 'active' "><a href="# " (click)="_testCreateLogInAccount()">_testCreateLogInAcc</a></li>
                 </ul>
             </nav>
         </div>

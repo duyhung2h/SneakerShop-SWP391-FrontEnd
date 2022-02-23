@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/controller/auth.service';
 import { FavoriteProductService } from 'src/app/controller/FavoriteProductService';
+import { Customer } from 'src/app/model/Customer';
 import { DiscountProduct } from 'src/app/model/DiscountProduct';
+import { Role } from 'src/app/model/Role';
 import { UserModel } from 'src/app/model/UserModel';
 declare var $: any;
 
@@ -18,7 +20,7 @@ export class HeaderComponent implements OnInit {
   listProductFavorite: DiscountProduct[] = [];
 
 
-  constructor( private authService: AuthService, 
+  constructor(private authService: AuthService,
     private favoriteProductService: FavoriteProductService) {
     //lay user
     try {
@@ -27,15 +29,15 @@ export class HeaderComponent implements OnInit {
       console.log("ERROR: Cannot get userModel")
       this.userModel = new UserModel
     }
-    
 
-    // // load data trong local storage, neu ko co thi tao moi
+
+    // load data trong local storage, neu ko co thi tao moi
     try {
       this.listProductFavorite = JSON.parse(localStorage['listProductFavorite']);
     } catch (err) {
     }
 
-    // //tao moi neu localstorage ko co du lieu
+    //tao moi neu localstorage ko co du lieu
     try {
       if (this.listProductFavorite.length == 0) {
         try {
@@ -51,27 +53,38 @@ export class HeaderComponent implements OnInit {
       }
     }
   }
-  checkCartAmount(){
+  _testCreateLogInAccount() {
+    this.userModel = new UserModel
+    this.userModel.customer = new Customer
+    this.userModel.customer.role = new Role
+    this.userModel.customer.role.roleId = 1
+
+    localStorage['currentUser'] = JSON.stringify(this.userModel)
+    console.log(JSON.stringify(this.userModel))
+
+  }
+
+  checkCartAmount() {
     //lay cart trong localStorage
-    try{
+    try {
       let cartProduct = JSON.parse(localStorage['listOrder']);
-      if(cartProduct.length == 0){
+      if (cartProduct.length == 0) {
         return cartProduct.length;
       }
       return cartProduct.length;
-    }catch(err){
+    } catch (err) {
       return 0;
     }
   }
-  checkFavoriteAmount(){
+  checkFavoriteAmount() {
     //lay favorite trong localStorage
-    try{
+    try {
       let listProductFavorite = JSON.parse(localStorage['listProductFavorite']);
-      if(listProductFavorite.length == 0){
+      if (listProductFavorite.length == 0) {
         return listProductFavorite.length;
       }
       return listProductFavorite.length;
-    }catch(err){
+    } catch (err) {
       return 0;
     }
   }
@@ -93,24 +106,24 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  public changePage(index: any){
+  public changePage(index: any) {
     this.indexPage = index;
   }
 
-  humbergerOnclick(){
+  humbergerOnclick() {
     $(".humberger__menu__wrapper").addClass("show__humberger__menu__wrapper");
     $(".humberger__menu__overlay").addClass("active");
     $("body").addClass("over_hid");
   }
 
-  humbergerMenuOverlayOnClick(){
+  humbergerMenuOverlayOnClick() {
     $(".humberger__menu__wrapper").removeClass("show__humberger__menu__wrapper");
     $(".humberger__menu__overlay").removeClass("active");
     $("body").removeClass("over_hid");
   }
 
-  logout(){
-    
+  logout() {
+
     this.authService.logout()
   }
 
