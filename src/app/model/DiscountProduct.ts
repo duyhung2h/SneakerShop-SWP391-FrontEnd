@@ -2,13 +2,13 @@ import {Product} from "./Product";
 import {Voucher} from "./Voucher";
 
 export class DiscountProduct {
-  discountProductId ?: any;
-  product ?: Product;
-  voucher ?: Voucher;
+  _discountProductId ?: any;
+  _product ?: Product;
+  _voucher ?: Voucher;
 
-  public DiscountProduct(discountProductId: any, product: Product, voucher: Voucher){
-    this.discountProductId = discountProductId;
-    this.product = product;
-    this.voucher = voucher;
+  constructor(discountProductId?: any, product?: Product, voucher?: Voucher){
+    this._discountProductId = discountProductId;
+    this._product = product;
+    this._voucher = voucher;
   }
 }

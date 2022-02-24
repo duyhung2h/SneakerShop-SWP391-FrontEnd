@@ -2,7 +2,7 @@ export class Voucher {
   voucherId: any;
   voucherCode: any;
   description: any;
-  discountPct?: any;
+  _discountPct?: any;
   type: any;
   startDate: any;
   endDate: any;

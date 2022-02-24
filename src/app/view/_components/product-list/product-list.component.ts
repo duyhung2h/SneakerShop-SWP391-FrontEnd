@@ -10,6 +10,9 @@ import { UserModel } from 'src/app/model/UserModel';
 import { AuthService } from 'src/app/controller/auth.service';
 import { DiscountProductService } from 'src/app/controller/DiscountProductService';
 import { FavoriteProductService } from 'src/app/controller/FavoriteProductService';
+import { Product } from 'src/app/model/Product';
+import { Voucher } from 'src/app/model/Voucher';
+import { Attribute } from 'src/app/model/Attribute';
 
 @Component({
   selector: 'app-product-list',
@@ -18,6 +21,7 @@ import { FavoriteProductService } from 'src/app/controller/FavoriteProductServic
 })
 export class ProductListComponent implements OnInit {
   listProduct: DiscountProduct[] = [];
+  listProductCore: any[] = []
   listCategory: Category[] = [];
   listProductFavorite: DiscountProduct[] = [];
   listCart: OrderDetail[] = []
@@ -45,7 +49,7 @@ export class ProductListComponent implements OnInit {
     try {
       this.userModel = this.authService.currentUserValue
       console.log("%c current user value", 'color: orange;')
-      console.log({"current user value": this.authService.currentUserValue})
+      console.log({ "current user value": this.authService.currentUserValue })
       if (this.userModel != null) {
         this.guestIsViewing = false;
       } else {
@@ -98,33 +102,68 @@ export class ProductListComponent implements OnInit {
    */
   removeUnwantedProductFromList(listProduct: DiscountProduct[]) {
     listProduct.forEach((item, i) => {
-      if (item.product?.status == 0) {
+      if (item._product?._status == 0) {
         listProduct.splice(i, 1);
       }
     });
     return listProduct;
   }
+  /**
+   * Load product data
+   */
   loadData() {
-    this.productService.getAllProduct().then(data => {
-      console.log("%c getAllProduct", 'color: blue;', data)
-      console.log("getAllProduct", data)
-      console.table([data])
-      
-      this.listProduct = data;
+    this.productService.getAllProduct().then(coreData => {
+      console.log("%c getAllProduct", 'color: blue;', coreData.data.items)
+      console.log("getAllProduct", coreData.data.items)
+      //add to top
+      coreData.data.items.forEach((item: any) => {
+        // let productCategory = new Category(item.category.CategoryId, item.category.CategoryName, item.category.CategoryDescription)
+        let productCategories: Category[] = []
+        item.category.forEach((itemCategory: any) => {
+          let category = new Category(itemCategory.CategoryId, itemCategory.CategoryName, itemCategory.CategoryDescription)
+          productCategories.unshift(category)
+        })
+        let productAttributes: Attribute[] = []
+        item.attributes.forEach((itemAttribute: any) => {
+          let attribute = new Attribute(itemAttribute.AttributeId, itemAttribute.AttributeName, itemAttribute.AttributeDescription, itemAttribute.AttributeImage)
+          productAttributes.unshift(attribute)
+        })
+        let product = new Product(item.ProductId, item.ProductName, productCategories[0], item.Price, "", "", item.ProductImage, productAttributes)
+        let voucher = new Voucher
+        let discountProduct = new DiscountProduct(item.ProductId,
+          product,
+          voucher
+        )
+        console.log("add to list " + discountProduct._discountProductId)
+
+        console.log(this.listProductCore.unshift(discountProduct))
+
+      });
+
+      console.table(this.listProductCore)
+
+      this.listProduct = this.listProductCore
+      console.table(this.listProduct)
       if (this.listProduct.length == 0) {
-        this.notifier.notify('error', "Lỗi hiển thị list sản phẩm!");
+        this.notifier.notify('error', "Lỗi hiển thị list sản phẩm!")
       }
-      this.listProduct = this.removeUnwantedProductFromList(this.listProduct);
-      this.isLoading.next(true);
-      this.listPages();
+      // this.listProduct = this.removeUnwantedProductFromList(this.listProduct)
+      this.isLoading.next(true)
+      this.listPages()
     }, error => {
-      this.notifier.notify('error', "Lỗi hiển thị list sản phẩm!");
+      this.notifier.notify('error', "Lỗi hiển thị list sản phẩm!")
     });
   }
+  /**
+   * On page change, show list of products according to page number
+   * @param  {any} index
+   */
   pageChange(index: any) {
     this.skip = index * this.pageSize;
   }
-
+  /**
+   * Add pages to product page
+   */
   listPages() {
     let i = 0;
     let add = 0;
@@ -137,8 +176,9 @@ export class ProductListComponent implements OnInit {
   }
 
 
-  //lam viec voi favorite
-
+  /**
+   * lam viec voi favorite
+   */
   loadProductFavorite() {
     this.favoriteProductService.getFavoriteProduct(this.userModel.customer?.customerId).then(data => {
       console.log("getFavoriteProduct");
@@ -151,9 +191,11 @@ export class ProductListComponent implements OnInit {
     });
   }
   /**
+   * Check if the product is favorited if user hover over a product
    * @param  {any} product
    */
   checkFavorite(product: any) {
+    console.table(this.listProduct)
 
     let listProductFavorite: DiscountProduct[] = []
 
@@ -164,7 +206,7 @@ export class ProductListComponent implements OnInit {
       listProductFavorite = data;
       this.isLoading.next(true);
       for (let item of listProductFavorite) {
-        if (item.product?.productId == product.product.productId) {
+        if (item._product?._productId == product.product.productId) {
           console.log("listProductFavorite: mon an da ton tai");
           this.selectedFavoriteIndex = product.product.productId;
 
@@ -192,7 +234,7 @@ export class ProductListComponent implements OnInit {
       console.log(data);
       this.listProductFavorite = data;
       this.isLoading.next(true);
-      const idIndex = this.listProductFavorite.findIndex(productFavoriteItem => productFavoriteItem.product?.productId == product.product.productId);
+      const idIndex = this.listProductFavorite.findIndex(productFavoriteItem => productFavoriteItem._product?._productId == product.product.productId);
       if (idIndex != -1) {
         console.log("listProductFavorite: mon an da ton tai");
         //remove mon an khoi list favorite
@@ -233,7 +275,7 @@ export class ProductListComponent implements OnInit {
     try {
       // Try to run this code 
       this.listCart.forEach((item, i) => {
-        if (item.discountProduct?.product?.productId == product.product.productId) { index = i; }
+        if (item._discountProduct?._product?._productId == product.product.productId) { index = i; }
       })
     }
     catch (err) {
@@ -243,23 +285,23 @@ export class ProductListComponent implements OnInit {
     }
     console.log(index)
     if (index > -1) {
-      this.listCart[index].orderQuantity += 1;
+      this.listCart[index]._orderQuantity += 1;
       console.log("index > -1" + index);
       localStorage.setItem('listOrder', JSON.stringify(this.listCart));
       this.notifier.notify('success', "Đã thêm '" + product.product.name + "' vào giỏ hàng!");
     } else {
       const orderDetaiOn = new OrderDetail();
-      orderDetaiOn.orderDetailId = product.product.productId;
-      orderDetaiOn.discountProduct = product;
-      orderDetaiOn.orderQuantity = 1;
+      orderDetaiOn._orderDetailId = product.product.productId;
+      orderDetaiOn._discountProduct = product;
+      orderDetaiOn._orderQuantity = 1;
       if (product.voucher) {
-        orderDetaiOn.price = product.product?.price
+        orderDetaiOn._price = product.product?.price
       } else {
-        orderDetaiOn.price = product.product?.price
+        orderDetaiOn._price = product.product?.price
       }
 
-      orderDetaiOn.discountPct = product?.voucher?.discountPct;
-      orderDetaiOn.voucherCode = product?.voucher?.voucherCode;
+      orderDetaiOn._discountPct = product?.voucher?.discountPct;
+      orderDetaiOn._voucherCode = product?.voucher?.voucherCode;
 
       this.listCart.push(orderDetaiOn);
       localStorage.setItem('listOrder', JSON.stringify(this.listCart));
@@ -276,11 +318,22 @@ export class ProductListComponent implements OnInit {
   /**
    * @param  {any} item
    */
-  priceAfterDiscount(item: any) {
-    if (item.voucher) {
-      return Math.floor(item.product.price - (item.product.price * item.voucher.discountPct) / 100);
-    } else {
-      return item.product.price;
+  priceAfterDiscount(item?: DiscountProduct) {
+    try {
+      if (item?._voucher) {
+        let priceAfterDiscount: any = Math.floor(item?._product?._price - (item?._product?._price * item._voucher._discountPct) / 100);
+        if (!(priceAfterDiscount instanceof Number)){
+          var errorIn : Error = new Error("Giá / Voucher không hợp lệ!");
+          throw errorIn
+        }
+        console.log("!!!!!!!!" + priceAfterDiscount)
+        return priceAfterDiscount
+      } else {
+        return item?._product?._price;
+      }
+    } catch (errorIn) {
+      this.notifier.notify('error', ''+errorIn)
+      return item?._product?._price;
     }
   }
   removeVietnameseTones(str: any) {

@@ -72,10 +72,10 @@
 <!-- Header Section Begin -->
 <mat-toolbar color="primary" class="header position-fixed " style="z-index:1000000">
     <div class="container navbar position-sticky">
-        <div class="row ">
+        <div class="row w-auto">
             <div class="col-lg-3 ">
-                <div class=" ">
-                    <a [routerLink]="['/home']"><img src="assets/img/logo2.png " alt=" " class="header__logo "></a>
+                <div class="header__logo ">
+                    <a [routerLink]="['/home']"><img src="assets/img/logo2.png " alt=" "></a>
                 </div>
             </div>
             <div class="col-lg-5 ">
@@ -87,49 +87,49 @@
                     </ul>
                 </nav>
             </div>
-            <div class="col-lg-4 ">
-                <div class="header__cart ">
-                    <ul class="header__ul " *ngIf="userModel?.customer?.role?.roleId==1 ">
-                        <li>
-                            <a href="# " [routerLink]="['/favorite'] ">
-                                <i class="fa fa-heart tooltipHeader ">
+        </div>
+        <div class="float-right w-auto">
+            <div class="header__cart ">
+                <ul class="header__ul " *ngIf="userModel?.customer?.role?.roleId==1 ">
+                    <li>
+                        <a href="# " [routerLink]="['/favorite'] ">
+                            <i class="fa fa-heart tooltipHeader ">
                                     <span class="tooltiptext ">Menu ưa thích</span>
                                 </i>
-                                <span>{{checkFavoriteAmount()}}</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a [routerLink]="['/cart'] ">
-                                <i class="fa fa-shopping-bag tooltipHeader ">
+                            <span>{{checkFavoriteAmount()}}</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a [routerLink]="['/cart'] ">
+                            <i class="fa fa-shopping-bag tooltipHeader ">
                                     <span class="tooltiptext ">Giỏ hàng của bạn</span>
                                 </i>
-                                <span>{{checkCartAmount()}}</span>
-                            </a>
-                        </li>
+                            <span>{{checkCartAmount()}}</span>
+                        </a>
+                    </li>
 
-                        <li>
-                            <div class="header__item__dropdown ">
-                                <i class="fa fa-user "></i>
-                                <ul class="header__menu__dropdown dropdown_left ">
-                                    <li><a [routerLink]="['/accountinfo']">Cập Nhật Tài Khoản</a></li>
-                                    <li><a [routerLink]="['/logout']" (click)="logout() ">Đăng Xuất</a></li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                    <ul class="header__ul " *ngIf="userModel==null">
-                        <li class="cursor-auto">
-                            <div class="header__item__dropdown  cursor-pointer">
-                                <i [routerLink]="['/login']" class="fa fa-user mr-3 line-separator-header">
+                    <li>
+                        <div class="header__item__dropdown ">
+                            <i class="fa fa-user "></i>
+                            <ul class="header__menu__dropdown dropdown_left ">
+                                <li><a [routerLink]="['/accountinfo']">Cập Nhật Tài Khoản</a></li>
+                                <li><a [routerLink]="['/logout']" (click)="logout() ">Đăng Xuất</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="header__ul " *ngIf="userModel==null">
+                    <li class="cursor-auto">
+                        <div class="header__item__dropdown  cursor-pointer">
+                            <i [routerLink]="['/login']" class="fa fa-user mr-3 line-separator-header">
                                     <span class="footer-ybwc-desc"> Đăng Nhập</span>
                                 </i>
-                                <i [routerLink]="['/register']" class="fa ">
+                            <i [routerLink]="['/register']" class="fa ">
                                     <span class="footer-ybwc-desc"> Đăng Ký</span>
                                 </i>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="humberger__open " (click)="humbergerOnclick() ">
