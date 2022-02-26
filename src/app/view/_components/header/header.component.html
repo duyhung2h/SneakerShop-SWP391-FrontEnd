@@ -71,12 +71,10 @@
 
 <!-- Header Section Begin -->
 <mat-toolbar color="primary" class="header position-fixed " style="z-index:1000000">
-    <div class="container navbar position-sticky">
-        <div class="row w-auto">
-            <div class="col-lg-3 ">
-                <div class="header__logo ">
-                    <a [routerLink]="['/home']"><img src="assets/img/logo2.png " alt=" "></a>
-                </div>
+    <div class="container navbar position-sticky width-100">
+        <div class="row width-100">
+            <div class="col-lg-3 header__logo">
+                <a [routerLink]="['/home']"><img src="assets/img/logo2.png " alt=" "></a>
             </div>
             <div class="col-lg-5 ">
                 <nav class="header__menu ">
@@ -88,8 +86,8 @@
                 </nav>
             </div>
         </div>
-        <div class="float-right w-auto">
-            <div class="header__cart ">
+        <div class="">
+            <div class="header__cart position-absolute d-block float-right w-auto">
                 <ul class="header__ul " *ngIf="userModel?.customer?.role?.roleId==1 ">
                     <li>
                         <a href="# " [routerLink]="['/favorite'] ">

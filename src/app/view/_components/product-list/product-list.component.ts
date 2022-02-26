@@ -207,25 +207,26 @@ export class ProductListComponent implements OnInit {
       this.isLoading.next(true);
       for (let item of listProductFavorite) {
         if (item._product?._productId == product.product.productId) {
-          console.log("listProductFavorite: mon an da ton tai");
+          console.log("listProductFavorite: product da ton tai");
           this.selectedFavoriteIndex = product.product.productId;
 
 
           return;
         }
       }
-      console.log("listProductFavorite: mon an chua ton tai");
+      console.log("listProductFavorite: product chua ton tai");
       this.selectedFavoriteIndex = -1;
-      //add mon an vao list favorite
-      // this.DiscountProductService.add
     });
   }
-
+  /**
+   * update favorite product list to session
+   */
   updateFavorite() {
     localStorage.setItem('listProductFavorite', JSON.stringify(this.listProductFavorite));
   }
 
   /**
+   * Add product to customer favorite list
    * @param  {any} product
    */
   addFavorite(product: any) {
@@ -236,7 +237,7 @@ export class ProductListComponent implements OnInit {
       this.isLoading.next(true);
       const idIndex = this.listProductFavorite.findIndex(productFavoriteItem => productFavoriteItem._product?._productId == product.product.productId);
       if (idIndex != -1) {
-        console.log("listProductFavorite: mon an da ton tai");
+        console.log("listProductFavorite: product da ton tai");
         //remove mon an khoi list favorite
         this.favoriteProductService.removeFavoriteProduct(this.userModel.customer?.customerId, product.product.productId).then(data => {
           console.log("this.favoriteProductService.removeFavoriteProduct");
@@ -246,10 +247,10 @@ export class ProductListComponent implements OnInit {
         });
         this.listProductFavorite.splice(idIndex, 1);
         this.updateFavorite();
-        this.notifier.notify('success', "Đã xóa '" + product.product.name + "' khỏi món yêu thích!");
+        this.notifier.notify('success', "Đã xóa '" + product.product.name + "' khỏi sản phẩm yêu thích!");
         return;
       } else {
-        console.log("listProductFavorite: mon an chua ton tai");
+        console.log("listProductFavorite: product chua ton tai");
         //add mon an vao list favorite
         this.favoriteProductService.addFavoriteProduct(this.userModel.customer?.customerId, product.product.productId).then(data => {
           console.log("this.favoriteProductService.addFavoriteProduct");
@@ -257,7 +258,7 @@ export class ProductListComponent implements OnInit {
         });
         this.listProductFavorite.push(product);
         this.updateFavorite();
-        this.notifier.notify('success', "Món ăn '" + product.product.name + "' đã được thêm vào yêu thích!");
+        this.notifier.notify('success', "Sản phẩm '" + product.product.name + "' đã được thêm vào yêu thích!");
         return;
       }
     });
@@ -332,7 +333,7 @@ export class ProductListComponent implements OnInit {
         return item?._product?._price;
       }
     } catch (errorIn) {
-      this.notifier.notify('error', ''+errorIn)
+      // this.notifier.notify('error', ''+errorIn)
       return item?._product?._price;
     }
   }

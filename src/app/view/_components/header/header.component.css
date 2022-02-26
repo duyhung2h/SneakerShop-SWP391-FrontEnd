@@ -31,10 +31,6 @@
     display: block;
 }
 
-.header__item__dropdown .header__menu__dropdown li:hover>a {
-    color: #7fad39;
-}
-
 .header__item__dropdown .header__menu__dropdown li a {
     font-size: 15px;
     color: #252525;

@@ -17,7 +17,7 @@ export class HomepageComponent implements OnInit {
   images = [
     { path: './assets/img/carousel/slide1.jpg' },
     { path: './assets/img/carousel/slide2.jpg' },
-    { path: './assets/img/carousel/slide3.png' },
+    { path: './assets/img/carousel/slide3.gif' },
     { path: './assets/img/carousel/slide4.png' },
     { path: './assets/img/carousel/slide5.png' }
   ]
