@@ -10,9 +10,7 @@ import { UserModel } from 'src/app/model/UserModel';
 import { AuthService } from 'src/app/controller/auth.service';
 import { DiscountProductService } from 'src/app/controller/DiscountProductService';
 import { FavoriteProductService } from 'src/app/controller/FavoriteProductService';
-import { Product } from 'src/app/model/Product';
-import { Voucher } from 'src/app/model/Voucher';
-import { Attribute } from 'src/app/model/Attribute';
+import { ProductController } from 'src/app/controller/ProductController';
 
 @Component({
   selector: 'app-product-list',
@@ -20,6 +18,8 @@ import { Attribute } from 'src/app/model/Attribute';
   styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
+  productController: ProductController = new ProductController();
+
   listProduct: DiscountProduct[] = [];
   listProductCore: any[] = []
   listCategory: Category[] = [];
@@ -107,52 +107,6 @@ export class ProductListComponent implements OnInit {
       }
     });
     return listProduct;
-  }
-  /**
-   * Load product data
-   */
-  loadData() {
-    this.productService.getAllProduct().then(coreData => {
-      console.log("%c getAllProduct", 'color: blue;', coreData.data.items)
-      console.log("getAllProduct", coreData.data.items)
-      //add to top
-      coreData.data.items.forEach((item: any) => {
-        // let productCategory = new Category(item.category.CategoryId, item.category.CategoryName, item.category.CategoryDescription)
-        let productCategories: Category[] = []
-        item.category.forEach((itemCategory: any) => {
-          let category = new Category(itemCategory.CategoryId, itemCategory.CategoryName, itemCategory.CategoryDescription)
-          productCategories.unshift(category)
-        })
-        let productAttributes: Attribute[] = []
-        item.attributes.forEach((itemAttribute: any) => {
-          let attribute = new Attribute(itemAttribute.AttributeId, itemAttribute.AttributeName, itemAttribute.AttributeDescription, itemAttribute.AttributeImage)
-          productAttributes.unshift(attribute)
-        })
-        let product = new Product(item.ProductId, item.ProductName, productCategories[0], item.Price, "", "", item.ProductImage, productAttributes)
-        let voucher = new Voucher
-        let discountProduct = new DiscountProduct(item.ProductId,
-          product,
-          voucher
-        )
-        console.log("add to list " + discountProduct._discountProductId)
-
-        console.log(this.listProductCore.unshift(discountProduct))
-
-      });
-
-      console.table(this.listProductCore)
-
-      this.listProduct = this.listProductCore
-      console.table(this.listProduct)
-      if (this.listProduct.length == 0) {
-        this.notifier.notify('error', "Lỗi hiển thị list sản phẩm!")
-      }
-      // this.listProduct = this.removeUnwantedProductFromList(this.listProduct)
-      this.isLoading.next(true)
-      this.listPages()
-    }, error => {
-      this.notifier.notify('error', "Lỗi hiển thị list sản phẩm!")
-    });
   }
   /**
    * On page change, show list of products according to page number

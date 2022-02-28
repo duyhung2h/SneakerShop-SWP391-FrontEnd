@@ -18,6 +18,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { CartlistComponent } from './view/cartlist/cartlist.component';
 import { OrdereditemlistComponent } from './view/_components/ordereditemlist/ordereditemlist.component';
+import { ProductlistComponent } from './view/productlist/productlist.component';
 
 
 const customNotifierOptions: NotifierOptions = {
@@ -68,7 +69,8 @@ const customNotifierOptions: NotifierOptions = {
     FooterComponent,
     ProductListComponent,
     CartlistComponent,
-    OrdereditemlistComponent
+    OrdereditemlistComponent,
+    ProductlistComponent
   ],
   imports: [
     BrowserModule,
