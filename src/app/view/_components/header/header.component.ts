@@ -57,6 +57,7 @@ export class HeaderComponent implements OnInit {
     this.userModel = new UserModel
     this.userModel.customer = new Customer
     this.userModel.customer.role = new Role
+    this.userModel.customer.customerId = 1
     this.userModel.customer.role.roleId = 1
 
     localStorage['currentUser'] = JSON.stringify(this.userModel)

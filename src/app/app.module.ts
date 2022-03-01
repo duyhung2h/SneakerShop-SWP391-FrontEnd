@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { RouterModule } from '@angular/router';
 import { IvyCarouselModule } from 'angular-responsive-carousel';
@@ -18,6 +18,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { CartlistComponent } from './view/cartlist/cartlist.component';
 import { OrdereditemlistComponent } from './view/_components/ordereditemlist/ordereditemlist.component';
+import { FullProductListComponent } from './view/full-product-list/full-product-list.component';
 
 
 const customNotifierOptions: NotifierOptions = {
@@ -68,7 +69,8 @@ const customNotifierOptions: NotifierOptions = {
     FooterComponent,
     ProductListComponent,
     CartlistComponent,
-    OrdereditemlistComponent
+    OrdereditemlistComponent,
+    FullProductListComponent
   ],
   imports: [
     BrowserModule,
@@ -80,6 +82,7 @@ const customNotifierOptions: NotifierOptions = {
     NotifierModule,
     MatToolbarModule,
     MatIconModule,
+    ReactiveFormsModule,
 
 
     NotifierModule.withConfig(customNotifierOptions),

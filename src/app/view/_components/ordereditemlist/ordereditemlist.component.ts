@@ -14,7 +14,7 @@ export class OrdereditemlistComponent implements OnInit {
 
   constructor(private router: Router,
     private notifier: NotifierService) {
-    window.scroll(0, 400);
+    window.scroll(0, 0);
     try {
       this.listCart = JSON.parse(localStorage['listOrder']);
       console.log("JSON.parse(localStorage.listOrder)");

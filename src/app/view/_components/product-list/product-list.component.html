@@ -9,42 +9,42 @@
                 </div>
             </div>
         </div>
-        <div class="row featured__filter" *ngIf="isLoading | async">
+        <div class="row featured__filter" *ngIf="productController.isLoading | async">
             <div class="col-lg-3 col-md-4 col-sm-6" *ngFor="
-            let item of listProduct
+            let item of productController.listProduct
             ">
-                <!-- .slice(this.skip,skip+pageSize) .slice(this.skip,skip+pageSize) -->
+                <!-- .slice(this.productController.skip,skip+pageSize) .slice(this.productController.skip,skip+pageSize) -->
                 <div class="product__item">
-                    <div (mouseenter)="checkFavorite(item)" class="product__item__pic set-bg" style="background-image: url('{{item._product?._image}}');">
-                        <div class="product__detail__view" (click)="viewDetail(item)"></div>
+                    <div (mouseenter)="productController.checkFavorite(item)" class="product__item__pic set-bg" style="background-image: url('{{item._product?._image}}');">
+                        <div class="product__detail__view" (click)="productController.viewDetail(item)"></div>
                         <div class="product__discount__percent" *ngIf="item._voucher ? (item._voucher._discountPct ? true : false): ''">{{item._voucher ? ("-" + item._voucher._discountPct + "%" ): ""}}</div>
 
-                        <ul *ngIf="userModel != null" class="product__item__pic__hover">
-                            <li><a (click)="addFavorite(item)" [ngClass]="{
-                                'red': (selectedFavoriteIndex == item._product?._productId)
+                        <ul *ngIf="productController.authService.userModel != null" class="product__item__pic__hover">
+                            <li><a (click)="productController.addFavorite(item)" [ngClass]="{
+                                'red': (productController.selectedFavoriteIndex == item._product?._productId)
                               }"><i class="fa " [ngClass]="{
-                                'fa-heart': !(selectedFavoriteIndex == item._product?._productId),
-                                'fa-heartbeat': (selectedFavoriteIndex == item._product?._productId)
+                                'fa-heart': !(productController.selectedFavoriteIndex == item._product?._productId),
+                                'fa-heartbeat': (productController.selectedFavoriteIndex == item._product?._productId)
                               }"></i></a></li>
                             <li *ngIf="item._product?._status != 2"><a (click)="addCart(item)"><i class="fa fa-shopping-cart"></i></a>
                             </li>
                         </ul>
-                        <ul *ngIf="userModel == null" class="product__item__pic__hover product__order__guest__notification__menu">
+                        <ul *ngIf="productController.authService.userModel == null" class="product__item__pic__hover product__order__guest__notification__menu">
                             <div class="col-lg-12 ybwc-desc">Để đặt hàng, trước tiên bạn cần đăng nhập.</div>
                         </ul>
                     </div>
                     <div class="featured__item__text product__discount__item__text">
-                        <h6><a [routerLink]="['/detail']" (click)="viewDetail(item)">{{item._product ? item._product._name : ""}}</a></h6>
-                        <h5 class="product__item__price">{{item._product ? getPrice(priceAfterDiscount(item)) : ""}}đ
-                            <span *ngIf="item._voucher ? true : false">{{item._product ? getPrice(item._product._price) : ""}}đ</span>
+                        <h6><a [routerLink]="['/detail']" (click)="productController.viewDetail(item)">{{item._product ? item._product._name : ""}}</a></h6>
+                        <h5 class="product__item__price">{{item._product ? textController.getPrice(priceAfterDiscount(item)) : ""}}đ
+                            <span *ngIf="item._voucher ? true : false">{{item._product ? textController.getPrice(item._product._price) : ""}}đ</span>
                         </h5>
                     </div>
                 </div>
 
             </div>
         </div>
-        <div class="product__pagination" *ngIf="listPage.length == 1 ? false : true">
-            <a *ngFor="let item of listPage" (click)="pageChange(item)" style="{{this.skip/this.pageSize === item ? 'background-color: #3CC032': ''}} ">{{item + 1}}</a>
+        <div class="product__pagination" *ngIf="productController.listPage.length == 1 ? false : true">
+            <a *ngFor="let item of productController.listPage" (click)="productController.pageChange(item)" style="{{this.productController.skip/this.productController.pageSize === item ? 'background-color: #3CC032': ''}} ">{{item + 1}}</a>
         </div>
     </div>
 </section>

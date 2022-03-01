@@ -59,7 +59,7 @@
             <nav class="slicknav_nav slicknav_hidden " aria-hidden="true " role="menu " style="display: none; ">
                 <ul class="header__ul ">
                     <li [routerLinkActive]=" 'active' "><a href="# " [routerLink]="['/home'] ">Trang Chủ</a></li>
-                    <li [routerLinkActive]=" 'active' "><a href="# " [routerLink]="['/menu'] ">Sản Phẩm</a></li>
+                    <li [routerLinkActive]=" 'active' "><a href="# " [routerLink]="['/product-list'] ">Sản Phẩm</a></li>
                     <li [routerLinkActive]=" 'active' " *ngIf="userModel?.customer?.role?.roleId==1"><a href="# " [routerLink]="['/history'] ">Lịch sử</a></li>
                     <li [routerLinkActive]=" 'active' "><a href="# " (click)="_testCreateLogInAccount()">_testCreateLogInAcc</a></li>
                 </ul>
@@ -80,7 +80,7 @@
                 <nav class="header__menu ">
                     <ul class="header__ul ">
                         <li [routerLinkActive]=" 'active' "><a href="#" [routerLink]="['/home'] ">Trang Chủ</a></li>
-                        <li [routerLinkActive]=" 'active' "><a href="#" [routerLink]="['/menu'] ">Sản Phẩm</a></li>
+                        <li [routerLinkActive]=" 'active' "><a href="#" [routerLink]="['/product-list'] ">Sản Phẩm</a></li>
                         <li [routerLinkActive]=" 'active' " *ngIf="userModel?.customer?.role?.roleId==1 "><a [routerLink]="[ '/history'] ">Lịch sử</a></li>
                     </ul>
                 </nav>
