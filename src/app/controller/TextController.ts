@@ -30,9 +30,16 @@ export class TextController{
     return str;
   }
 
-  comparionName(txtSearch: any, txtProduct: any) {
+  comparisonNameEqual(txtSearch: any, txtProduct: any) {
     txtSearch = this.removeVietnameseTones(txtSearch);
     txtProduct = this.removeVietnameseTones(txtProduct);
+    console.log("%c comparisonName" + txtProduct.indexOf(txtSearch), "color: green;")
+    return txtProduct.indexOf(txtSearch) == 0;
+  }
+  comparisonName(txtSearch: any, txtProduct: any) {
+    txtSearch = this.removeVietnameseTones(txtSearch);
+    txtProduct = this.removeVietnameseTones(txtProduct);
+    console.log("%c comparisonName" + txtProduct.indexOf(txtSearch), "color: green;")
     return txtProduct.indexOf(txtSearch) > -1;
   }
   comparionCategory(listCate: any, txtCategory: any) {

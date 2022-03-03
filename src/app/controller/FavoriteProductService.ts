@@ -19,8 +19,9 @@ export class FavoriteProductService {
 
   async getFavoriteProduct(customerId: any) {
     //   return await this.getAllOfflineProduct();
-        return await lastValueFrom<DiscountProduct[]>(this.http.get<DiscountProduct[]>
-          (`${environment.apiUrl}api/favorite/my-favorites?customerId=${customerId}`));
+        return await []
+        // lastValueFrom<DiscountProduct[]>(this.http.get<DiscountProduct[]>
+        //   (`${environment.apiUrl}api/favorite/my-favorites?customerId=${customerId}`));
   }
   async addFavoriteProduct(customerId: any, productId: any) {
     //   return await this.getAllOfflineProduct();

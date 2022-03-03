@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CartlistComponent } from './view/cartlist/cartlist.component';
 import { OrdereditemlistComponent } from './view/_components/ordereditemlist/ordereditemlist.component';
 import { FullProductListComponent } from './view/full-product-list/full-product-list.component';
+import { ErrorPageComponent } from './view/error-page/error-page.component';
 
 
 const customNotifierOptions: NotifierOptions = {
@@ -70,7 +71,8 @@ const customNotifierOptions: NotifierOptions = {
     ProductListComponent,
     CartlistComponent,
     OrdereditemlistComponent,
-    FullProductListComponent
+    FullProductListComponent,
+    ErrorPageComponent
   ],
   imports: [
     BrowserModule,

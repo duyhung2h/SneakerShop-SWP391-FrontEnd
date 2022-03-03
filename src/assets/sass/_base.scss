@@ -133,7 +133,7 @@ ol {
         margin: 0 auto;
         display: block;
         width: max-content;
-        background: $underline-color-after;
+        background: $underline-color-before;
         line-height: 1.3em !important;
         margin-top: 1.5em;
         padding-bottom: .15em;
@@ -146,7 +146,7 @@ ol {
             margin-bottom: 1.5em;
             height: .15em;
             content-visibility: hidden;
-            background: $underline-color-after;
+            background: $underline-color-before;
         }
     }
 }

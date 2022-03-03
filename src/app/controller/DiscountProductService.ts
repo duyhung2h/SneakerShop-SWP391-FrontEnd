@@ -98,7 +98,8 @@ export class DiscountProductService {
   async getAllProduct() {
     console.log("%c Call Product API :", 'color: blue;', (`${environment.apiUrl}api/product/get-all?page=2&pageSize=5&search=`))
     return await lastValueFrom(this.http.get<any>
-      (`${environment.apiUrl}api/product/get-all?page=2&pageSize=5&search=`));
+      (`${environment.apiUrl}api/product/get-all?page=1&pageSize=9999&search=`));
+      // (`${environment.apiUrl}api/product/get-all?page=1&pageSize=111&search=`));
   }
 
   async getBestSellerProduct() {
