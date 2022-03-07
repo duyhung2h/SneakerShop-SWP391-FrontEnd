@@ -12,6 +12,8 @@ import { TextController } from './TextController';
 
 export class CategoryController {
   txtSearch: any;
+  listProductSearchedIsLoaded = false;
+  listProductSearched: any = []
   formGroup = new FormGroup({ search: new FormControl() });
   sortCategory = [
     { id: 0, name: 'Tên' },
@@ -37,13 +39,6 @@ export class CategoryController {
 
   listCategory: Category[] = [];
 
-  productController: ProductController = new ProductController(
-    this.productService,
-    this.authService,
-    this.router,
-    this.favoriteProductService,
-    this.notifier
-  );
   textController: TextController = new TextController();
   /**
    * This section declare services
@@ -57,15 +52,10 @@ export class CategoryController {
    * @param notifier
    */
   constructor(
-    private productService: DiscountProductService,
-    private router: Router,
     private activatedRoute: ActivatedRoute,
-    private authService: AuthService,
     private categoryService: CategoryService,
-    private favoriteProductService: FavoriteProductService,
-    private notifier: NotifierService
+    public productController: ProductController
   ) {
-
     this.activatedRoute.queryParams.subscribe((params) => {
       this.txtSearch = params['searchText'];
       this.formGroup.value.search = params['searchText'];
@@ -75,13 +65,19 @@ export class CategoryController {
       this.selectedSortPriceValue = params['selectedSortPriceValue'];
 
       let paramCategoryId = params['category'];
-    })
-    
+    }
+    );
+    this.loadAsyncData()
+  }
+  async loadAsyncData(){
+    this.listProductSearched = await this.productController.loadData()
+    console.log(this.listProductSearched)
+
     this.loadCategory();
 
     console.log('begin');
     this.selectedSortValue = 0;
-    this.searchBySearchBar()
+    this.searchBySearchBar();
   }
 
   /**
@@ -161,14 +157,14 @@ export class CategoryController {
       //tang dan
       console.log('sort price tang dan');
 
-      this.productController.listProductSearched?.sort((a, b) =>
+      this.listProductSearched?.sort((a: DiscountProduct, b: DiscountProduct) =>
         a._product?._price > b._product?._price ? 1 : -1
       );
     } else {
       //giam dan
       console.log('sort price giam dan');
 
-      this.productController.listProductSearched?.sort((a, b) =>
+      this.listProductSearched?.sort((a: DiscountProduct, b: DiscountProduct) =>
         a._product?._price > b._product?._price ? -1 : 1
       );
     }
@@ -187,14 +183,14 @@ export class CategoryController {
       //A-Z
       console.log('sort A-Z');
 
-      this.productController.listProductSearched?.sort((a, b) =>
+      this.listProductSearched?.sort((a: DiscountProduct, b: DiscountProduct) =>
         a._product?._name > b._product?._name ? 1 : -1
       );
     } else {
       //Z-A
       console.log('sort Z-A');
 
-      this.productController.listProductSearched?.sort((a, b) =>
+      this.listProductSearched?.sort((a: DiscountProduct, b: DiscountProduct) =>
         a._product?._name > b._product?._name ? -1 : 1
       );
     }
@@ -205,7 +201,7 @@ export class CategoryController {
     let i = 0;
     let add = 0;
     this.productController.listPage = [];
-    for (i; i < this.productController.listProductSearched.length; i++) {
+    for (i; i < this.listProductSearched.length; i++) {
       if (i % this.productController.pageSize == 0) {
         this.productController.listPage.push(add);
         add++;
@@ -214,20 +210,46 @@ export class CategoryController {
   }
 
   /**
+   * Wait until all products are loaded and filtered, return the list
+   *
+   * @returns loaded product list
+   */
+  async getSearchedProducts() {
+    return await new Promise((resolve) => {
+      function checkLoaded(
+        IsLoaded: any,
+        listProductReturn: DiscountProduct[]
+      ) {
+        if (IsLoaded == undefined) {
+          resolve(listProductReturn);
+        } else {
+          window.setTimeout(checkLoaded, 1000);
+        }
+      }
+      checkLoaded(this.listProductSearchedIsLoaded, JSON.parse(localStorage['loadedListProductSearched']));
+    });
+  }
+  /**
    * Search item by text
    */
   searchBySearchBar() {
+    console.log(this.listProductSearched)
     try {
       this.searchCategory(this.selectedCategoryIndex);
     } catch {
-      this.notifier.notify('error', 'Lỗi hiển thị thể loại!');
+      this.productController.notifier.notify('error', 'Lỗi hiển thị thể loại!');
     }
     try {
       this.searchText();
     } catch {
-      this.notifier.notify('error', 'Lỗi tìm kiếm!');
+      this.productController.notifier.notify('error', 'Lỗi tìm kiếm!');
     }
     this.listPages();
+
+    this.listProductSearchedIsLoaded = true;
+    console.log(this.listProductSearched)
+    localStorage.setItem('loadedListProductSearched', JSON.stringify(this.listProductSearched));
+    // localStorage['loadedListProductSearched'] = JSON.stringify(this.listProductSearched)
   }
   /**
    * Search item by category
@@ -247,10 +269,10 @@ export class CategoryController {
 
     this.productController.skip = 0;
     if (this.listCategory[index]._categoryId == -1) {
-      this.productController.listProductSearched =
+      this.listProductSearched =
         this.productController.listProduct;
     } else {
-      this.productController.listProductSearched =
+      this.listProductSearched =
         this.productController.listProduct.filter((value) =>
           this.textController.comparionCategory(
             this.listCategory[index]._categoryName,
@@ -270,24 +292,24 @@ export class CategoryController {
       console.log('this.txtSearch == null');
     } else {
       //sort by name
-      console.log(this.productController.listProductSearched)
+      console.log(this.listProductSearched);
       if (this.selectedSortValue == 0 || this.selectedSortValue == undefined) {
-        this.selectedSortValue == 0
-        console.log(this.productController.listProduct)
-        this.productController.listProductSearched =
-          this.productController.listProductSearched.filter((value) => 
+        this.selectedSortValue == 0;
+        console.log(this.productController.listProduct);
+        this.listProductSearched =
+          this.listProductSearched.filter((value: DiscountProduct) =>
             this.textController.comparisonNameEqual(
               this.txtSearch,
               value._product?._name
             )
           );
-          console.log(this.productController.listProductSearched)
+        console.log(this.listProductSearched);
         this.onSortNameCategoryChange(this.selectedSortNameValue);
       }
       //sort by price
       if (this.selectedSortValue == 1) {
-        this.productController.listProductSearched =
-          this.productController.listProductSearched.filter((value) => {
+        this.listProductSearched =
+          this.listProductSearched.filter((value: DiscountProduct) => {
             this.textController.comparisonNameEqual(
               this.txtSearch,
               value._product?._name

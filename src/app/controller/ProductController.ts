@@ -15,7 +15,7 @@ import { Voucher } from '../model/Voucher';
 export class ProductController {
   listProductSearched: DiscountProduct[] = [];
   listProduct: DiscountProduct[] = [];
-  listProductCore: any[] = [];
+  listProductCore: any = [];
   listCategory: Category[] = [];
   listProductFavorite: DiscountProduct[] = [];
   listCart: OrderDetail[] = [];
@@ -40,11 +40,11 @@ export class ProductController {
    * @param notifier
    */
   constructor(
-    private productService: DiscountProductService,
+    public productService: DiscountProductService,
     public authService: AuthService,
-    private router: Router,
-    private favoriteProductService: FavoriteProductService,
-    private notifier: NotifierService
+    public router: Router,
+    public favoriteProductService: FavoriteProductService,
+    public notifier: NotifierService
   ) {
     try {
       this.loadData();
@@ -100,70 +100,19 @@ export class ProductController {
   /**
    * Load product data
    */
-  loadData() {
-    this.productService.getAllProduct().then(
-      (coreData) => {
-        console.log('%c getAllProduct', 'color: blue;', coreData.data.items);
-        console.log('getAllProduct', coreData.data.items);
-        //add to top
-        coreData.data.items.forEach((item: any) => {
-          // let productCategory = new Category(item.category.CategoryId, item.category.CategoryName, item.category.CategoryDescription)
-          let productCategories: Category[] = [];
-          item.category.forEach((itemCategory: any) => {
-            let category = new Category(
-              itemCategory.CategoryId,
-              itemCategory.CategoryName,
-              itemCategory.CategoryDescription
-            );
-            productCategories.unshift(category);
-          });
-          let productAttributes: Attribute[] = [];
-          item.attributes.forEach((itemAttribute: any) => {
-            let attribute = new Attribute(
-              itemAttribute.AttributeId,
-              itemAttribute.AttributeName,
-              itemAttribute.AttributeDescription,
-              itemAttribute.AttributeImage
-            );
-            productAttributes.unshift(attribute);
-          });
-          let product = new Product(
-            item.ProductId,
-            item.ProductName,
-            productCategories[0],
-            item.Price,
-            '',
-            '',
-            item.ProductImage,
-            productAttributes
-          );
-          let voucher = new Voucher();
-          let discountProduct = new DiscountProduct(
-            item.ProductId,
-            product,
-            voucher
-          );
-          this.listProductCore.unshift(discountProduct)
-        });
-
-        // console.table(this.listProductCore);
-
-        this.listProduct = this.listProductCore;
-        this.listProductSearched = this.listProductCore;
-        // console.table(this.listProduct);
-        if (this.listProduct.length == 0) {
-          this.notifier.notify('error', 'Lỗi hiển thị list sản phẩm!');
-        }
-        // this.listProduct = this.removeUnwantedProductFromList(this.listProduct)
-        this.isLoading.next(true);
-        this.listPages();
-      },
-      (error) => {
-        this.notifier.notify('error', 'Lỗi hiển thị list sản phẩm!');
-      }
-    );
-    
-    console.log(this.listProductSearched);
+  async loadData() {
+    let data: DiscountProduct[] = await this.productService.getAllProduct();
+    this.listProductCore = data
+    this.listProduct = data
+    this.listProductSearched = data
+    if (this.listProduct.length == 0) {
+      this.notifier.notify('error', 'Lỗi hiển thị list sản phẩm!');
+    }
+    // this.listProduct = this.removeUnwantedProductFromList(this.listProduct)
+    this.isLoading.next(true);
+    this.listPages();
+    console.log(data)
+    return await new Promise(resolve =>{resolve(data)})
   }
   /**
    * update favorite product list to session

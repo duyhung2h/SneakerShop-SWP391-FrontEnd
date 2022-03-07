@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Host, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
@@ -9,6 +9,7 @@ import { DiscountProductService } from 'src/app/controller/DiscountProductServic
 import { FavoriteProductService } from 'src/app/controller/FavoriteProductService';
 import { ProductController } from 'src/app/controller/ProductController';
 import { TextController } from 'src/app/controller/TextController';
+import { FullProductListComponent } from '../../full-product-list/full-product-list.component';
 
 @Component({
   selector: 'app-product-list',
@@ -30,6 +31,9 @@ export class ProductListComponent implements OnInit {
     this.notifier
   );
   textController: TextController = new TextController();
+
+  //parent component
+  private parentComponent?: FullProductListComponent;
   /**
    * This section declare services
    *
@@ -40,16 +44,26 @@ export class ProductListComponent implements OnInit {
    * @param notifier
    */
   constructor(
+    @Host() parent: FullProductListComponent,
     private productService: DiscountProductService,
     private authService: AuthService,
     private router: Router,
     private favoriteProductService: FavoriteProductService,
     private notifier: NotifierService
   ) {
-    this.listProductSearched = this.productController.listProductSearched;
-
-    console.table(this.listProductSearched);
+    try {
+      this.parentComponent = parent;
+      this.loadSearchedData();
+    } catch (error) {}
     // this.listCart = JSON.parse(localStorage['listCart'])
+  }
+  async loadSearchedData() {
+    try {
+      this.productController.listProductSearched = await this.parentComponent?.fetchSearchedList();
+      console.log(this.productController.listProductSearched);      
+    } catch (error) {
+      this.notifier.notify('error', 'Lỗi hiển thị list sản phẩm tìm kiếm!');
+    }
   }
 
   ngOnInit(): void {}

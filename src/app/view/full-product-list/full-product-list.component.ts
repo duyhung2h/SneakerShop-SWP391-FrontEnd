@@ -31,13 +31,9 @@ export class FullProductListComponent implements OnInit {
     this.notifier
   );
   categoryController: CategoryController = new CategoryController(
-    this.productService,
-    this.router,
     this.activatedRoute,
-    this.authService,
     this.categoryService,
-    this.favoriteProductService,
-    this.notifier
+    this.productController
   );
   /**
    * This section declare services
@@ -59,21 +55,19 @@ export class FullProductListComponent implements OnInit {
     private favoriteProductService: FavoriteProductService,
     private notifier: NotifierService
   ) {
+
+
     this.categoryController.formGroup.value.search =
       this.categoryController.txtSearch;
   }
 
   ngOnInit(): void {}
 
-  ngAfterViewInit() {
-    // while (true) {
-    // console.log("loop")
-    // this.productController.listProductSearched =
-    //   this.categoryController.productController.listProductSearched;
-    // }
+  async fetchSearchedList() {
+    await this.categoryController.getSearchedProducts()
+    return await JSON.parse(localStorage['loadedListProductSearched'])
   }
   refreshProductList() {
-    this.router.navigateByUrl('/home');
     this.router
       .navigate(['/product-list'], {
         queryParams: {
@@ -86,14 +80,17 @@ export class FullProductListComponent implements OnInit {
         },
       })
       .then(() => {
-        this.categoryController.searchBySearchBar();
-        this.productController.listProductSearched =
-          this.categoryController.productController.listProductSearched;
+        // window.location.reload();
+        // this.categoryController.searchBySearchBar()
+        // this.authService.reloadRoute(this.router.url)
+        // this.productController = undefined
+        // this.productController.listProductSearched =
+        //   this.categoryController.productController.listProductSearched;
         console.log(
           '%c full product list refresh',
           'color: orange; background-color: #222222;'
         );
-        console.log(this.productController.listProductSearched);
+        // console.log(this.productController.listProductSearched);
       });
   }
 }
