@@ -10,32 +10,32 @@ declare var $: any;
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit {
   indexPage = 0;
   userModel: UserModel;
 
-
   listProductFavorite: DiscountProduct[] = [];
 
-
-  constructor(private authService: AuthService,
-    private favoriteProductService: FavoriteProductService) {
+  constructor(
+    private authService: AuthService,
+    private favoriteProductService: FavoriteProductService
+  ) {
     //lay user
     try {
-      this.userModel = this.authService.currentUserValue
+      this.userModel = this.authService.currentUserValue;
     } catch (error) {
-      console.log("ERROR: Cannot get userModel")
-      this.userModel = new UserModel
+      console.log('ERROR: Cannot get userModel');
+      this.userModel = new UserModel();
     }
-
 
     // load data trong local storage, neu ko co thi tao moi
     try {
-      this.listProductFavorite = JSON.parse(localStorage['listProductFavorite']);
-    } catch (err) {
-    }
+      this.listProductFavorite = JSON.parse(
+        localStorage['listProductFavorite']
+      );
+    } catch (err) {}
 
     //tao moi neu localstorage ko co du lieu
     try {
@@ -44,8 +44,7 @@ export class HeaderComponent implements OnInit {
           if (this.userModel != null) {
             this.loadProductFavorite();
           }
-        } catch (err) {
-        }
+        } catch (err) {}
       }
     } catch (err) {
       if (this.userModel != null) {
@@ -54,15 +53,14 @@ export class HeaderComponent implements OnInit {
     }
   }
   _testCreateLogInAccount() {
-    this.userModel = new UserModel
-    this.userModel.customer = new Customer
-    this.userModel.customer.role = new Role
-    this.userModel.customer.customerId = 1
-    this.userModel.customer.role.roleId = 1
+    this.userModel = new UserModel();
+    this.userModel.customer = new Customer();
+    this.userModel.customer.role = new Role();
+    this.userModel.customer.customerId = 1;
+    this.userModel.customer.role.roleId = 1;
 
-    localStorage['currentUser'] = JSON.stringify(this.userModel)
-    console.log(JSON.stringify(this.userModel))
-
+    localStorage['currentUser'] = JSON.stringify(this.userModel);
+    console.log(JSON.stringify(this.userModel));
   }
 
   checkCartAmount() {
@@ -91,41 +89,44 @@ export class HeaderComponent implements OnInit {
   }
   loadProductFavorite() {
     // this.discountProductService.getFavoriteProduct(this.userModel.customer?.customerId).then(data => {
-    this.favoriteProductService.getFavoriteProduct(this.userModel.customer?.customerId).then(data => {
-      console.log("getFavoriteProduct");
-      console.log(data);
+    this.favoriteProductService
+      .getFavoriteProduct(this.userModel.customer?.customerId)
+      .then((data) => {
+        console.log('getFavoriteProduct');
+        console.log(data);
 
-      // this.listProductFavorite = data;
+        // this.listProductFavorite = data;
 
-      this.updateFavorite();
-    });
+        this.updateFavorite();
+      });
   }
   updateFavorite() {
-    localStorage.setItem('listProductFavorite', JSON.stringify(this.listProductFavorite));
+    localStorage.setItem(
+      'listProductFavorite',
+      JSON.stringify(this.listProductFavorite)
+    );
   }
 
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   public changePage(index: any) {
     this.indexPage = index;
   }
 
   humbergerOnclick() {
-    $(".humberger__menu__wrapper").addClass("show__humberger__menu__wrapper");
-    $(".humberger__menu__overlay").addClass("active");
-    $("body").addClass("over_hid");
+    $('.humberger__menu__wrapper').addClass('show__humberger__menu__wrapper');
+    $('.humberger__menu__overlay').addClass('active');
+    $('body').addClass('over_hid');
   }
 
   humbergerMenuOverlayOnClick() {
-    $(".humberger__menu__wrapper").removeClass("show__humberger__menu__wrapper");
-    $(".humberger__menu__overlay").removeClass("active");
-    $("body").removeClass("over_hid");
+    $('.humberger__menu__wrapper').removeClass(
+      'show__humberger__menu__wrapper'
+    );
+    $('.humberger__menu__overlay').removeClass('active');
+    $('body').removeClass('over_hid');
   }
 
   logout() {
-
-    this.authService.logout()
+    this.authService.logout();
   }
-
 }

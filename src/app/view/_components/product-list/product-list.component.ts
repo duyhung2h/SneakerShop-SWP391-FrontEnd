@@ -1,4 +1,4 @@
-import { Component, Host, OnInit } from '@angular/core';
+import { Component, Host, Injectable, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
@@ -11,10 +11,12 @@ import { ProductController } from 'src/app/controller/ProductController';
 import { TextController } from 'src/app/controller/TextController';
 import { FullProductListComponent } from '../../full-product-list/full-product-list.component';
 
+@Injectable({ providedIn: 'any' })
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css'],
+  providers: [FullProductListComponent]
 })
 export class ProductListComponent implements OnInit {
   listCart: OrderDetail[] = [];
@@ -32,8 +34,6 @@ export class ProductListComponent implements OnInit {
   );
   textController: TextController = new TextController();
 
-  //parent component
-  private parentComponent?: FullProductListComponent;
   /**
    * This section declare services
    *
@@ -44,22 +44,24 @@ export class ProductListComponent implements OnInit {
    * @param notifier
    */
   constructor(
-    @Host() parent: FullProductListComponent,
     private productService: DiscountProductService,
     private authService: AuthService,
     private router: Router,
     private favoriteProductService: FavoriteProductService,
-    private notifier: NotifierService
+    private notifier: NotifierService,
+    @Host() parentComponent?: FullProductListComponent,
   ) {
     try {
-      this.parentComponent = parent;
-      this.loadSearchedData();
-    } catch (error) {}
+      this.loadSearchedData(parentComponent);
+    } catch (error) {
+      this.notifier.notify('error', 'Lỗi hiển thị list sản phẩm tìm kiếm constructor!');
+    }
     // this.listCart = JSON.parse(localStorage['listCart'])
   }
-  async loadSearchedData() {
+  async loadSearchedData(parentComponent?: FullProductListComponent) {
     try {
-      this.productController.listProductSearched = await this.parentComponent?.fetchSearchedList();
+      this.productController.listProductSearched = await parentComponent?.fetchSearchedList();
+      this.productController.listPages(this.productController.listProductSearched)
       console.log(this.productController.listProductSearched);      
     } catch (error) {
       this.notifier.notify('error', 'Lỗi hiển thị list sản phẩm tìm kiếm!');

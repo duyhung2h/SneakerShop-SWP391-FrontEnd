@@ -1,4 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Injectable,
+  OnInit,
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject, delay } from 'rxjs';
@@ -16,12 +21,15 @@ import { ProductController } from 'src/app/controller/ProductController';
 import { CategoryController } from 'src/app/controller/CategoryController';
 declare var $: any;
 
+@Injectable({ providedIn: 'any' })
 @Component({
   selector: 'app-full-product-list',
   templateUrl: './full-product-list.component.html',
   styleUrls: ['./full-product-list.component.css'],
 })
 export class FullProductListComponent implements OnInit {
+  
+  txtSearch: any;
   // controller declare
   productController: ProductController = new ProductController(
     this.productService,
@@ -55,8 +63,6 @@ export class FullProductListComponent implements OnInit {
     private favoriteProductService: FavoriteProductService,
     private notifier: NotifierService
   ) {
-
-
     this.categoryController.formGroup.value.search =
       this.categoryController.txtSearch;
   }
@@ -64,33 +70,39 @@ export class FullProductListComponent implements OnInit {
   ngOnInit(): void {}
 
   async fetchSearchedList() {
-    await this.categoryController.getSearchedProducts()
-    return await JSON.parse(localStorage['loadedListProductSearched'])
+    this.categoryController = new CategoryController(
+      this.activatedRoute,
+      this.categoryService,
+      this.productController
+    );
+    await this.categoryController.getSearchedProducts();
+    return await JSON.parse(localStorage['loadedListProductSearched']);
   }
+
   refreshProductList() {
-    this.router
-      .navigate(['/product-list'], {
-        queryParams: {
-          selectedCategoryIndex: this.categoryController.selectedCategoryIndex,
-          selectedSortValue: this.categoryController.selectedSortValue,
-          selectedSortNameValue: this.categoryController.selectedSortNameValue,
-          selectedSortPriceValue:
-            this.categoryController.selectedSortPriceValue,
-          searchText: this.categoryController.txtSearch,
-        },
-      })
-      .then(() => {
-        // window.location.reload();
-        // this.categoryController.searchBySearchBar()
-        // this.authService.reloadRoute(this.router.url)
-        // this.productController = undefined
-        // this.productController.listProductSearched =
-        //   this.categoryController.productController.listProductSearched;
-        console.log(
-          '%c full product list refresh',
-          'color: orange; background-color: #222222;'
-        );
-        // console.log(this.productController.listProductSearched);
-      });
+    // this.router
+    //   .navigateByUrl('/home', { skipLocationChange: true })
+    //   .then(() => {
+        this.router
+          .navigate(['/product-list'], {
+            queryParams: {
+              selectedCategoryIndex:
+                this.categoryController.selectedCategoryIndex,
+              selectedSortValue: this.categoryController.selectedSortValue,
+              selectedSortNameValue:
+                this.categoryController.selectedSortNameValue,
+              selectedSortPriceValue:
+                this.categoryController.selectedSortPriceValue,
+              searchText: this.txtSearch,
+            },
+          })
+          .then(() => {
+            window.location.reload()
+            console.log(
+              '%c full product list refresh',
+              'color: orange; background-color: #222222;'
+            );
+          });
+      // });
   }
 }

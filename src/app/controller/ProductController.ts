@@ -74,10 +74,13 @@ export class ProductController {
   /**
    * Add pages to product page
    */
-  listPages() {
+  listPages(listProductSearched: DiscountProduct[]) {
     let i = 0;
     let add = 0;
-    for (i; i < this.listProduct.length; i++) {
+    console.log(listProductSearched);
+    
+    this.listPage = [];
+    for (i; i < listProductSearched.length; i++) {
       if (i % this.pageSize == 0) {
         this.listPage.push(add);
         add++;
@@ -109,8 +112,8 @@ export class ProductController {
       this.notifier.notify('error', 'Lỗi hiển thị list sản phẩm!');
     }
     // this.listProduct = this.removeUnwantedProductFromList(this.listProduct)
-    this.isLoading.next(true);
-    this.listPages();
+    this.isLoading.next(true)
+    this.listPages(this.listProductSearched)
     console.log(data)
     return await new Promise(resolve =>{resolve(data)})
   }

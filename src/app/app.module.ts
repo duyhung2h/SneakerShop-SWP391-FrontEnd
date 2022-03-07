@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { Injectable, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -92,6 +92,7 @@ const customNotifierOptions: NotifierOptions = {
     BrowserAnimationsModule,
   ],
   providers: [
+    FullProductListComponent
   ],
   bootstrap: [AppComponent]
 })

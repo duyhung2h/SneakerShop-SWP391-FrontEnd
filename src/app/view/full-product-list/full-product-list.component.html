@@ -4,7 +4,7 @@
             <div class="col-lg-5 col-md-5">
                 <div class="hero__search__form">
                     <form [formGroup]="categoryController.formGroup">
-                        <input maxlength="200" type="text" placeholder="Nhập tên sản phẩm..." [formControlName]="'search'" [(ngModel)]="categoryController.txtSearch" (change)="refreshProductList()">
+                        <input maxlength="200" type="text" placeholder="Nhập tên sản phẩm..." [formControlName]="'search'" [(ngModel)]="txtSearch" (change)="refreshProductList()">
                         <button type="submit" class="btn right site-btn btn-success" (click)="refreshProductList()">Tìm kiếm</button>
                     </form>
                 </div>
