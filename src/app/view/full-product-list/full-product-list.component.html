@@ -29,11 +29,11 @@
                     </div>
                 </div>
             </div>
-            <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="dropdown col-lg-2">
+                <button style="height: 48px !important;" class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{categoryController.selectedCategoryName}}
                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <div style="position: sticky !important;" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                     <a class="dropdown-item" *ngFor="let category of categoryController.listCategory; let i = index" (click)="categoryController.searchByCategory(i)">{{category._categoryName}}</a>
                 </div>
             </div>

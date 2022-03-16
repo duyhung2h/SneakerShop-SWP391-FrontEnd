@@ -115,14 +115,16 @@ export class CategoryController {
     }
   }
   getSelectedCategoryName(categoryIndex: number){
-    // await this.loadCategory()
-    this.listCategory.forEach((itemCategory: Category) => {
-      if (itemCategory._categoryId = categoryIndex){
-        console.log(itemCategory);
-        return itemCategory._categoryName
-      }
-    });
-    return ""
+    console.log(this.listCategory);
+    console.log(categoryIndex);
+    return this.listCategory[categoryIndex]._categoryName
+    // this.listCategory.forEach((itemCategory: Category) => {
+    //   if (itemCategory._categoryId == categoryIndex){
+    //     console.log(itemCategory);
+    //     return itemCategory._categoryName
+    //   }
+    // });
+    return "sd"
   }
   /**
    * load all catrgories
@@ -136,6 +138,13 @@ export class CategoryController {
 
         console.log('this.listCategory');
         console.log(this.listCategory);
+        this.activatedRoute.queryParams.subscribe((params) => {
+          this.paramCategoryId =
+            params['selectedCategoryIndex'] === undefined
+              ? -1
+              : params['selectedCategoryIndex'];
+              this.selectedCategoryName = this.getSelectedCategoryName(this.paramCategoryId);
+        })
 
         // localStorage.setItem('listCategory', JSON.stringify(this.listCategory));
       });
@@ -313,7 +322,6 @@ export class CategoryController {
     console.log('index');
     console.log(this.listProductSearched);
     console.log(this.selectedCategoryIndex);
-    this.selectedCategoryName = this.getSelectedCategoryName(this.selectedCategoryIndex)
     this.searchText();
   }
   searchText() {
