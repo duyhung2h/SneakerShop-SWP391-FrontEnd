@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/controller/auth.service';
-import { FavoriteProductService } from 'src/app/controller/FavoriteProductService';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/db/auth.service';
+import { FavoriteProductService } from 'src/app/db/FavoriteProductService';
 import { Customer } from 'src/app/model/Customer';
 import { DiscountProduct } from 'src/app/model/DiscountProduct';
+import { OrderHeader } from 'src/app/model/Order';
 import { Role } from 'src/app/model/Role';
 import { UserModel } from 'src/app/model/UserModel';
 declare var $: any;
@@ -20,7 +22,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private favoriteProductService: FavoriteProductService
+    private favoriteProductService: FavoriteProductService,
+    private router: Router,
   ) {
     //lay user
     try {
@@ -29,13 +32,6 @@ export class HeaderComponent implements OnInit {
       console.log('ERROR: Cannot get userModel');
       this.userModel = new UserModel();
     }
-
-    // load data trong local storage, neu ko co thi tao moi
-    try {
-      this.listProductFavorite = JSON.parse(
-        localStorage['listProductFavorite']
-      );
-    } catch (err) {}
 
     //tao moi neu localstorage ko co du lieu
     try {
@@ -67,9 +63,6 @@ export class HeaderComponent implements OnInit {
     //lay cart trong localStorage
     try {
       let cartProduct = JSON.parse(localStorage['listOrder']);
-      if (cartProduct.length == 0) {
-        return cartProduct.length;
-      }
       return cartProduct.length;
     } catch (err) {
       return 0;
@@ -78,11 +71,8 @@ export class HeaderComponent implements OnInit {
   checkFavoriteAmount() {
     //lay favorite trong localStorage
     try {
-      let listProductFavorite = JSON.parse(localStorage['listProductFavorite']);
-      if (listProductFavorite.length == 0) {
-        return listProductFavorite.length;
-      }
-      return listProductFavorite.length;
+      // let listProductFavorite = JSON.parse(localStorage['listProductFavorite']);
+      return this.listProductFavorite.length;
     } catch (err) {
       return 0;
     }
@@ -94,17 +84,7 @@ export class HeaderComponent implements OnInit {
       .then((data) => {
         console.log('getFavoriteProduct');
         console.log(data);
-
-        // this.listProductFavorite = data;
-
-        this.updateFavorite();
       });
-  }
-  updateFavorite() {
-    localStorage.setItem(
-      'listProductFavorite',
-      JSON.stringify(this.listProductFavorite)
-    );
   }
 
   ngOnInit(): void {}

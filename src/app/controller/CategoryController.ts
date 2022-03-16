@@ -1,19 +1,15 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { Category } from 'src/app/model/Category';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from 'src/app/controller/auth.service';
-import { CategoryService } from 'src/app/controller/CategoryService';
-import { DiscountProductService } from 'src/app/controller/DiscountProductService';
-import { FavoriteProductService } from 'src/app/controller/FavoriteProductService';
+import { CategoryService } from 'src/app/db/CategoryService';
 import { DiscountProduct } from 'src/app/model/DiscountProduct';
-import { NotifierService } from 'angular-notifier';
 import { ProductController } from './ProductController';
 import { TextController } from './TextController';
 
 export class CategoryController {
   txtSearch: any;
   listProductSearchedIsLoaded = false;
-  listProductSearched: any = []
+  listProductSearched: any = [];
   formGroup = new FormGroup({ search: new FormControl() });
   sortCategory = [
     { id: 0, name: 'Tên' },
@@ -31,12 +27,14 @@ export class CategoryController {
   listProductChanging = false;
 
   selectedCategoryIndex: any = 0;
+  selectedCategoryName = "";
   selectedFavoriteIndex = -1;
 
   selectedSortValue = 0;
   selectedSortNameValue = 0;
   selectedSortPriceValue = 0;
 
+  paramCategoryId = -1;
   listCategory: Category[] = [];
 
   textController: TextController = new TextController();
@@ -56,27 +54,42 @@ export class CategoryController {
     private categoryService: CategoryService,
     public productController: ProductController
   ) {
+    this.productController.router.routeReuseStrategy.shouldReuseRoute = () =>
+      false;
     this.activatedRoute.queryParams.subscribe((params) => {
-      this.txtSearch = params['searchText'];
+      this.txtSearch =
+        params['searchText'] === undefined ? '' : params['searchText'];
       this.formGroup.value.search = params['searchText'];
-      this.selectedCategoryIndex = params['selectedCategoryIndex'];
-      this.selectedSortValue = params['selectedSortValue'];
-      this.selectedSortNameValue = params['selectedSortNameValue'];
-      this.selectedSortPriceValue = params['selectedSortPriceValue'];
+      this.paramCategoryId =
+        params['selectedCategoryIndex'] === undefined
+          ? -1
+          : params['selectedCategoryIndex'];
+      this.selectedSortValue =
+        params['selectedSortValue'] === undefined
+          ? 0
+          : params['selectedSortValue'];
+      this.selectedSortNameValue =
+        params['selectedSortNameValue'] === undefined
+          ? 0
+          : params['selectedSortNameValue'];
+      this.selectedSortPriceValue =
+        params['selectedSortPriceValue'] === undefined
+          ? 0
+          : params['selectedSortPriceValue'];
+      console.log(params['selectedSortValue']);
+    });
 
-      let paramCategoryId = params['category'];
-    }
-    );
-    this.loadAsyncData()
+    console.log(this.selectedSortValue);
+    this.loadAsyncData();
   }
-  async loadAsyncData(){
-    this.listProductSearched = await this.productController.loadData()
-    console.log(this.listProductSearched)
+  async loadAsyncData() {
+    this.listProductSearched = await this.productController.loadData();
+    console.log(this.listProductSearched);
 
-    this.loadCategory();
+    await this.loadCategory();
+    this.searchByParams();
 
     console.log('begin');
-    this.selectedSortValue = 0;
     this.searchBySearchBar();
   }
 
@@ -84,45 +97,48 @@ export class CategoryController {
    * search by text
    */
   searchByParams() {
-    this.activatedRoute.queryParams.subscribe((params) => {
-      this.txtSearch = params['searchText'];
-      this.formGroup.value.search = params['searchText'];
-      this.selectedCategoryIndex = params['selectedCategoryIndex'];
-      this.selectedSortValue = params['selectedSortValue'];
-      this.selectedSortNameValue = params['selectedSortNameValue'];
-      this.selectedSortPriceValue = params['selectedSortPriceValue'];
-
-      let paramCategoryId = params['category'];
-      console.log('this.listCategory');
-      console.log(this.listCategory);
-      this.selectedCategoryIndex = this.listCategory?.findIndex(
-        (categoryItem) => categoryItem._categoryId == paramCategoryId
-      );
-      if (!(this.selectedCategoryIndex > -1)) {
-        this.selectedCategoryIndex = 0;
-        //activate search (neu co query)
-        this.onSortNameCategoryChange(this.selectedSortNameValue);
-        this.searchBySearchBar();
-      } else {
-        this.searchByCategory(this.selectedCategoryIndex);
+    console.log('this.listCategory');
+    console.log(this.listCategory);
+    console.log(this.paramCategoryId);
+    this.selectedCategoryIndex = this.listCategory?.findIndex(
+      (categoryItem) => categoryItem._categoryId == this.paramCategoryId
+    );
+    console.log(this.selectedCategoryIndex);
+    if (this.paramCategoryId > -1) {
+      console.log(this.selectedCategoryIndex);
+      this.searchByCategory(this.selectedCategoryIndex);
+    } else {
+      this.paramCategoryId = -1;
+      this.selectedCategoryIndex = 0;
+      console.log(this.selectedCategoryIndex);
+      this.searchByCategory(this.selectedCategoryIndex);
+    }
+  }
+  getSelectedCategoryName(categoryIndex: number){
+    // await this.loadCategory()
+    this.listCategory.forEach((itemCategory: Category) => {
+      if (itemCategory._categoryId = categoryIndex){
+        console.log(itemCategory);
+        return itemCategory._categoryName
       }
-      // this.searchByCategory(this.selectedCategoryIndex);
     });
+    return ""
   }
   /**
    * load all catrgories
    */
-  loadCategory() {
-    this.categoryService?.getAllCategory().then((dataCore) => {
-      this.listCategory = [];
-      this.listCategory = dataCore;
+  async loadCategory() {
+    await this.categoryService
+      ?.getAllCategory()
+      .then((dataCore: Category[]) => {
+        // this.listCategory = [];
+        this.listCategory = dataCore;
 
-      console.log('this.listCategory');
-      console.log(dataCore);
+        console.log('this.listCategory');
+        console.log(this.listCategory);
 
-      // localStorage.setItem('listCategory', JSON.stringify(this.listCategory));
-      this.searchByParams();
-    });
+        // localStorage.setItem('listCategory', JSON.stringify(this.listCategory));
+      });
   }
 
   /**
@@ -140,23 +156,21 @@ export class CategoryController {
     if (this.selectedSortValue == 1) {
       this.onSortPriceCategoryChange(this.selectedSortPriceValue);
     }
-    // if(this.selectedSortValue == 2){
-    //   this.onSortNameCategoryChange(this.selectedSortNameValue)
-    // }
   }
 
   /**
-   * Sort and filter price on category change
+   * Sort and filter product by price on category change
    *
    * @param value
    */
   onSortPriceCategoryChange(value: any) {
     console.log(value);
+    console.log(this.listProductSearched);
     this.selectedSortPriceValue = value;
     if (this.selectedSortPriceValue == 0) {
       //tang dan
       console.log('sort price tang dan');
-
+      console.log(typeof this.listProductSearched[0]._product?._price);
       this.listProductSearched?.sort((a: DiscountProduct, b: DiscountProduct) =>
         a._product?._price > b._product?._price ? 1 : -1
       );
@@ -168,16 +182,17 @@ export class CategoryController {
         a._product?._price > b._product?._price ? -1 : 1
       );
     }
-    // this.productController.listProduct = [];
+    this.refreshProductList();
   }
 
   /**
-   *
+   * Sort and filter product by name on category change
    *
    * @param value
    */
   onSortNameCategoryChange(value: any) {
     console.log(value);
+    console.log(this.listProductSearched);
     this.selectedSortNameValue = value;
     if (this.selectedSortNameValue == 0) {
       //A-Z
@@ -194,7 +209,7 @@ export class CategoryController {
         a._product?._name > b._product?._name ? -1 : 1
       );
     }
-    // this.productController.listProduct = [];
+    this.refreshProductList();
   }
 
   listPages() {
@@ -226,18 +241,25 @@ export class CategoryController {
           window.setTimeout(checkLoaded, 1000);
         }
       }
-      checkLoaded(this.listProductSearchedIsLoaded, JSON.parse(localStorage['loadedListProductSearched']));
+      console.log(this.selectedSortValue);
+      checkLoaded(
+        this.listProductSearchedIsLoaded,
+        JSON.parse(localStorage['loadedListProductSearched'])
+      );
     });
   }
   /**
    * Search item by text
    */
   searchBySearchBar() {
-    console.log(this.listProductSearched)
+    console.log(this.listProductSearched);
     try {
-      this.searchCategory(this.selectedCategoryIndex);
+      this.searchByCategory(this.selectedCategoryIndex);
     } catch {
-      this.productController.notifier.notify('error', 'Lỗi hiển thị thể loại!');
+      this.productController.notifier.notify(
+        'error',
+        'Lỗi hiển thị thể loại2!'
+      );
     }
     try {
       this.searchText();
@@ -247,9 +269,11 @@ export class CategoryController {
     this.listPages();
 
     this.listProductSearchedIsLoaded = true;
-    console.log(this.listProductSearched)
-    localStorage.setItem('loadedListProductSearched', JSON.stringify(this.listProductSearched));
-    // localStorage['loadedListProductSearched'] = JSON.stringify(this.listProductSearched)
+    console.log(this.listProductSearched);
+    localStorage.setItem(
+      'loadedListProductSearched',
+      JSON.stringify(this.listProductSearched)
+    );
   }
   /**
    * Search item by category
@@ -257,66 +281,93 @@ export class CategoryController {
    * @param index
    */
   searchByCategory(index: any) {
-    this.searchCategory(index);
-    this.searchText();
-    this.listPages();
+    this.searchCategory(index).then(() => {
+      this.listPages();
+      this.refreshProductList();
+    });
   }
 
-  searchCategory(index: any) {
+  async searchCategory(index: any) {
     console.log('searchCategory index');
+    if (index == -1) {
+      index = 0;
+    }
     console.log(index);
     console.log(this.listCategory[index]);
+    this.selectedCategoryIndex = index;
+    this.paramCategoryId = this.listCategory[index]._categoryId;
 
     this.productController.skip = 0;
     if (this.listCategory[index]._categoryId == -1) {
-      this.listProductSearched =
-        this.productController.listProduct;
+      this.listProductSearched = this.productController.listProduct;
     } else {
-      this.listProductSearched =
-        this.productController.listProduct.filter((value) =>
+      this.listProductSearched = this.productController.listProduct.filter(
+        (value) =>
           this.textController.comparionCategory(
             this.listCategory[index]._categoryName,
             value._product?._category?._categoryName
           )
-        );
+      );
     }
 
     console.log('index');
-    console.log(this.listCategory[index]._categoryId);
-    this.selectedCategoryIndex = index;
+    console.log(this.listProductSearched);
+    console.log(this.selectedCategoryIndex);
+    this.selectedCategoryName = this.getSelectedCategoryName(this.selectedCategoryIndex)
+    this.searchText();
   }
   searchText() {
-    // this.txtSearch = this.formGroup.value.search;
     this.txtSearch = this?.txtSearch?.trim()?.replace(/ + /g, ' ');
     if (this.txtSearch == null) {
       console.log('this.txtSearch == null');
     } else {
-      //sort by name
+      //sort by name ****
       console.log(this.listProductSearched);
-      if (this.selectedSortValue == 0 || this.selectedSortValue == undefined) {
-        this.selectedSortValue == 0;
+      if (this.selectedSortValue == 0) {
         console.log(this.productController.listProduct);
-        this.listProductSearched =
-          this.listProductSearched.filter((value: DiscountProduct) =>
+        this.listProductSearched = this.listProductSearched.filter(
+          (value: DiscountProduct) =>
             this.textController.comparisonNameEqual(
               this.txtSearch,
               value._product?._name
             )
-          );
-        console.log(this.listProductSearched);
+        );
         this.onSortNameCategoryChange(this.selectedSortNameValue);
       }
       //sort by price
       if (this.selectedSortValue == 1) {
-        this.listProductSearched =
-          this.listProductSearched.filter((value: DiscountProduct) => {
+        this.listProductSearched = this.listProductSearched.filter(
+          (value: DiscountProduct) =>
             this.textController.comparisonNameEqual(
               this.txtSearch,
               value._product?._name
-            );
-          });
+            )
+        );
         this.onSortPriceCategoryChange(this.selectedSortPriceValue);
       }
+    }
+  }
+
+  refreshProductList() {
+    console.log(this.paramCategoryId);
+    if (window.location.pathname == '/product-list') {
+      this.productController.router
+        .navigate(['/product-list'], {
+          queryParams: {
+            selectedCategoryIndex: this.paramCategoryId,
+            selectedSortValue: this.selectedSortValue,
+            selectedSortNameValue: this.selectedSortNameValue,
+            selectedSortPriceValue: this.selectedSortPriceValue,
+            searchText: this.txtSearch,
+          },
+        })
+        .then(() => {
+          console.log(
+            '%c full product list refresh',
+            'color: orange; background-color: #222222;'
+          );
+        });
+    } else {
     }
   }
 }

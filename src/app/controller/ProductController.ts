@@ -5,12 +5,9 @@ import { BehaviorSubject } from 'rxjs';
 import { Category } from 'src/app/model/Category';
 import { DiscountProduct } from 'src/app/model/DiscountProduct';
 import { OrderDetail } from 'src/app/model/OrderDetail';
-import { AuthService } from 'src/app/controller/auth.service';
-import { DiscountProductService } from 'src/app/controller/DiscountProductService';
-import { FavoriteProductService } from 'src/app/controller/FavoriteProductService';
-import { Attribute } from '../model/Attribute';
-import { Product } from '../model/Product';
-import { Voucher } from '../model/Voucher';
+import { AuthService } from 'src/app/db/auth.service';
+import { DiscountProductService } from 'src/app/db/DiscountProductService';
+import { FavoriteProductService } from 'src/app/db/FavoriteProductService';
 
 export class ProductController {
   listProductSearched: DiscountProduct[] = [];
@@ -46,6 +43,7 @@ export class ProductController {
     public favoriteProductService: FavoriteProductService,
     public notifier: NotifierService
   ) {
+    // this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     try {
       this.loadData();
     } catch (err) {}

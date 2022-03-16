@@ -34,7 +34,7 @@ export class TextController{
     txtSearch = this.removeVietnameseTones(txtSearch);
     txtProduct = this.removeVietnameseTones(txtProduct);
     console.log("%c comparisonName" + txtProduct.indexOf(txtSearch), "color: green;")
-    return txtProduct.indexOf(txtSearch) == 0;
+    return txtProduct.indexOf(txtSearch) != -1;
   }
   comparisonName(txtSearch: any, txtProduct: any) {
     txtSearch = this.removeVietnameseTones(txtSearch);

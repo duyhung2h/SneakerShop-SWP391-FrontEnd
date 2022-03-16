@@ -1,10 +1,9 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Category } from 'src/app/model/Category';
-import { FullProductListComponent } from '../full-product-list/full-product-list.component';
 
 
-@Injectable({ providedIn: 'any' })
+// @Injectable({ providedIn: 'any' })
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',

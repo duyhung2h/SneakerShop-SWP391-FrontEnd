@@ -18,18 +18,17 @@ const routes: Routes = [
   },
   {
     path: 'home',
+    pathMatch: 'full',
     component: HomepageComponent
   },
   {
     path: 'product-list',
+    pathMatch: 'full',
     component: FullProductListComponent
   },
   {
-    path: 'productlist',
-    component: ProductListComponent
-  },
-  {
     path: 'cart',
+    pathMatch: 'full',
     component: CartlistComponent
   },];
 
