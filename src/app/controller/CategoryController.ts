@@ -27,7 +27,7 @@ export class CategoryController {
   listProductChanging = false;
 
   selectedCategoryIndex: any = 0;
-  selectedCategoryName = "";
+  selectedCategoryName = '';
   selectedFavoriteIndex = -1;
 
   selectedSortValue = 0;
@@ -114,17 +114,17 @@ export class CategoryController {
       this.searchByCategory(this.selectedCategoryIndex);
     }
   }
-  getSelectedCategoryName(categoryIndex: number){
+  getSelectedCategoryName(categoryIndex: number) {
     console.log(this.listCategory);
     console.log(categoryIndex);
-    return this.listCategory[categoryIndex]._categoryName
-    // this.listCategory.forEach((itemCategory: Category) => {
-    //   if (itemCategory._categoryId == categoryIndex){
-    //     console.log(itemCategory);
-    //     return itemCategory._categoryName
-    //   }
-    // });
-    return "sd"
+    let categoryName = '';
+    this.listCategory.forEach((itemCategory: Category) => {
+      if (itemCategory._categoryId == categoryIndex) {
+        console.log(itemCategory);
+        categoryName = itemCategory._categoryName;
+      }
+    });
+    return categoryName;
   }
   /**
    * load all catrgories
@@ -138,15 +138,9 @@ export class CategoryController {
 
         console.log('this.listCategory');
         console.log(this.listCategory);
-        this.activatedRoute.queryParams.subscribe((params) => {
-          this.paramCategoryId =
-            params['selectedCategoryIndex'] === undefined
-              ? -1
-              : params['selectedCategoryIndex'];
-              this.selectedCategoryName = this.getSelectedCategoryName(this.paramCategoryId);
-        })
-
-        // localStorage.setItem('listCategory', JSON.stringify(this.listCategory));
+        this.selectedCategoryName = this.getSelectedCategoryName(
+          this.paramCategoryId
+        );
       });
   }
 
@@ -305,6 +299,7 @@ export class CategoryController {
     console.log(this.listCategory[index]);
     this.selectedCategoryIndex = index;
     this.paramCategoryId = this.listCategory[index]._categoryId;
+    console.log(this.paramCategoryId);
 
     this.productController.skip = 0;
     if (this.listCategory[index]._categoryId == -1) {
