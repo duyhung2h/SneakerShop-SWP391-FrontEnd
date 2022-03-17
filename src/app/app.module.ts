@@ -20,6 +20,8 @@ import { CartlistComponent } from './view/cartlist/cartlist.component';
 import { OrdereditemlistComponent } from './view/_components/ordereditemlist/ordereditemlist.component';
 import { FullProductListComponent } from './view/full-product-list/full-product-list.component';
 import { ErrorPageComponent } from './view/error-page/error-page.component';
+import { CheckoutComponent } from './view/checkout/checkout.component';
+import { AlertDialogCheckoutComponent } from './view/checkout/alert-dialog-checkout/alert-dialog-checkout.component';
 
 
 const customNotifierOptions: NotifierOptions = {
@@ -72,7 +74,9 @@ const customNotifierOptions: NotifierOptions = {
     CartlistComponent,
     OrdereditemlistComponent,
     FullProductListComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    CheckoutComponent,
+    AlertDialogCheckoutComponent
   ],
   imports: [
     BrowserModule,

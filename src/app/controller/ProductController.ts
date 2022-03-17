@@ -16,6 +16,7 @@ export class ProductController {
   listCategory: Category[] = [];
   listProductFavorite: DiscountProduct[] = [];
   listCart: OrderDetail[] = [];
+  
   skip = 0;
   pageSize = 8;
   listPage: number[] = [];
@@ -28,6 +29,9 @@ export class ProductController {
   );
 
   /**
+   * Product controller that fetch a list of Product through DiscountProductService, 
+   * and handle checking favorite products in list / add, remove favorite products
+   * 
    * This section declare services
    *
    * @param productService
@@ -64,6 +68,7 @@ export class ProductController {
   }
   /**
    * On page change, show list of products according to page number
+   * 
    * @param  {any} index
    */
   pageChange(index: any) {
@@ -86,8 +91,9 @@ export class ProductController {
     }
   }
 
-  //remove product with status = 0
   /**
+   * remove product with status = 0
+   * 
    * @param  {DiscountProduct[]} listProduct
    */
   removeUnwantedProductFromList(listProduct: DiscountProduct[]) {
@@ -99,7 +105,7 @@ export class ProductController {
     return listProduct;
   }
   /**
-   * Load product data
+   * Load product data from API through DiscountProductService
    */
   async loadData() {
     let data: DiscountProduct[] = await this.productService.getAllProduct();
@@ -143,11 +149,10 @@ export class ProductController {
   }
   /**
    * Check if the product is favorited if user hover over a product
+   * 
    * @param  {any} product
    */
   checkFavorite(product: any) {
-    // console.table(this.listProduct);
-
     let listProductFavorite: DiscountProduct[] = [];
 
     this.favoriteProductService
@@ -173,6 +178,7 @@ export class ProductController {
 
   /**
    * Add product to customer favorite list
+   * 
    * @param  {any} product
    */
   addFavorite(product: any) {
@@ -211,7 +217,7 @@ export class ProductController {
           return;
         } else {
           console.log('listProductFavorite: product chua ton tai');
-          //add mon an vao list favorite
+          //add product vao list favorite
           this.favoriteProductService
             .addFavoriteProduct(
               this.authService.userModel.customer?.customerId,

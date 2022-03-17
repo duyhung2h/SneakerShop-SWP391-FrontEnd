@@ -1,0 +1,30 @@
+::ng-deep .ng-autocomplete ng-autocomplete .autocomplete-container .input-container input {
+    width: 100%;
+    height: 46px;
+    border: 1px solid #ebebeb;
+    padding-left: 20px;
+    font-size: 16px;
+    border-radius: 4px;
+}
+
+::ng-deep .ng-autocomplete ng-autocomplete .autocomplete-container {
+    box-shadow: none;
+    width: 100%;
+}
+
+::ng-deep .ng-autocomplete ng-autocomplete {
+    box-shadow: none;
+    width: 100%;
+}
+
+.ng-autocomplete {
+    width: 100%;
+}
+
+.checkout-left {
+    width: 66.66%;
+}
+
+.checkout-right {
+    width: 33.33%;
+}

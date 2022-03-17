@@ -38,16 +38,16 @@ export class CategoryController {
   listCategory: Category[] = [];
 
   textController: TextController = new TextController();
+  
   /**
+   * Category controller that fetch a list of Categories through CategoryService, 
+   * and handle product list sorting and searching
+   * 
    * This section declare services
    *
-   * @param productService
-   * @param router
    * @param activatedRoute
-   * @param authService
    * @param categoryService
-   * @param favoriteProductService
-   * @param notifier
+   * @param productController
    */
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -82,6 +82,10 @@ export class CategoryController {
     console.log(this.selectedSortValue);
     this.loadAsyncData();
   }
+
+  /**
+   * Load product data from ProductController first and then load category data from API through CategoryService 
+   */
   async loadAsyncData() {
     this.listProductSearched = await this.productController.loadData();
     console.log(this.listProductSearched);
@@ -114,6 +118,12 @@ export class CategoryController {
       this.searchByCategory(this.selectedCategoryIndex);
     }
   }
+  /**
+   * Get the current selected category name based on selected category index, to be shown in the dropdown list
+   * 
+   * @param categoryIndex 
+   * @returns 
+   */
   getSelectedCategoryName(categoryIndex: number) {
     console.log(this.listCategory);
     console.log(categoryIndex);
@@ -127,7 +137,7 @@ export class CategoryController {
     return categoryName;
   }
   /**
-   * load all catrgories
+   * load all catrgories from API through CategoryService
    */
   async loadCategory() {
     await this.categoryService
@@ -215,6 +225,9 @@ export class CategoryController {
     this.refreshProductList();
   }
 
+  /**
+   * Load table list number according to number of product shown per page and number of products
+   */
   listPages() {
     let i = 0;
     let add = 0;
@@ -279,7 +292,7 @@ export class CategoryController {
     );
   }
   /**
-   * Search item by category
+   * Search item by category (full)
    *
    * @param index
    */
@@ -290,6 +303,11 @@ export class CategoryController {
     });
   }
 
+  /**
+   * Search item by category
+   *
+   * @param index
+   */
   async searchCategory(index: any) {
     console.log('searchCategory index');
     if (index == -1) {
@@ -319,6 +337,11 @@ export class CategoryController {
     console.log(this.selectedCategoryIndex);
     this.searchText();
   }
+  /**
+   * Search item by Text
+   *
+   * @param index
+   */
   searchText() {
     this.txtSearch = this?.txtSearch?.trim()?.replace(/ + /g, ' ');
     if (this.txtSearch == null) {
@@ -350,7 +373,9 @@ export class CategoryController {
       }
     }
   }
-
+/**
+ * Refresh the page to get all the parameters
+ */
   refreshProductList() {
     console.log(this.paramCategoryId);
     if (window.location.pathname == '/product-list') {

@@ -157,6 +157,10 @@
     /* Internet Explorer/Edge */
 }
 
+.dropdown-item {
+    cursor: pointer;
+}
+
 .hero__search__phone__icon {
     font-size: 18px;
     color: $primary-color;
