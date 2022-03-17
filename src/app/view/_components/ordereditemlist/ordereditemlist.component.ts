@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
+import { TextController } from 'src/app/controller/TextController';
+import { DiscountProduct } from 'src/app/model/DiscountProduct';
 import { OrderDetail } from "src/app/model/OrderDetail";
 
 @Component({
@@ -11,7 +13,8 @@ import { OrderDetail } from "src/app/model/OrderDetail";
 export class OrdereditemlistComponent implements OnInit {
 
   listCart: OrderDetail[] = []
-
+  
+  textController: TextController = new TextController();
   constructor(private router: Router,
     private notifier: NotifierService) {
     window.scroll(0, 0);
@@ -38,7 +41,7 @@ export class OrdereditemlistComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  updateCart() {
+  updateCart() {  
     localStorage.setItem('listOrder', JSON.stringify(this.listCart));
   }
 
@@ -54,17 +57,17 @@ export class OrdereditemlistComponent implements OnInit {
     this.updateCart();
   }
 
-  decrease(data: any) {
-    if (data.orderonlqty == 1)
-      data.orderonlqty = 1
+  decrease(data: OrderDetail) {
+    if (data._orderQuantity == 1)
+      data._orderQuantity = 1
     else
-      data.orderonlqty--;
+      data._orderQuantity--;
     this.updateCart();
   }
 
-  increase(data: any) {
-    if (data.orderonlqty < 100) {
-      data.orderonlqty++;
+  increase(data: OrderDetail) {
+    if (data._orderQuantity < 100) {
+      data._orderQuantity++;
       this.updateCart();
     }
   }
@@ -104,20 +107,23 @@ export class OrdereditemlistComponent implements OnInit {
       return "0";
     }
   }
-  getPriceProduct(item: any) {
-    let returnPrice = 0;
-
+  priceAfterDiscount(item?: DiscountProduct) {
     try {
-      if (item.discountproduct?.voucher) {
-        returnPrice = (item.discountproduct?.product?.price * (100 - item.discountPct) / 100)
+      if (item?._voucher) {
+        let priceAfterDiscount: any = Math.floor(item?._product?._price - (item?._product?._price * item._voucher._discountPct) / 100);
+        if (!(priceAfterDiscount instanceof Number)) {
+          var errorIn: Error = new Error("Giá / Voucher không hợp lệ!");
+          throw errorIn
+        }
+        console.log("!!!!!!!!" + priceAfterDiscount)
+        return priceAfterDiscount
       } else {
-        returnPrice = item.discountproduct?.product?.price
+        return item?._product?._price;
       }
-    } catch (error) {
-      return 0
+    } catch (errorIn) {
+      // this.notifier.notify('error', ''+errorIn)
+      return item?._product?._price;
     }
-
-    return Math.round(returnPrice);
   }
 
   isCartEmpty() {

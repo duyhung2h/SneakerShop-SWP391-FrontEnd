@@ -1,12 +1,11 @@
 /*---------------------
   Hero
 -----------------------*/
+
 .hero {
     padding-bottom: 50px;
-
     &.hero-normal {
         padding-bottom: 30px;
-
         .hero__categories {
             position: relative;
             ul {
@@ -19,7 +18,6 @@
                 background: $white-color;
             }
         }
-
         .hero__search {
             margin-bottom: 0;
         }
@@ -31,19 +29,16 @@
     position: relative;
     padding: 10px 25px 10px 40px;
     cursor: pointer;
-
     i {
         font-size: 16px;
         color: $white-color;
         margin-right: 10px;
     }
-
     span {
         font-size: 18px;
         font-weight: 700;
         color: $white-color;
     }
-
     &:after {
         position: absolute;
         right: 18px;
@@ -56,16 +51,13 @@
 }
 
 .hero__categories {
-
     ul {
         border: 1px solid $border;
         padding-left: 40px;
         padding-top: 10px;
         padding-bottom: 12px;
-
         li {
             list-style: none;
-
             a {
                 font-size: 16px;
                 color: $normal-color;
@@ -87,9 +79,7 @@
     border: 1px solid $border;
     position: relative;
     float: left;
-
     form {
-
         .hero__search__categories {
             width: 30%;
             float: left;
@@ -99,7 +89,6 @@
             padding-left: 18px;
             padding-top: 11px;
             position: relative;
-
             &:after {
                 position: absolute;
                 right: 0;
@@ -110,27 +99,23 @@
                 opacity: .1;
                 content: "";
             }
-
             span {
                 position: absolute;
                 right: 14px;
                 top: 14px;
             }
         }
-
         input {
-            width: 70%;
+            width: 100%;
             border: none;
             height: 48px;
             font-size: 16px;
-            color: #b2b2b2;
+            color: $black-color;
             padding-left: 20px;
-
             &::placeholder {
-                color: #b2b2b2;
+                color: $para-color;
             }
         }
-
         button {
             position: absolute;
             right: 0;
@@ -142,6 +127,34 @@
 
 .hero__search__phone {
     float: right;
+}
+
+.hero__search__categories__dropdown {
+    height: 48px;
+    color: $main-text-color;
+    background-color: $header-background-color !important;
+    .dropdown-item {
+        color: $main-text-color;
+        background-color: $header-background-color !important;
+        margin: auto;
+        height: 100%;
+        width: 100%;
+        // -webkit-transform: translateY(50%);
+    }
+}
+
+.dropdown-menu {
+    transform: none !important;
+    user-select: none;
+    /* supported by Chrome and Opera */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
 }
 
 .hero__search__phone__icon {
@@ -159,13 +172,11 @@
 
 .hero__search__phone__text {
     overflow: hidden;
-
     h5 {
         color: $normal-color;
         font-weight: 700;
         margin-bottom: 5px;
     }
-
     span {
         font-size: 14px;
         color: $para-color;
@@ -180,7 +191,6 @@
 }
 
 .hero__text {
-
     span {
         font-size: 14px;
         text-transform: uppercase;
@@ -188,15 +198,13 @@
         letter-spacing: 4px;
         color: $primary-color;
     }
-
     h2 {
-        font-size: 46px;
+        font-size: 15px;
         color: $heading-color-2;
-        line-height: 52px;
+        line-height: 15px;
         font-weight: 700;
-        margin: 10px 0;
+        margin: 0;
     }
-
     p {
         margin-bottom: 35px;
     }

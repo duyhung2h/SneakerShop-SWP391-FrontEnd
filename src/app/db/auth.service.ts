@@ -118,6 +118,13 @@ export class AuthService {
         window.location.reload();
       });
   }
+  reloadRoute(url: string) {
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate([url]);
+        console.log(url);
+    });
+  }
+
   async registerUser(customer: Customer) {
     try {
       return await this.http.post<Customer[]>(`${environment.apiUrl}customer/createCustomer`, customer).toPromise();

@@ -4,8 +4,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomepageComponent } from 'src/app/view/homepage/homepage.component'
 import { CartlistComponent } from 'src/app/view/cartlist/cartlist.component';
 import { FullProductListComponent } from './view/full-product-list/full-product-list.component';
+import { ErrorPageComponent } from './view/error-page/error-page.component';
+import { ProductListComponent } from './view/_components/product-list/product-list.component';
 
 const routes: Routes = [
+  //Wild Card Route for 404 request
+  // { path: '**', pathMatch: 'full', 
+  //     component: ErrorPageComponent },
   {
     path: '',
     redirectTo: 'home',
@@ -13,14 +18,17 @@ const routes: Routes = [
   },
   {
     path: 'home',
+    pathMatch: 'full',
     component: HomepageComponent
   },
   {
     path: 'product-list',
+    pathMatch: 'full',
     component: FullProductListComponent
   },
   {
     path: 'cart',
+    pathMatch: 'full',
     component: CartlistComponent
   },];
 
