@@ -5,11 +5,11 @@ export class Customer {
   username?: any;
   password?: any;
   role?: Role;
-  name?: any;
+  customerName?: any;
   gender?: any;
   age?: any;
   email?: any;
-  phone?: any;
+  customerPhone?: any;
   address1?: any;
   address2?: any;
   status?: any;

@@ -22,7 +22,10 @@ import { FullProductListComponent } from './view/full-product-list/full-product-
 import { ErrorPageComponent } from './view/error-page/error-page.component';
 import { CheckoutComponent } from './view/checkout/checkout.component';
 import { AlertDialogCheckoutComponent } from './view/checkout/alert-dialog-checkout/alert-dialog-checkout.component';
-
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -94,6 +97,10 @@ const customNotifierOptions: NotifierOptions = {
     NotifierModule.withConfig(customNotifierOptions),
 
     BrowserAnimationsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    MatInputModule,
   ],
   providers: [
     FullProductListComponent

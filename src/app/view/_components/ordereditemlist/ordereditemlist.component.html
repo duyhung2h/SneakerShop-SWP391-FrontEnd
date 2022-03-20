@@ -16,35 +16,35 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let item of cartController.listCart">
+                            <tr *ngFor="let item of listCart">
                                 <td class="col-lg-2">
                                     <img src="{{item._discountProduct?._product?._image}}" class="menu-item-image">
                                 </td>
                                 <td class="col-lg-3">
                                     <h5>{{item._discountProduct ? item._discountProduct._product ? item._discountProduct._product._name: "": ""}}</h5>
                                 </td>
-                                <td class="col-lg-2"> {{cartController.getPrice(cartController.priceAfterDiscount(item._discountProduct)) }}đ
+                                <td class="col-lg-2"> {{getPrice(priceAfterDiscount(item._discountProduct)) }}đ
                                 </td>
                                 <td class="shoping__cart__quantity col-lg-2">
                                     <div class="quantity">
                                         <div class="pro-qty">
-                                            <span class="dec qtybtn" (click)="cartController.decrease(item)">-</span>
+                                            <span class="dec qtybtn" (click)="decrease(item)">-</span>
                                             <input type="text" [ngModel]="item._orderQuantity" readonly>
-                                            <span class="dec qtybtn" (click)="cartController.increase(item)">+</span>
+                                            <span class="dec qtybtn" (click)="increase(item)">+</span>
                                         </div>
                                     </div>
                                 </td>
-                                <td class="shoping__cart__promo col-lg-2"> {{cartController.getPrice(cartController.priceAfterDiscount(item._discountProduct) * item?._orderQuantity) }}đ
+                                <td class="shoping__cart__promo col-lg-2"> {{getPrice(priceAfterDiscount(item._discountProduct) * item?._orderQuantity) }}đ
                                 </td>
                                 <td class="shoping__cart__item__close col-lg-1">
-                                    <span class="icon_close" (click)="cartController.remove(item)"></span>
+                                    <span class="icon_close" (click)="remove(item)"></span>
                                 </td>
                             </tr>
                         </tbody>
 
                     </table>
 
-                    <h3 *ngIf="cartController.isCartEmpty()" class="col-lg-12 padding-5 ybwc-title">Giỏ hàng của bạn đang trống!</h3>
+                    <h3 *ngIf="isCartEmpty()" class="col-lg-12 padding-5 ybwc-title">Giỏ hàng của bạn đang trống!</h3>
                 </div>
             </div>
             <div class="col-lg-8">
@@ -58,9 +58,9 @@
                     <h5>Tổng Cộng</h5>
                     <ul>
                         <li><span></span></li>
-                        <li>Tổng Tiền <span>{{cartController.getPrice(cartController.total())}}đ</span></li>
+                        <li>Tổng Tiền <span>{{getPrice(total())}}đ</span></li>
                     </ul>
-                    <button class="primary-btn btn btn-success width-100" (click)="cartController.redirectToCheckout()">ĐẶT HÀNG</button>
+                    <button class="primary-btn btn btn-success width-100" (click)="redirectToCheckout()">ĐẶT HÀNG</button>
                 </div>
             </div>
         </div>

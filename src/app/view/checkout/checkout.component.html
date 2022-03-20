@@ -1,0 +1,115 @@
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+
+
+    <div class="container">
+
+        <div class="checkout__form">
+            <h4>Thông tin hóa đơn</h4>
+            <form novalidate (ngSubmit)="onSubmit()" [formGroup]="rfContact">
+                <div class="row">
+                    <div class="col-lg-7 col-md-6  pr-5">
+                        <!-- fullname -->
+                        <div>
+                            <mat-form-field class="width-100">
+                                <div class="checkout__input">
+                                    <p>Tên người nhận<span>*</span></p>
+                                    <input maxlength="50" matInput type="text" name="formFullname" formControlName="formFullname" [(ngModel)]="customerName" required>
+                                </div>
+                                <div class="width-100">
+                                    <mat-error *ngFor="let validation of order_validation_messages.fullname" style="color: red;">
+                                        <mat-error class="error-message" *ngIf="rfContact.get('formFullname')!.hasError(validation.type) && (rfContact.get('formFullname')!.dirty || rfContact.get('formFullname')!.touched)">
+                                            <i class="fa fa-times"></i>{{validation.message}}
+                                        </mat-error>
+                                    </mat-error>
+                                </div>
+                            </mat-form-field>
+                        </div>
+                        <!-- address -->
+                        <div>
+                            <mat-form-field class="width-100">
+                                <div class="checkout__input">
+                                    <p>Địa chỉ<span>*</span></p>
+                                    <input matInput type="text" name="formAddress1" formControlName="formAddress1" [(ngModel)]="address" required />
+
+                                    <!-- <input [maxlength]="150" formControlName="formAddress1" type="text" [(ngModel)]="address" matInput formControlName="formAddress1" [matAutocomplete]="auto"> -->
+
+                                    <mat-autocomplete #auto="matAutocomplete">
+                                    </mat-autocomplete>
+
+                                    <!-- ----- -->
+
+
+
+                                    <!-- <div class="ng-autocomplete checkout__input ">
+                                        <ng-autocomplete class="mat-input-element" formControlName="formAddress1" [data]="addressOptions" searchKeyword="keyword" placeholder="Nhập địa chỉ..." (selected)='onChangeSearch()' (inputChanged)='onChangeSearch()' historyIdentifier="addressOptions"
+                                            [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
+                                        </ng-autocomplete>
+
+                                        <ng-template #itemTemplate let-item>
+                                            <span>Địa chỉ {{item.id}}:</span>
+                                            <a [innerHTML]="item._name"></a>
+                                        </ng-template>
+
+                                        <ng-template #notFoundTemplate>
+                                            <div [innerHTML]="notFound"></div>
+                                        </ng-template>
+                                    </div> -->
+
+                                </div>
+                                <div class="width-100">
+                                    <mat-error *ngFor="let validation of order_validation_messages.address" style="color: red;">
+                                        <mat-error class="error-message" *ngIf="rfContact.get('formAddress1')!.hasError(validation.type) && (rfContact.get('formAddress1')!.dirty || rfContact.get('formAddress1')!.touched)">
+                                            <i class="fa fa-times"></i>{{validation.message}}
+                                        </mat-error>
+                                    </mat-error>
+                                </div>
+                            </mat-form-field>
+                        </div>
+                        <!-- phone  -->
+                        <div>
+                            <mat-form-field class="width-100">
+                                <div class="checkout__input">
+                                    <p>Số điện thoại<span>*</span></p>
+                                    <input matInput type="phone" name="formPhone" formControlName="formPhone" [(ngModel)]="customerPhone" required>
+                                </div>
+                                <div class="width-100">
+                                    <mat-error *ngFor="let validation of order_validation_messages.phone" style="color: red;">
+                                        <mat-error class="error-message" *ngIf="rfContact.get('formPhone')!.hasError(validation.type) && (rfContact.get('formPhone')!.dirty || rfContact.get('formPhone')!.touched)">
+                                            <i class="fa fa-times"></i>{{validation.message}}
+                                        </mat-error>
+                                    </mat-error>
+                                </div>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- <div class="checkout__input width-100">
+                            <p>Ghi chú</p>
+                            <input maxlength="500" type="text" value="" #formNote>
+                        </div> -->
+                    </div>
+
+                    <div class="col-lg-5 col-md-6">
+                        <div class="checkout__order">
+                            <h4>Đơn hàng của bạn</h4>
+                            <div class="checkout__order__products">Sản phẩm <span>Tổng</span></div>
+                            <ul>
+                                <li *ngFor="let item of listCart" class="overflow-hidden row">
+                                    <span class="col-lg-8 checkout-left">{{limitNameLength(item._discountProduct?._product?._name, 20)}}</span>
+                                    <span class="col-lg-4 checkout-right float-right text-right">{{ getPrice( (getPriceProduct(item)) * item?._orderQuantity) }}đ</span>
+                                </li>
+                            </ul>
+                            <!-- <div class="checkout__order__subtotal"></div> -->
+                            <div class="line-separator"></div>
+                            <div class="checkout__order__total">Tổng Tiền <span>{{getPrice(totalDue)}}đ</span></div>
+                            <div class="checkout__input__checkbox">
+                            </div>
+                            <button type="submit" class="site-btn btn btn-success">Đặt hàng</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<!-- Checkout Section End -->

@@ -1,1 +1,21 @@
-<p>alert-dialog-checkout works!</p>
+<div class="dialog-block-background ">
+    <div class="dialog-block border-round-dialog centered">
+        <div class="footer-ybwc-desc background-secondarycolor top-bannerbg"></div>
+        <h2 matDialogTitle class="footer-ybwc-desc title padding-5 border-round-dialog background-secondarycolor white-font overflow-hidden top-banner-title">Xác nhận thanh toán</h2>
+        <div class="padding-5 padding-vh-topbottom">
+            <mat-dialog-content>
+                <p>Xin vui lòng kiểm tra lại thông tin đơn hàng, trước khi ấn nút "xác nhận" để đặt hàng. </p>
+            </mat-dialog-content>
+            <mat-dialog-actions align="end" class="width-100">
+                <button mat-raised-button tabindex="-1" matDialogClose="cancel" color="primary" class="btn btn-danger mr-2">
+                <div class="login-button bold overflow-hidden"> Quay Lại</div>
+                <input type="submit" value="submit" style="display: none !important;">
+            </button>
+                <button mat-raised-button tabindex="-1" matDialogClose="confirm" color="warn" class="btn btn-success">
+                <div class="login-button bold overflow-hidden"> Xác Nhận</div>
+                <input type="submit" value="submit" style="display: none !important;">
+            </button>
+            </mat-dialog-actions>
+        </div>
+    </div>
+</div>

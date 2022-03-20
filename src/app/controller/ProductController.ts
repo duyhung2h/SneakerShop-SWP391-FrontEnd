@@ -109,6 +109,8 @@ export class ProductController {
    */
   async loadData() {
     let data: DiscountProduct[] = await this.productService.getAllProduct();
+    console.log(data);
+    
     this.listProductCore = data
     this.listProduct = data
     this.listProductSearched = data

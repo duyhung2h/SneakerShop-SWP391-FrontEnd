@@ -41,9 +41,9 @@ export class DiscountProductService {
       //add to top
       coreData.data.items.forEach((item: any) => {
         let productCategory = new Category(
-          item.category.CategoryId,
-          item.category.CategoryName,
-          item.category.CategoryDescription
+          item.CategoryId,
+          // item.category.CategoryName,
+          // item.category.CategoryDescription
         );
         let productAttributes: Attribute[] = [];
         item.attributes.forEach((itemAttribute: any) => {

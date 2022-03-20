@@ -350,7 +350,6 @@ export class CategoryController {
       //sort by name ****
       console.log(this.listProductSearched);
       if (this.selectedSortValue == 0) {
-        console.log(this.productController.listProduct);
         this.listProductSearched = this.listProductSearched.filter(
           (value: DiscountProduct) =>
             this.textController.comparisonNameEqual(
@@ -358,6 +357,7 @@ export class CategoryController {
               value._product?._name
             )
         );
+        console.log(this.listProductSearched);
         this.onSortNameCategoryChange(this.selectedSortNameValue);
       }
       //sort by price

@@ -10,20 +10,13 @@ import { OrderDetail } from "src/app/model/OrderDetail";
   templateUrl: './ordereditemlist.component.html',
   styleUrls: ['./ordereditemlist.component.css']
 })
-export class OrdereditemlistComponent implements OnInit {
-
-  // controller declare
-  cartController: CartController = new CartController(
-    this.router,
-    this.notifier
-  );
-  listCart: OrderDetail[] = []
-  
+export class OrdereditemlistComponent extends CartController implements OnInit {
   textController: TextController = new TextController();
   constructor(
-    private router: Router,
-    private notifier: NotifierService
+    router: Router,
+    notifier: NotifierService
   ) {
+    super(router, notifier);
     window.scroll(0, 0);
   }
   ngOnInit(): void {
