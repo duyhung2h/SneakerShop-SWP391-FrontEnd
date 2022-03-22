@@ -3,41 +3,41 @@
         <div class="row">
             <div class="col-lg-9">
                 <div class="hero__search__form width-100">
-                    <form [formGroup]="categoryController.formGroup">
-                        <input maxlength="200" type="text" placeholder="Nhập tên sản phẩm..." [formControlName]="'search'" [(ngModel)]="categoryController.txtSearch" (change)="categoryController.refreshProductList()">
-                        <button type="submit" class="btn right site-btn btn-success" (click)="categoryController.refreshProductList()">Tìm kiếm</button>
+                    <form [formGroup]="formGroup">
+                        <input maxlength="200" type="text" placeholder="Nhập tên sản phẩm..." [formControlName]="'search'" [(ngModel)]="txtSearch" (change)="refreshProductList()">
+                        <button type="submit" class="btn right site-btn btn-success" (click)="refreshProductList()">Tìm kiếm</button>
                     </form>
                 </div>
                 <div class="pt-4 width-100">
                     <div class="filter__sort col-md-5 col-lg-5">
                         <span>Sắp xếp theo </span>
                         <label for="select1" class="visually-hidden">Label Text</label>
-                        <select id="select1" class="ml-3" [ngModel]="categoryController.selectedSortValue" (ngModelChange)="categoryController.onSortCategoryChange($event)">
-                                        <option *ngFor="let sort of categoryController.sortCategory" [value]="sort.id">{{sort.name}}</option>
+                        <select id="select1" class="ml-3" [ngModel]="selectedSortValue" (ngModelChange)="onSortCategoryChange($event)">
+                                        <option *ngFor="let sort of sortCategory" [value]="sort.id">{{sort.name}}</option>
                                     </select>
                     </div>
-                    <div class="filter__sort col-md-2 col-lg-2" *ngIf="categoryController.selectedSortValue == 0">
+                    <div class="filter__sort col-md-2 col-lg-2" *ngIf="selectedSortValue == 0">
                         <!-- <span>Theo thứ tự </span> -->
                         <label for="select2" class="visually-hidden">Label Text</label>
-                        <select id="select2" class="" [ngModel]="categoryController.selectedSortNameValue" (ngModelChange)="categoryController.onSortNameCategoryChange($event)">
-                                        <option *ngFor="let sortName of categoryController.sortNameCategory"  [value]="sortName.id">{{sortName.name}}</option>
+                        <select id="select2" class="" [ngModel]="selectedSortNameValue" (ngModelChange)="onSortNameCategoryChange($event)">
+                                        <option *ngFor="let sortName of sortNameCategory"  [value]="sortName.id">{{sortName.name}}</option>
                                     </select>
                     </div>
-                    <div class="filter__sort col-md-2 col-lg-2" *ngIf="categoryController.selectedSortValue == 1">
+                    <div class="filter__sort col-md-2 col-lg-2" *ngIf="selectedSortValue == 1">
                         <!-- <span>Theo thứ tự </span> -->
                         <label for="select3" class="visually-hidden">Label Text</label>
-                        <select id="select3" class="" [ngModel]="categoryController.selectedSortPriceValue" (ngModelChange)="categoryController.onSortPriceCategoryChange($event)">
-                                        <option *ngFor="let sortPrice of categoryController.sortPriceCategory"  [value]="sortPrice.id">{{sortPrice.name}}</option>
+                        <select id="select3" class="" [ngModel]="selectedSortPriceValue" (ngModelChange)="onSortPriceCategoryChange($event)">
+                                        <option *ngFor="let sortPrice of sortPriceCategory"  [value]="sortPrice.id">{{sortPrice.name}}</option>
                                     </select>
                     </div>
                 </div>
             </div>
             <div class="dropdown col-lg-2">
                 <button style="height: 48px !important;" class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{categoryController.selectedCategoryName}}
+                    {{selectedCategoryName}}
                </button>
                 <div style="position: sticky !important;" class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" *ngFor="let category of categoryController.listCategory; let i = index" (click)="categoryController.searchByCategory(i)">{{category._categoryName}}</a>
+                    <a class="dropdown-item" *ngFor="let category of listCategory; let i = index" (click)="searchByCategory(i)">{{category._categoryName}}</a>
                 </div>
             </div>
         </div>

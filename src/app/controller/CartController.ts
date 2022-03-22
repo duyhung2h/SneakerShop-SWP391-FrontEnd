@@ -16,8 +16,8 @@ export class CartController {
    * @param notifier 
    */
   constructor(
-    private router: Router,
-    private notifier: NotifierService
+    public router: Router,
+    public notifier: NotifierService
     ) {
     try {
       this.listCart = JSON.parse(localStorage['listOrder']);
@@ -136,6 +136,62 @@ export class CartController {
       }
     } catch (err) {
       return true;
+    }
+  }
+  /**
+   * @param  {any} product
+   */
+  addCart(product: any) {
+    console.log(product);
+
+    let index = -1;
+    console.log('this.listCartProduct');
+    console.log(this.listCart);
+    try {
+      // Try to run this code
+      this.listCart.forEach((item, i) => {
+        if (
+          item._discountProduct?._product?._productId ==
+          product._product._productId
+        ) {
+          index = i;
+        }
+      });
+    } catch (err) {
+      // if any error, Code throws the error
+      this.listCart = [];
+      console.log('is empty');
+    }
+    console.log(index);
+    if (index > -1) {
+      this.listCart[index]._orderQuantity += 1;
+      console.log('index > -1' + index);
+      localStorage.setItem('listOrder', JSON.stringify(this.listCart));
+      this.notifier.notify(
+        'success',
+        "Đã thêm '" + product._product._name + "' vào giỏ hàng!"
+      );
+    } else {
+      const orderDetaiOn = new OrderDetail();
+      orderDetaiOn._orderDetailId = product._product._productId;
+      orderDetaiOn._discountProduct = product;
+      orderDetaiOn._orderQuantity = 1;
+      if (product.voucher) {
+        orderDetaiOn._price = product._product?._price;
+      } else {
+        orderDetaiOn._price = product._product?._price;
+      }
+
+      orderDetaiOn._discountPct = product?.voucher?._discountPct;
+      orderDetaiOn._voucherCode = product?.voucher?.voucherCode;
+
+      this.listCart.push(orderDetaiOn);
+      localStorage.setItem('listOrder', JSON.stringify(this.listCart));
+      console.log(JSON.parse(localStorage['listOrder']));
+      this.notifier.notify(
+        'success',
+        "Đã thêm '" + product._product._name + "' vào giỏ hàng!"
+      );
     }
   }
 }

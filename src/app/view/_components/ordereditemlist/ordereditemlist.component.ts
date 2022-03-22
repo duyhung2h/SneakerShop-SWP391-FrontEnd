@@ -4,6 +4,7 @@ import { NotifierService } from 'angular-notifier';
 import { CartController } from 'src/app/controller/CartController';
 import { TextController } from 'src/app/controller/TextController';
 import { OrderDetail } from "src/app/model/OrderDetail";
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-ordereditemlist',
@@ -12,6 +13,7 @@ import { OrderDetail } from "src/app/model/OrderDetail";
 })
 export class OrdereditemlistComponent extends CartController implements OnInit {
   textController: TextController = new TextController();
+  environment = environment
   constructor(
     router: Router,
     notifier: NotifierService

@@ -5,11 +5,15 @@ import { CategoryService } from 'src/app/db/CategoryService';
 import { DiscountProduct } from 'src/app/model/DiscountProduct';
 import { ProductController } from './ProductController';
 import { TextController } from './TextController';
+import { FullProductListComponent } from '../view/full-product-list/full-product-list.component';
+import { DiscountProductService } from '../db/DiscountProductService';
+import { AuthService } from '../db/auth.service';
+import { FavoriteProductService } from '../db/FavoriteProductService';
+import { NotifierService } from 'angular-notifier';
 
-export class CategoryController {
+export class CategoryController extends ProductController {
   txtSearch: any;
   listProductSearchedIsLoaded = false;
-  listProductSearched: any = [];
   formGroup = new FormGroup({ search: new FormControl() });
   sortCategory = [
     { id: 0, name: 'Tên' },
@@ -28,7 +32,6 @@ export class CategoryController {
 
   selectedCategoryIndex: any = 0;
   selectedCategoryName = '';
-  selectedFavoriteIndex = -1;
 
   selectedSortValue = 0;
   selectedSortNameValue = 0;
@@ -38,6 +41,8 @@ export class CategoryController {
   listCategory: Category[] = [];
 
   textController: TextController = new TextController();
+  
+
   
   /**
    * Category controller that fetch a list of Categories through CategoryService, 
@@ -52,9 +57,16 @@ export class CategoryController {
   constructor(
     private activatedRoute: ActivatedRoute,
     private categoryService: CategoryService,
-    public productController: ProductController
+
+    
+    productService: DiscountProductService,
+    authService: AuthService,
+    router: Router,
+    favoriteProductService: FavoriteProductService,
+    notifier: NotifierService
   ) {
-    this.productController.router.routeReuseStrategy.shouldReuseRoute = () =>
+    super(productService, authService, router, favoriteProductService, notifier)
+    this.router.routeReuseStrategy.shouldReuseRoute = () =>
       false;
     this.activatedRoute.queryParams.subscribe((params) => {
       this.txtSearch =
@@ -87,7 +99,7 @@ export class CategoryController {
    * Load product data from ProductController first and then load category data from API through CategoryService 
    */
   async loadAsyncData() {
-    this.listProductSearched = await this.productController.loadData();
+    this.listProductSearched = await this.loadData();
     console.log(this.listProductSearched);
 
     await this.loadCategory();
@@ -195,7 +207,8 @@ export class CategoryController {
         a._product?._price > b._product?._price ? -1 : 1
       );
     }
-    this.refreshProductList();
+    // without this, it loop after a reserarch
+    this.refreshProductList(); 
   }
 
   /**
@@ -225,20 +238,6 @@ export class CategoryController {
     this.refreshProductList();
   }
 
-  /**
-   * Load table list number according to number of product shown per page and number of products
-   */
-  listPages() {
-    let i = 0;
-    let add = 0;
-    this.productController.listPage = [];
-    for (i; i < this.listProductSearched.length; i++) {
-      if (i % this.productController.pageSize == 0) {
-        this.productController.listPage.push(add);
-        add++;
-      }
-    }
-  }
 
   /**
    * Wait until all products are loaded and filtered, return the list
@@ -251,7 +250,8 @@ export class CategoryController {
         IsLoaded: any,
         listProductReturn: DiscountProduct[]
       ) {
-        if (IsLoaded == undefined) {
+        window.setTimeout(checkLoaded, 10000);
+        if (IsLoaded == true) {
           resolve(listProductReturn);
         } else {
           window.setTimeout(checkLoaded, 1000);
@@ -272,7 +272,7 @@ export class CategoryController {
     try {
       this.searchByCategory(this.selectedCategoryIndex);
     } catch {
-      this.productController.notifier.notify(
+      this.notifier.notify(
         'error',
         'Lỗi hiển thị thể loại2!'
       );
@@ -280,9 +280,9 @@ export class CategoryController {
     try {
       this.searchText();
     } catch {
-      this.productController.notifier.notify('error', 'Lỗi tìm kiếm!');
+      this.notifier.notify('error', 'Lỗi tìm kiếm!');
     }
-    this.listPages();
+    this.listPages(this.listProductSearched);
 
     this.listProductSearchedIsLoaded = true;
     console.log(this.listProductSearched);
@@ -290,6 +290,9 @@ export class CategoryController {
       'loadedListProductSearched',
       JSON.stringify(this.listProductSearched)
     );
+    
+    // this.listProductSearched = this.listProductSearched
+    // alert(this.listProductSearched)
   }
   /**
    * Search item by category (full)
@@ -298,7 +301,7 @@ export class CategoryController {
    */
   searchByCategory(index: any) {
     this.searchCategory(index).then(() => {
-      this.listPages();
+      this.listPages(this.listProductSearched);
       this.refreshProductList();
     });
   }
@@ -316,14 +319,15 @@ export class CategoryController {
     console.log(index);
     console.log(this.listCategory[index]);
     this.selectedCategoryIndex = index;
-    this.paramCategoryId = this.listCategory[index]._categoryId;
-    console.log(this.paramCategoryId);
+    // this.paramCategoryId = this.listCategory[index]._categoryId;
+    // console.log(this.paramCategoryId);
+    console.log(this.listProduct);
 
-    this.productController.skip = 0;
+    this.skip = 0;
     if (this.listCategory[index]._categoryId == -1) {
-      this.listProductSearched = this.productController.listProduct;
+      this.listProductSearched = this.listProduct;
     } else {
-      this.listProductSearched = this.productController.listProduct.filter(
+      this.listProductSearched = this.listProduct.filter(
         (value) =>
           this.textController.comparionCategory(
             this.listCategory[index]._categoryName,
@@ -349,6 +353,7 @@ export class CategoryController {
     } else {
       //sort by name ****
       console.log(this.listProductSearched);
+      console.log(this.selectedSortValue);
       if (this.selectedSortValue == 0) {
         this.listProductSearched = this.listProductSearched.filter(
           (value: DiscountProduct) =>
@@ -379,7 +384,7 @@ export class CategoryController {
   refreshProductList() {
     console.log(this.paramCategoryId);
     if (window.location.pathname == '/product-list') {
-      this.productController.router
+      this.router
         .navigate(['/product-list'], {
           queryParams: {
             selectedCategoryIndex: this.paramCategoryId,

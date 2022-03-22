@@ -18,7 +18,7 @@
                         <tbody>
                             <tr *ngFor="let item of listCart">
                                 <td class="col-lg-2">
-                                    <img src="{{item._discountProduct?._product?._image}}" class="menu-item-image">
+                                    <img src="{{environment.apiUrl}}uploads/{{item._discountProduct?._product?._image}}" class="menu-item-image">
                                 </td>
                                 <td class="col-lg-3">
                                     <h5>{{item._discountProduct ? item._discountProduct._product ? item._discountProduct._product._name: "": ""}}</h5>

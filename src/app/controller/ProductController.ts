@@ -13,21 +13,19 @@ export class ProductController {
   listProductSearched: DiscountProduct[] = [];
   listProduct: DiscountProduct[] = [];
   listProductCore: any = [];
-  listCategory: Category[] = [];
   listProductFavorite: DiscountProduct[] = [];
   listCart: OrderDetail[] = [];
   
   skip = 0;
   pageSize = 8;
   listPage: number[] = [];
-  txtSearch: any;
-  formGroup = new FormGroup({ search: new FormControl() });
   selectedFavoriteIndex = -1;
 
   public isLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     true
   );
 
+  
   /**
    * Product controller that fetch a list of Product through DiscountProductService, 
    * and handle checking favorite products in list / add, remove favorite products
@@ -75,12 +73,11 @@ export class ProductController {
     this.skip = index * this.pageSize;
   }
   /**
-   * Add pages to product page
+   * Load table list number according to number of product shown per page and number of products
    */
   listPages(listProductSearched: DiscountProduct[]) {
     let i = 0;
     let add = 0;
-    console.log(listProductSearched);
     
     this.listPage = [];
     for (i; i < listProductSearched.length; i++) {
@@ -110,7 +107,6 @@ export class ProductController {
   async loadData() {
     let data: DiscountProduct[] = await this.productService.getAllProduct();
     console.log(data);
-    
     this.listProductCore = data
     this.listProduct = data
     this.listProductSearched = data
@@ -121,7 +117,7 @@ export class ProductController {
     this.isLoading.next(true)
     this.listPages(this.listProductSearched)
     console.log(data)
-    return await new Promise(resolve =>{resolve(data)})
+    return this.listProductSearched
   }
   /**
    * update favorite product list to session
@@ -160,8 +156,8 @@ export class ProductController {
     this.favoriteProductService
       .getFavoriteProduct(this.authService.userModel.customer?.customerId)
       .then((data) => {
-        console.log('getFavoriteProduct');
-        console.log(data);
+        // console.log('getFavoriteProduct');
+        // console.log(data);
 
         listProductFavorite = data;
         this.isLoading.next(true);
@@ -173,7 +169,7 @@ export class ProductController {
             return;
           }
         }
-        console.log('listProductFavorite: product chua ton tai');
+        // console.log('listProductFavorite: product chua ton tai');
         this.selectedFavoriteIndex = -1;
       });
   }
