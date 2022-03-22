@@ -278,11 +278,10 @@
     margin-top: -14px;
     ul {
         display: inline-block;
-        margin-right: 25px;
+        width: auto;
         li {
             list-style: none;
             display: inline-block;
-            margin-right: 15px;
             &:last-child {
                 margin-right: 0;
             }
@@ -331,4 +330,143 @@
 
 .tooltipHeader .tooltiptext {
     @include transition(all, .3s);
+}
+
+
+/*---------------------
+  Header (dropdown tu icon user)
+-----------------------*/
+
+.header__item__dropdown .header__menu__dropdown li a {
+    font-size: 15px;
+    color: $almost-black-color;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 2px;
+    -webkit-transition: all, 0.3s;
+    -moz-transition: all, 0.3s;
+    -ms-transition: all, 0.3s;
+    -o-transition: all, 0.3s;
+    transition: all, 0.3s;
+    padding: 5px 0;
+    display: block;
+    text-transform: capitalize;
+    color: #ffffff;
+    font-weight: 400;
+    padding: 5px 15px;
+    width: 240px;
+    text-align: center;
+}
+
+.header__item__dropdown {
+    list-style: none;
+    display: inline-block;
+    position: relative;
+}
+
+.header__item__dropdown .header__menu__dropdown {
+    position: absolute;
+    top: 50px;
+    background: #222222;
+    /* height: 5vh; */
+    /* width: 30vw; */
+    z-index: 9;
+    padding: 5px 0;
+    -webkit-transition: all, 0.3s;
+    -moz-transition: all, 0.3s;
+    -ms-transition: all, 0.3s;
+    -o-transition: all, 0.3s;
+    transition: all, 0.3s;
+    opacity: 0;
+    visibility: hidden;
+    float: right;
+}
+
+.header__item__dropdown .header__menu__dropdown li {
+    left: -440px;
+    display: block;
+    margin: 10px;
+}
+
+.header__item__dropdown:hover .header__menu__dropdown {
+    top: 30px;
+    opacity: 1;
+    visibility: visible;
+}
+
+.header__item__dropdown:last-child {
+    margin-right: 0;
+}
+
+.header__item__dropdown a {
+    font-size: 15px;
+    color: $almost-black-color;
+    font-weight: 700;
+    -webkit-transition: all, 0.3s;
+    -moz-transition: all, 0.3s;
+    -ms-transition: all, 0.3s;
+    -o-transition: all, 0.3s;
+    transition: all, 0.3s;
+    padding: 5px 0;
+    display: block;
+}
+
+
+/* responsive header hamburger */
+
+.header__menu__dropdown.dropdown_right {
+    left: -100px;
+}
+
+.header__menu__dropdown.dropdown_login_right {
+    left: 0px;
+}
+
+.header__menu__dropdown.dropdown_left {
+    left: -200px;
+}
+
+.header__menu__dropdown.dropdown_login {
+    left: -100px;
+}
+
+
+/* tooltip text */
+
+.tooltipHeader .tooltiptext {
+    visibility: hidden;
+    top: 24px;
+    min-width: 120px;
+    background-color: $header-background-color;
+    color: $white-color;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+    height: 24px;
+    font-size: 14px;
+    text-align: center;
+    right: -250%;
+}
+
+.tooltipHeader:hover .tooltiptext {
+    visibility: visible;
+}
+
+.mat-input-element {
+    border: 1px solid $semi-white-color !important;
+    background: $white-color !important;
+    color: $para-color !important;
+    &:focus {
+        color: $black-color !important;
+    }
+    width: 300px;
+    height: 40px;
+}
+
+.background__transparent {
+    background: $transparent !important;
+    background-color: $transparent !important;
 }
