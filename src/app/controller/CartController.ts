@@ -2,6 +2,7 @@ import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { DiscountProduct } from 'src/app/model/DiscountProduct';
 import { OrderDetail } from 'src/app/model/OrderDetail';
+import { Voucher } from '../model/Voucher';
 
 export class CartController {
   listCart: OrderDetail[] = [];
@@ -70,10 +71,10 @@ export class CartController {
   total() {
     var totalPrice = 0;
     this.listCart.forEach((item) => {
-      if (item._voucherCode != null) {
+      if (item._discountProduct._voucher?._discountPct > 0) {
         totalPrice =
           totalPrice +
-          ((item._price * (100 - item?._discountPct)) / 100) *
+          ((item._price * (100 - item?._discountProduct._voucher?._discountPct)) / 100) *
             item?._orderQuantity;
       } else {
         totalPrice = totalPrice + item._price * item?._orderQuantity;
@@ -102,24 +103,25 @@ export class CartController {
       return '0';
     }
   }
-  priceAfterDiscount(item?: DiscountProduct) {
-    try {
-      if (item?._voucher) {
+  priceAfterDiscount(item: DiscountProduct) {
+    try {    
+      if (item._voucher?._discountPct > 0) {        
         let priceAfterDiscount: any = Math.floor(
           item?._product?._price -
-            (item?._product?._price * item._voucher._discountPct) / 100
+            (item?._product?._price * item._voucher?._discountPct) / 100
         );
-        if (!(priceAfterDiscount instanceof Number)) {
+        if (typeof priceAfterDiscount != "number") {
           var errorIn: Error = new Error('Giá / Voucher không hợp lệ!');
           throw errorIn;
         }
-        console.log('!!!!!!!!' + priceAfterDiscount);
+        // console.log('!!!!!!!!' + priceAfterDiscount);
         return priceAfterDiscount;
       } else {
         return item?._product?._price;
       }
     } catch (errorIn) {
       // this.notifier.notify('error', ''+errorIn)
+      // console.log(errorIn);
       return item?._product?._price;
     }
   }
@@ -172,7 +174,7 @@ export class CartController {
         "Đã thêm '" + product._product._name + "' vào giỏ hàng!"
       );
     } else {
-      const orderDetaiOn = new OrderDetail();
+      const orderDetaiOn = new OrderDetail(product._discountProductId);
       orderDetaiOn._orderDetailId = product._product._productId;
       orderDetaiOn._discountProduct = product;
       orderDetaiOn._orderQuantity = 1;
@@ -182,8 +184,9 @@ export class CartController {
         orderDetaiOn._price = product._product?._price;
       }
 
-      orderDetaiOn._discountPct = product?.voucher?._discountPct;
-      orderDetaiOn._voucherCode = product?.voucher?.voucherCode;
+      // color and size: default for now
+      orderDetaiOn._color = "default"
+      orderDetaiOn._size = 40
 
       this.listCart.push(orderDetaiOn);
       localStorage.setItem('listOrder', JSON.stringify(this.listCart));

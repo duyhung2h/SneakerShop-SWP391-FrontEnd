@@ -96,7 +96,7 @@
                             <ul>
                                 <li *ngFor="let item of listCart" class="overflow-hidden row">
                                     <span class="col-lg-8 checkout-left">{{limitNameLength(item._discountProduct?._product?._name, 20)}}</span>
-                                    <span class="col-lg-4 checkout-right float-right text-right">{{ getPrice( (getPriceProduct(item)) * item?._orderQuantity) }}đ</span>
+                                    <span class="col-lg-4 checkout-right float-right text-right">{{ getPrice( (getPriceProduct(item._discountProduct)) * item?._orderQuantity) }}đ</span>
                                 </li>
                             </ul>
                             <!-- <div class="checkout__order__subtotal"></div> -->

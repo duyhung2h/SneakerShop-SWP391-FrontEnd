@@ -57,9 +57,9 @@ export class HeaderComponent extends UserController implements OnInit {
     this.userModel = new UserModel();
     this.userModel.id_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUUkFOIEhPQU5HIEhVWSIsInN1YiI6MiwiaWF0IjoxNjQ3NzMyMjMzMjQ4LCJleHAiOjE2NTk2MzU4ODE5MTh9.hvZCLAiejewSZZWr5U1RnimAwJkQQHlgh2DPIYzigzg";
     this.userModel.customer = new Customer();
-    this.userModel.customer.role = new Role();
+    this.userModel.customer.role = new Role(1, "customer");
     this.userModel.customer.customerId = 1;
-    this.userModel.customer.role.roleId = 1;
+    this.userModel.customer.role._roleId = 1;
     this.userModel.customer.customerName = "Nguyễn Duy Hưng";
     this.userModel.customer.address1 = "101A";
     this.userModel.customer.customerPhone = "0961578499";

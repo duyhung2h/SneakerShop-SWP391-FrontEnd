@@ -119,6 +119,7 @@ export class ProductController {
     console.log(data)
     return this.listProductSearched
   }
+
   /**
    * update favorite product list to session
    */

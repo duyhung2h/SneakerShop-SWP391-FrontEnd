@@ -126,7 +126,7 @@ export class OrderController {
       if (item._discountProduct?._voucher?._discountPct) {
         totalPrice =
           totalPrice +
-          ((item._price * (100 - item?._discountPct)) / 100) *
+          ((item._price * (100 - item?._discountProduct._voucher._discountPct)) / 100) *
             item?._orderQuantity;
       } else {
         totalPrice = totalPrice + item._price * item?._orderQuantity;
@@ -211,12 +211,13 @@ export class OrderController {
         orderSuccess: true,
       },
     };
-    // this.router.navigate(['/resetpassword'], navigationExtras);
+    
+    // redirect to history page after a successful order
 
-    setTimeout(
-      () => this.router.navigate(['/history'], navigationExtras).then(() => {}),
-      2000
-    );
+    // setTimeout(
+    //   () => this.router.navigate(['/history'], navigationExtras).then(() => {}),
+    //   2000
+    // );
   }
 
   order_validation_messages = {
@@ -235,17 +236,27 @@ export class OrderController {
     return Number(Math.round(price)).toLocaleString();
   }
   getPriceProduct(item: any) {
-    let returnPrice = 0;
-
-    if (item._discountProduct?._voucher?._discountPct) {
-      returnPrice =
-        (item._discountProduct?._product?._price * (100 - item._discountPct)) /
-        100;
-    } else {
-      returnPrice = item._discountProduct?._product?._price;
+    try {    
+      // console.log(item._voucher);
+      
+      if (item._voucher?._discountPct > 0) {        
+        let priceAfterDiscount: any = Math.floor(
+          item?._product?._price -
+            (item?._product?._price * item._voucher?._discountPct) / 100
+        );
+        if (typeof priceAfterDiscount != "number") {
+          var errorIn: Error = new Error('Giá / Voucher không hợp lệ!');
+          throw errorIn;
+        }
+        return priceAfterDiscount;
+      } else {
+        return item?._product?._price;
+      }
+    } catch (errorIn) {
+      // this.notifier.notify('error', ''+errorIn)
+      // console.log(errorIn);
+      return item?._product?._price;
     }
-
-    return Math.round(returnPrice);
   }
   limitNameLength(name: string, lengthLimit: number) {
     if (name.length > lengthLimit) {

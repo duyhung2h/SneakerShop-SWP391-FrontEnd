@@ -1,8 +1,14 @@
-import { HttpClient, HttpEvent, HttpHandler, HttpRequest } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpEvent,
+  HttpHandler,
+  HttpRequest,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { lastValueFrom, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { OrderHeader } from '../model/Order';
+import { OrderDetail } from '../model/OrderDetail';
 import { OrderHistory } from '../model/OrderHistory';
 import { AuthService } from './auth.service';
 
@@ -11,37 +17,51 @@ import { AuthService } from './auth.service';
 })
 export class OrderHeaderService {
   constructor(private http: HttpClient, private authService: AuthService) {}
-
-  intercept(
-    req: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    if (this.authService.userModel) {
-      req = req.clone({
-        headers: req.headers.set(
-          'Authorization',
-          `Bearer ${this.authService.userModel.id_token}`
-        ),
-      });
-    }
-    alert();
-    return next.handle(req);
-  }
   async createOrderHeader(orderHeader: OrderHeader) {
     console.log(orderHeader);
-    console.log(this.http);
+
+    // order header items
+
+    let orderHeaderData: { productId: any; quantity: any; size: any; color: any; }[] = [];
+    orderHeader?._listOrderDetail?.forEach((order: OrderDetail) => {
+      let orderData = {
+        productId: order?._discountProduct?._product?._productId,
+        quantity: order?._orderQuantity,
+        size: order?._size,
+        color: order?._color
+      };
+      console.log(orderData);
+      orderHeaderData.unshift(orderData)
+    });
+    
+    // order all
+
+    let requestOrderHeader = {
+      customerName: orderHeader._customerName,
+      customerPhone: orderHeader._customerPhone,
+      shipToAddress: orderHeader._shiptoAddress,
+      items: orderHeaderData
+    }
+    let requestOrderHeader2 = JSON.stringify(requestOrderHeader)
+    console.log(requestOrderHeader);
+    console.log(requestOrderHeader2);
+    
 
     return await lastValueFrom(
-      this.http.post<OrderHeader>(`${environment.apiUrl}api/order`, orderHeader)
+      this.http.post<OrderHeader>(
+        `${environment.apiUrl}api/order`,
+        requestOrderHeader2,
+        { headers: this.authService.headers }
+      )
     );
   }
-  async getAllOrderHeader(customerId: any) {
-    return await this.http
-      .get<OrderHistory[]>(
-        // (`${environment.apiUrl}orderheaderl/getOrderheaderlByCustomerId/${customerId}`).toPromise();
-        `${environment.apiUrl}feedback/get-allFeedbackOnl-CustomerId/${customerId}`
+  async getAllOrderHeader() {
+    return await lastValueFrom(
+      this.http.get<any>(
+        `${environment.apiUrl}api/order/my-orders?page=1&pageSize=999`,
+        { headers: this.authService.headers }
       )
-      .toPromise();
+    );
   }
   async getOrderHeaderById(orderonlId: any) {
     return await this.http

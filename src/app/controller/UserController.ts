@@ -4,6 +4,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { AuthService } from '../db/auth.service';
 import { Customer } from '../model/Customer';
+import { Role } from '../model/Role';
 import { UserModel } from '../model/UserModel';
 
 export class UserController {
@@ -99,7 +100,7 @@ export class UserController {
     this.authService.logout();
   }
   // fired up when submitted
-  onSubmit() {
+  async onSubmit() {
     this.validationMessage = '';
     if (this.checkUsernameNull()) {
       this.notificationMessage = 'error';
@@ -112,28 +113,30 @@ export class UserController {
       return;
     }
     let customer = new Customer();
-    customer.username = this.rfContact.get('formUsername')?.value;
+    customer.userName = this.rfContact.get('formUsername')?.value;
     customer.password = this.rfContact.get('formPassword')?.value;
-    this.authService.login(customer).then(
+    await this.authService.login(customer).then(
       (data) => {
+        console.log(data.data.token);
         if (data == 'error') {
           console.log('loginError');
-          console.log(data);
           this.notificationMessage = 'error';
           this.validationMessage = 'Tên tài khoản và mật khẩu không chính xác!';
         }
-        this.authService.getUser(data).then((x) => {
+        this.authService.getUser(data).then((dataToken) => {
           console.log('this.authService.getUser');
-          console.log(data);
+          console.log(dataToken);
 
           const user = new UserModel();
-          user.customer = x;
-          user.id_token = data;
+          user.customer = customer;
+          user.id_token = dataToken;
+          user.customer.status_account = 1 // chua ho tro reset mk
+          user.customer.role = new Role(1, "customer")
           console.log('user.customer?.status_account');
-          console.log(user.customer?.role?.roleId);
+          console.log(user.customer?.role?._roleId);
           if (
             user.customer?.status_account == 1 &&
-            user.customer?.role?.roleId == 1
+            user.customer?.role?._roleId == 1
           ) {
             this.router.navigate(['/home']).then(() => {
               localStorage['resetPassCustomer'] = null;
@@ -155,7 +158,7 @@ export class UserController {
             });
           } else if (
             user.customer?.status_account == 0 &&
-            user.customer?.role?.roleId == 1
+            user.customer?.role?._roleId == 1
           ) {
             const navigationExtras: NavigationExtras = {
               state: {
@@ -168,7 +171,7 @@ export class UserController {
               JSON.stringify(user.customer)
             );
             this.router.navigate(['/resetpassword'], navigationExtras);
-          } else if (user.customer?.role?.roleId != 1) {
+          } else if (user.customer?.role?._roleId != 1) {
             this.notifier.notify(
               'error',
               'Tài khoản không được phép đăng nhập vào hệ thống!'

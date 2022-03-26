@@ -7,6 +7,7 @@ import { FullProductListComponent } from './view/full-product-list/full-product-
 import { ErrorPageComponent } from './view/error-page/error-page.component';
 import { ProductListComponent } from './view/_components/product-list/product-list.component';
 import { CheckoutComponent } from './view/checkout/checkout.component';
+import { HistoryComponent } from './view/history/history.component';
 
 const routes: Routes = [
   //Wild Card Route for 404 request
@@ -31,6 +32,11 @@ const routes: Routes = [
     path: 'checkout',
     pathMatch: 'full',
     component: CheckoutComponent
+  },
+  {
+    path: 'history',
+    pathMatch: 'full',
+    component: HistoryComponent
   },
   {
     path: 'cart',

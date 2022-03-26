@@ -2,9 +2,9 @@ import { OrderHeader } from "./Order";
 
 
 export class OrderHistory {
-    feedbackId ?: any;
-    grade ?: any;
-    feedbackContent ?: any;
-    orderHeader = new OrderHeader();
+    _feedbackId ?: any;
+    _grade ?: any;
+    _feedbackContent ?: any;
+    _orderHeader = new OrderHeader();
   }
   

@@ -26,6 +26,7 @@ import {MatDialogModule} from '@angular/material/dialog';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
+import { HistoryComponent } from './view/history/history.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -79,7 +80,8 @@ const customNotifierOptions: NotifierOptions = {
     FullProductListComponent,
     ErrorPageComponent,
     CheckoutComponent,
-    AlertDialogCheckoutComponent
+    AlertDialogCheckoutComponent,
+    HistoryComponent
   ],
   imports: [
     BrowserModule,

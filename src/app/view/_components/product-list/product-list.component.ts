@@ -3,7 +3,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { DiscountProduct } from 'src/app/model/DiscountProduct';
-import { OrderDetail } from 'src/app/model/OrderDetail';
 import { AuthService } from 'src/app/db/auth.service';
 import { DiscountProductService } from 'src/app/db/DiscountProductService';
 import { FavoriteProductService } from 'src/app/db/FavoriteProductService';
@@ -86,14 +85,14 @@ export class ProductListComponent extends CartController implements OnInit {
 
   timeout = 10000
   async reloadListProductSearched() {
-    console.log(this.timeout);
+    // console.log(this.timeout);
     while (this.timeout > 0) {
       console.log(this.timeout);
       this.listProductSearched = JSON.parse(localStorage['loadedListProductSearched']);
-      console.log(this.listProductSearched);
-      console.log(this.productController.listProductSearched);
+      // console.log(this.listProductSearched);
+      // console.log(this.productController.listProductSearched);
       
-      await this.wait(10);
+      await this.wait(100);
       if (!this.arraysAreEqual(this.productController.listProductSearched, this.listProductSearched)){
         this.productController.listProductSearched = this.listProductSearched;
         console.log(this.productController.listProductSearched != this.listProductSearched);
@@ -101,7 +100,7 @@ export class ProductListComponent extends CartController implements OnInit {
         this.productController.listPages(this.productController.listProductSearched)
         // console.log(this.timeout);
         
-        this.timeout = 10000
+        this.timeout = 1000
       }else {
         this.timeout = this.timeout - 1
       }
