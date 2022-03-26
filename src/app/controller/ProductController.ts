@@ -13,21 +13,23 @@ export class ProductController {
   listProductSearched: DiscountProduct[] = [];
   listProduct: DiscountProduct[] = [];
   listProductCore: any = [];
-  listCategory: Category[] = [];
   listProductFavorite: DiscountProduct[] = [];
   listCart: OrderDetail[] = [];
+  
   skip = 0;
   pageSize = 8;
   listPage: number[] = [];
-  txtSearch: any;
-  formGroup = new FormGroup({ search: new FormControl() });
   selectedFavoriteIndex = -1;
 
   public isLoading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     true
   );
 
+  
   /**
+   * Product controller that fetch a list of Product through DiscountProductService, 
+   * and handle checking favorite products in list / add, remove favorite products
+   * 
    * This section declare services
    *
    * @param productService
@@ -64,18 +66,18 @@ export class ProductController {
   }
   /**
    * On page change, show list of products according to page number
+   * 
    * @param  {any} index
    */
   pageChange(index: any) {
     this.skip = index * this.pageSize;
   }
   /**
-   * Add pages to product page
+   * Load table list number according to number of product shown per page and number of products
    */
   listPages(listProductSearched: DiscountProduct[]) {
     let i = 0;
     let add = 0;
-    console.log(listProductSearched);
     
     this.listPage = [];
     for (i; i < listProductSearched.length; i++) {
@@ -86,8 +88,9 @@ export class ProductController {
     }
   }
 
-  //remove product with status = 0
   /**
+   * remove product with status = 0
+   * 
    * @param  {DiscountProduct[]} listProduct
    */
   removeUnwantedProductFromList(listProduct: DiscountProduct[]) {
@@ -99,10 +102,11 @@ export class ProductController {
     return listProduct;
   }
   /**
-   * Load product data
+   * Load product data from API through DiscountProductService
    */
   async loadData() {
     let data: DiscountProduct[] = await this.productService.getAllProduct();
+    console.log(data);
     this.listProductCore = data
     this.listProduct = data
     this.listProductSearched = data
@@ -113,8 +117,9 @@ export class ProductController {
     this.isLoading.next(true)
     this.listPages(this.listProductSearched)
     console.log(data)
-    return await new Promise(resolve =>{resolve(data)})
+    return this.listProductSearched
   }
+
   /**
    * update favorite product list to session
    */
@@ -143,18 +148,17 @@ export class ProductController {
   }
   /**
    * Check if the product is favorited if user hover over a product
+   * 
    * @param  {any} product
    */
   checkFavorite(product: any) {
-    // console.table(this.listProduct);
-
     let listProductFavorite: DiscountProduct[] = [];
 
     this.favoriteProductService
       .getFavoriteProduct(this.authService.userModel.customer?.customerId)
       .then((data) => {
-        console.log('getFavoriteProduct');
-        console.log(data);
+        // console.log('getFavoriteProduct');
+        // console.log(data);
 
         listProductFavorite = data;
         this.isLoading.next(true);
@@ -166,13 +170,14 @@ export class ProductController {
             return;
           }
         }
-        console.log('listProductFavorite: product chua ton tai');
+        // console.log('listProductFavorite: product chua ton tai');
         this.selectedFavoriteIndex = -1;
       });
   }
 
   /**
    * Add product to customer favorite list
+   * 
    * @param  {any} product
    */
   addFavorite(product: any) {
@@ -211,7 +216,7 @@ export class ProductController {
           return;
         } else {
           console.log('listProductFavorite: product chua ton tai');
-          //add mon an vao list favorite
+          //add product vao list favorite
           this.favoriteProductService
             .addFavoriteProduct(
               this.authService.userModel.customer?.customerId,

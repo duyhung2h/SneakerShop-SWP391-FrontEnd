@@ -15,9 +15,9 @@
             ">
                 <!-- .slice(this.productController.skip,skip+pageSize) .slice(this.productController.skip,skip+pageSize) -->
                 <div class="product__item">
-                    <div (mouseenter)="productController.checkFavorite(item)" class="product__item__pic set-bg" style="background-image: url('{{item._product?._image}}');">
+                    <div (mouseenter)="productController.checkFavorite(item)" class="product__item__pic set-bg" style="background-image: url('{{environment.apiUrl}}uploads/{{item._product?._image}}');">
                         <div class="product__detail__view" (click)="productController.viewDetail(item)"></div>
-                        <div class="product__discount__percent" *ngIf="item._voucher ? (item._voucher._discountPct ? true : false): ''">{{item._voucher ? ("-" + item._voucher._discountPct + "%" ): ""}}</div>
+                        <div class="product__discount__percent" *ngIf="(item._voucher?._discountPct > 0) ? (item._voucher?._discountPct ? true : false): ''">{{(item._voucher?._discountPct > 0) ? ("-" + item._voucher?._discountPct + "%" ): ""}}</div>
 
                         <ul *ngIf="productController.authService.userModel != null" class="product__item__pic__hover">
                             <li><a (click)="productController.addFavorite(item)" [ngClass]="{
@@ -29,18 +29,17 @@
                             <li *ngIf="item._product?._status != 2"><a (click)="addCart(item)"><i class="fa fa-shopping-cart"></i></a>
                             </li>
                         </ul>
-                        <ul *ngIf="productController.authService.userModel == null" class="product__item__pic__hover product__order__guest__notification__menu">
+                        <div *ngIf="productController.authService.userModel == null" class="product__item__pic__hover product__order__guest__notification__menu">
                             <div class="col-lg-12 ybwc-desc">Để đặt hàng, trước tiên bạn cần đăng nhập.</div>
-                        </ul>
+                        </div>
                     </div>
                     <div class="featured__item__text product__discount__item__text">
                         <h6><a [routerLink]="['/detail']" (click)="productController.viewDetail(item)">{{item._product ? item._product._name : ""}}</a></h6>
                         <h5 class="product__item__price">{{item._product ? textController.getPrice(priceAfterDiscount(item)) : ""}}đ
-                            <span *ngIf="item._voucher ? true : false">{{item._product ? textController.getPrice(item._product._price) : ""}}đ</span>
+                            <span *ngIf="(item._voucher?._discountPct > 0) ? true : false">{{item._product ? textController.getPrice(item._product._price) : ""}}đ</span>
                         </h5>
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="product__pagination" *ngIf="productController.listPage.length == 1 ? false : true">

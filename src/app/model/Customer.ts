@@ -2,14 +2,14 @@ import { Role } from "./Role";
 
 export class Customer {
   customerId ?: any;
-  username?: any;
+  userName?: any;
   password?: any;
   role?: Role;
-  name?: any;
+  customerName?: any;
   gender?: any;
   age?: any;
   email?: any;
-  phone?: any;
+  customerPhone?: any;
   address1?: any;
   address2?: any;
   status?: any;

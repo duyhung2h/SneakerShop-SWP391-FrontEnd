@@ -20,7 +20,13 @@ import { CartlistComponent } from './view/cartlist/cartlist.component';
 import { OrdereditemlistComponent } from './view/_components/ordereditemlist/ordereditemlist.component';
 import { FullProductListComponent } from './view/full-product-list/full-product-list.component';
 import { ErrorPageComponent } from './view/error-page/error-page.component';
-
+import { CheckoutComponent } from './view/checkout/checkout.component';
+import { AlertDialogCheckoutComponent } from './view/checkout/alert-dialog-checkout/alert-dialog-checkout.component';
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatInputModule} from '@angular/material/input';
+import { HistoryComponent } from './view/history/history.component';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -72,7 +78,10 @@ const customNotifierOptions: NotifierOptions = {
     CartlistComponent,
     OrdereditemlistComponent,
     FullProductListComponent,
-    ErrorPageComponent
+    ErrorPageComponent,
+    CheckoutComponent,
+    AlertDialogCheckoutComponent,
+    HistoryComponent
   ],
   imports: [
     BrowserModule,
@@ -90,6 +99,10 @@ const customNotifierOptions: NotifierOptions = {
     NotifierModule.withConfig(customNotifierOptions),
 
     BrowserAnimationsModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    MatInputModule,
   ],
   providers: [
     FullProductListComponent

@@ -13,6 +13,6 @@ import { Router } from '@angular/router';
 export class AppComponent {
   title = 'SneakerShop-frontend';
   constructor(private router: Router){
-    this.router.routeReuseStrategy.shouldReuseRoute = () => true;
+    // this.router.routeReuseStrategy.shouldReuseRoute = () => true;
   }
 }

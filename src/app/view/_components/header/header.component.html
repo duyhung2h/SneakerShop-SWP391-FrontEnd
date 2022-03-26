@@ -10,7 +10,7 @@
         <a href="#"><img src="img/logo2.png" alt=""></a>
     </div>
     <div class="humberger__menu__cart">
-        <ul *ngIf="userModel?.customer?.role?.roleId == 1">
+        <ul *ngIf="userModel?.customer?.role?._roleId == 1">
             <li>
                 <a title="Món ăn yêu thích" [routerLink]="['/favorite']">
                     <i class="fa fa-heart tooltipHeader">
@@ -60,8 +60,10 @@
                 <ul class="header__ul ">
                     <li [routerLinkActive]=" 'active' "><a href="# " [routerLink]="['/home'] ">Trang Chủ</a></li>
                     <li [routerLinkActive]=" 'active' "><a href="# " [routerLink]="['/product-list'] ">Sản Phẩm</a></li>
-                    <li [routerLinkActive]=" 'active' " *ngIf="userModel?.customer?.role?.roleId==1"><a href="# " [routerLink]="['/history'] ">Lịch sử</a></li>
-                    <li [routerLinkActive]=" 'active' "><a href="# " (click)="_testCreateLogInAccount()">_testCreateLogInAcc</a></li>
+                    <li [routerLinkActive]=" 'active' " *ngIf="userModel?.customer?.role?._roleId==1"><a href="# "
+                            [routerLink]="['/history'] ">Lịch sử</a></li>
+                    <li [routerLinkActive]=" 'active' "><a href="# "
+                            (click)="_testCreateLogInAccount()">_testCreateLogInAcc</a></li>
                 </ul>
             </nav>
         </div>
@@ -80,33 +82,35 @@
                 <nav class="header__menu ">
                     <ul class="header__ul ">
                         <li [routerLinkActive]=" 'active' "><a href="#" [routerLink]="['/home'] ">Trang Chủ</a></li>
-                        <li [routerLinkActive]=" 'active' "><a href="#" [routerLink]="['/product-list'] ">Sản Phẩm</a></li>
-                        <li [routerLinkActive]=" 'active' " *ngIf="userModel?.customer?.role?.roleId==1 "><a [routerLink]="[ '/history'] ">Lịch sử</a></li>
+                        <li [routerLinkActive]=" 'active' "><a href="#" [routerLink]="['/product-list'] ">Sản Phẩm</a>
+                        </li>
+                        <li [routerLinkActive]=" 'active' " *ngIf="userModel?.customer?.role?._roleId==1 "><a
+                                [routerLink]="[ '/history'] ">Lịch sử</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
         <div class="">
             <div class="header__cart position-absolute d-block float-right w-auto">
-                <ul class="header__ul " *ngIf="userModel?.customer?.role?.roleId==1 ">
+                <ul class="header__ul " *ngIf="userModel?.customer?.role?._roleId==1 ">
                     <li>
                         <a href="# " [routerLink]="['/favorite'] ">
                             <i class="fa fa-heart tooltipHeader ">
-                                    <span class="tooltiptext ">Menu ưa thích</span>
-                                </i>
+                                <span class="tooltiptext ">Menu ưa thích</span>
+                            </i>
                             <span>{{checkFavoriteAmount()}}</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="ml-3">
                         <a [routerLink]="['/cart'] ">
                             <i class="fa fa-shopping-bag tooltipHeader ">
-                                    <span class="tooltiptext ">Giỏ hàng của bạn</span>
-                                </i>
+                                <span class="tooltiptext ">Giỏ hàng của bạn</span>
+                            </i>
                             <span>{{checkCartAmount()}}</span>
                         </a>
                     </li>
 
-                    <li>
+                    <li class="ml-3">
                         <div class="header__item__dropdown ">
                             <i class="fa fa-user "></i>
                             <ul class="header__menu__dropdown dropdown_left ">
@@ -119,12 +123,73 @@
                 <ul class="header__ul " *ngIf="userModel==null">
                     <li class="cursor-auto">
                         <div class="header__item__dropdown  cursor-pointer">
-                            <i [routerLink]="['/login']" class="fa fa-user mr-3 line-separator-header">
-                                    <span class="footer-ybwc-desc"> Đăng Nhập</span>
-                                </i>
+                            <i class="fa fa-user mr-3 line-separator-header">
+                                <span class="footer-ybwc-desc"> Đăng Nhập</span>
+                                <ul class="header__menu__dropdown dropdown_right">
+                                    <form novalidate (ngSubmit)="onSubmit()" [formGroup]="rfContact">
+                                        <mat-form-field class="background__transparent width-100">
+                                            <li>
+                                                <div for="formUsername" class="footer-ybwc-desc float-left">Tên Tài
+                                                    Khoản</div>
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text"><i class="fa fa-user" aria-hidden="true"></i></div>
+                                                    </div>
+                                                    <input autocomplete="off" matInput type="text"
+                                                        formControlName="formUsername"
+                                                        class="mat-input-element form-control" id="formUsername"
+                                                        name="formUsername" placeholder="Nhập tên tài khoản..."
+                                                        required />
+                                                </div>
+                                            </li>
+                                        </mat-form-field>
+                                        <br>
+                                        <mat-form-field class="background__transparent width-100">
+                                            <li>
+                                                <div for="formUsername" class="footer-ybwc-desc float-left">Mật Khẩu
+                                                </div>
+                                                <div class="input-group mb-2">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text"><i class="fa fa-lock" aria-hidden="true"></i></div>
+                                                    </div>
+                                                    <input autocomplete="new-password" matInput
+                                                        [type]="passwordHidden ? 'password' : 'text'"
+                                                        formControlName="formPassword"
+                                                        class="mat-input-element form-control" id="formPassword"
+                                                        name="formPassword" placeholder="Nhập mật khẩu..." required />
+                                                    <div class="input-group-text right">
+                                                        <i class="fa" [ngClass]="{
+                                                              'fa-eye-slash': passwordHidden,
+                                                              'fa-eye': !passwordHidden
+                                                            }" (click)="togglePassword()"></i>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </mat-form-field>
+                                        <div class="width-100 overflow-hidden">
+                                            <input (change)="checkRememberMeTicked($event)" #rememberMeCheckbox
+                                                type="checkbox" id="rememberMeCheckbox" name="rememberMeCheckbox"
+                                                [checked]="rememberMeTicked" class="form-check-input">
+                                            <label for="rememberMeCheckbox" class="footer-ybwc-desc width-100">Lưu thông
+                                                tin đăng nhập</label>
+                                        </div>
+                                        <br>
+                                        <div class="width-100">
+                                            <button class=" btn btn-success background-secondarycolor width-100">
+                                                <div class="login-button bold overflow-hidden"> Đăng nhập</div>
+                                                <input type="submit" value="submit" style="display: none !important;">
+                                            </button>
+                                            <div class="">
+                                                <style></style>
+                                                <a routerLink="/forgotpassword" class="ybwc-link">Quên mật khẩu?</a>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </ul>
+                            </i>
                             <i [routerLink]="['/register']" class="fa ">
-                                    <span class="footer-ybwc-desc"> Đăng Ký</span>
-                                </i>
+                                <span class="footer-ybwc-desc"> Đăng Ký</span>
+                            </i>
                         </div>
                     </li>
                 </ul>

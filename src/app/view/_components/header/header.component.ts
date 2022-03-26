@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
+import { UserController } from 'src/app/controller/UserController';
 import { AuthService } from 'src/app/db/auth.service';
 import { FavoriteProductService } from 'src/app/db/FavoriteProductService';
 import { Customer } from 'src/app/model/Customer';
@@ -14,17 +16,20 @@ declare var $: any;
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent extends UserController implements OnInit {
   indexPage = 0;
   userModel: UserModel;
 
   listProductFavorite: DiscountProduct[] = [];
 
   constructor(
-    private authService: AuthService,
+    authService: AuthService,
+    notifier: NotifierService,
+    router: Router,
     private favoriteProductService: FavoriteProductService,
-    private router: Router,
   ) {
+    super(authService, notifier, router)
+    this.rememberMeCheckbox = new ElementRef(this)
     //lay user
     try {
       this.userModel = this.authService.currentUserValue;
@@ -50,14 +55,19 @@ export class HeaderComponent implements OnInit {
   }
   _testCreateLogInAccount() {
     this.userModel = new UserModel();
+    this.userModel.id_token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJUUkFOIEhPQU5HIEhVWSIsInN1YiI6MiwiaWF0IjoxNjQ3NzMyMjMzMjQ4LCJleHAiOjE2NTk2MzU4ODE5MTh9.hvZCLAiejewSZZWr5U1RnimAwJkQQHlgh2DPIYzigzg";
     this.userModel.customer = new Customer();
-    this.userModel.customer.role = new Role();
+    this.userModel.customer.role = new Role(1, "customer");
     this.userModel.customer.customerId = 1;
-    this.userModel.customer.role.roleId = 1;
+    this.userModel.customer.role._roleId = 1;
+    this.userModel.customer.customerName = "Nguyễn Duy Hưng";
+    this.userModel.customer.address1 = "101A";
+    this.userModel.customer.customerPhone = "0961578499";
 
     localStorage['currentUser'] = JSON.stringify(this.userModel);
     console.log(JSON.stringify(this.userModel));
   }
+  
 
   checkCartAmount() {
     //lay cart trong localStorage
@@ -104,9 +114,5 @@ export class HeaderComponent implements OnInit {
     );
     $('.humberger__menu__overlay').removeClass('active');
     $('body').removeClass('over_hid');
-  }
-
-  logout() {
-    this.authService.logout();
   }
 }
