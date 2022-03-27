@@ -5,7 +5,7 @@
                 <div class="hero__search__form width-100">
                     <form [formGroup]="formGroup">
                         <input maxlength="200" type="text" placeholder="Nhập tên sản phẩm..." [formControlName]="'search'" [(ngModel)]="txtSearch" (change)="refreshProductList()">
-                        <button type="submit" class="btn right site-btn btn-success" (click)="refreshProductList()">Tìm kiếm</button>
+                        <button type="submit" class="btn right site-btn primary-btn" (click)="refreshProductList()">Tìm kiếm</button>
                     </form>
                 </div>
                 <div class="pt-4 width-100">

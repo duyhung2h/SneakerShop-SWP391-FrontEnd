@@ -151,9 +151,9 @@ ol {
     font-weight: 700;
     background: $primary-color;
     letter-spacing: 2px;
-    background-color: rgb(127, 173, 57);
+    background-color: $primary-color;
     &:hover {
-        background-color: rgb(104, 139, 50);
+        background-color: $darker-primary-color;
     }
 }
 
@@ -2191,7 +2191,7 @@ ol {
 }
 
 .background-secondarycolor {
-    background: rgb(127, 173, 57);
+    background: $seconday-color;
 }
 
 .background-errorcolor {
@@ -2305,9 +2305,9 @@ span.mat-radio-outer-circle {
 }
 
 .btn-success {
-    background-color: $primary-color !important;
+    background-color: $green-color !important;
     &:hover {
-        background-color: $darker-primary-color !important;
+        background-color: $darker-green-color !important;
     }
 }
 
