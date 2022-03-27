@@ -64,3 +64,7 @@ sans-serif;
     -o-transition: width, .2s cubic-bezier(0.29, 0.18, 0.26, 0.83);
     transition: width .2s cubic-bezier(0.29, 0.18, 0.26, 0.83);
 }
+
+.text__color-white{
+    color: $white-color;
+}
