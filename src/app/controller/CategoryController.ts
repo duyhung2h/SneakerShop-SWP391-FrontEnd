@@ -244,26 +244,30 @@ export class CategoryController extends ProductController {
    *
    * @returns loaded product list
    */
-  async getSearchedProducts() {
-    return await new Promise((resolve) => {
-      function checkLoaded(
-        IsLoaded: any,
-        listProductReturn: DiscountProduct[]
-      ) {
-        window.setTimeout(checkLoaded, 10000);
-        if (IsLoaded == true) {
-          resolve(listProductReturn);
-        } else {
-          window.setTimeout(checkLoaded, 1000);
-        }
-      }
-      console.log(this.selectedSortValue);
-      checkLoaded(
-        this.listProductSearchedIsLoaded,
-        JSON.parse(localStorage['loadedListProductSearched'])
-      );
-    });
-  }
+  // async getSearchedProducts() {
+  //   return await new Promise((resolve) => {
+  //     function checkLoaded(
+  //       IsLoaded: any,
+  //       listProductReturn: DiscountProduct[]
+  //     ) {
+  //       // console.log(253);
+        
+  //       window.setTimeout(checkLoaded, 10000);
+  //       if (IsLoaded == true) {
+  //         resolve(listProductReturn);
+  //       } else {
+  //         window.setTimeout(checkLoaded, 1000);
+  //       }
+  //     }
+  //     // console.log(this.selectedSortValue);
+  //     let loadedListProductSearched = JSON.parse(localStorage['loadedListProductSearched'])
+  //     let listProductSearchedIsLoaded = this.listProductSearchedIsLoaded
+  //     checkLoaded(
+  //       listProductSearchedIsLoaded,
+  //       loadedListProductSearched
+  //     );
+  //   });
+  // }
   /**
    * Search item by text
    */
@@ -301,13 +305,13 @@ export class CategoryController extends ProductController {
    */
   searchByCategory(index: any) {
     this.searchCategory(index).then(() => {
-      this.listPages(this.listProductSearched);
+      // this.listPages(this.listProductSearched);
       this.refreshProductList();
     });
   }
 
   /**
-   * Search item by category
+   * Search item by category by choosing an item from category dropdownlist
    *
    * @param index
    */
@@ -316,17 +320,18 @@ export class CategoryController extends ProductController {
     if (index == -1) {
       index = 0;
     }
-    console.log(index);
-    console.log(this.listCategory[index]);
+    // console.log(index);
+    // console.log(this.listCategory[index]);
     this.selectedCategoryIndex = index;
-    // this.paramCategoryId = this.listCategory[index]._categoryId;
-    // console.log(this.paramCategoryId);
-    console.log(this.listProduct);
+    this.paramCategoryId = this.listCategory[index]._categoryId;
+    // console.log(this.listProduct);
 
     this.skip = 0;
     if (this.listCategory[index]._categoryId == -1) {
       this.listProductSearched = this.listProduct;
     } else {
+      // console.log(this.listProduct);
+      
       this.listProductSearched = this.listProduct.filter(
         (value) =>
           this.textController.comparionCategory(

@@ -232,38 +232,4 @@ export class OrderController {
     ],
   };
 
-  getPrice(price: any) {
-    return Number(Math.round(price)).toLocaleString();
-  }
-  getPriceProduct(item: any) {
-    try {    
-      // console.log(item._voucher);
-      
-      if (item._voucher?._discountPct > 0) {        
-        let priceAfterDiscount: any = Math.floor(
-          item?._product?._price -
-            (item?._product?._price * item._voucher?._discountPct) / 100
-        );
-        if (typeof priceAfterDiscount != "number") {
-          var errorIn: Error = new Error('Giá / Voucher không hợp lệ!');
-          throw errorIn;
-        }
-        return priceAfterDiscount;
-      } else {
-        return item?._product?._price;
-      }
-    } catch (errorIn) {
-      // this.notifier.notify('error', ''+errorIn)
-      // console.log(errorIn);
-      return item?._product?._price;
-    }
-  }
-  limitNameLength(name: string, lengthLimit: number) {
-    if (name.length > lengthLimit) {
-      name = name.substring(0, lengthLimit);
-      return name + '...';
-    } else {
-      return name;
-    }
-  }
 }

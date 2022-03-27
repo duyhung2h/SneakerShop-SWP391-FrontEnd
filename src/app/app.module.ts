@@ -27,6 +27,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
 import { HistoryComponent } from './view/history/history.component';
+import { TextController } from './controller/TextController';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -105,7 +106,8 @@ const customNotifierOptions: NotifierOptions = {
     MatInputModule,
   ],
   providers: [
-    FullProductListComponent
+    FullProductListComponent,
+    TextController
   ],
   bootstrap: [AppComponent]
 })

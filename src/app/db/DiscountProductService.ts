@@ -101,11 +101,16 @@ export class DiscountProductService {
         console.log('getAllProduct', coreData.data.items);
         //add to top
         coreData.data.items.forEach((item: any) => {
-          let productCategory = new Category(
-            item.CategoryId
-            // item.category.CategoryName,
-            // item.category.CategoryDescription
-          );
+          let productCategory = new Category()
+          try {
+            productCategory = new Category(
+              item.category.CategoryId,
+              item.category.CategoryName,
+              item.category.CategoryDescription
+            );
+          } catch {
+            console.log(item.ProductId);
+          }
           let productAttributes: Attribute[] = [];
           item.attributes.forEach((itemAttribute: any) => {
             let attribute = new Attribute(
@@ -127,16 +132,14 @@ export class DiscountProductService {
             productAttributes
           );
           try {
-            var voucher = new Voucher()
-          voucher._voucherId = item.voucher.VoucherId
-          voucher._discountPct = item.voucher.Discount_percentage
-          voucher._quantity = item.voucher.Quantity
+            var voucher = new Voucher();
+            voucher._voucherId = item.voucher.VoucherId;
+            voucher._discountPct = item.voucher.Discount_percentage;
+            voucher._quantity = item.voucher.Quantity;
           } catch {
             var voucher = new Voucher();
             console.log('%c item.voucher error!', 'color:red;');
             console.log(item.ProductId);
-            
-            
           }
           let discountProduct = new DiscountProduct(
             item.ProductId,

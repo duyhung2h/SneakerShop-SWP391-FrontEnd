@@ -95,13 +95,13 @@
                             <div class="checkout__order__products">Sản phẩm <span>Tổng</span></div>
                             <ul>
                                 <li *ngFor="let item of listCart" class="overflow-hidden row">
-                                    <span class="col-lg-8 checkout-left">{{limitNameLength(item._discountProduct?._product?._name, 20)}}</span>
-                                    <span class="col-lg-4 checkout-right float-right text-right">{{ getPrice( (getPriceProduct(item._discountProduct)) * item?._orderQuantity) }}đ</span>
+                                    <span class="col-lg-8 checkout-left">{{textController.limitNameLength(item._discountProduct?._product?._name, 20)}}</span>
+                                    <span class="col-lg-4 checkout-right float-right text-right">{{ textController.getPrice( (textController.getPriceProduct(item._discountProduct)) * item?._orderQuantity) }}đ</span>
                                 </li>
                             </ul>
                             <!-- <div class="checkout__order__subtotal"></div> -->
                             <div class="line-separator"></div>
-                            <div class="checkout__order__total">Tổng Tiền <span>{{getPrice(totalDue)}}đ</span></div>
+                            <div class="checkout__order__total">Tổng Tiền <span>{{textController.getPrice(totalDue)}}đ</span></div>
                             <div class="checkout__input__checkbox">
                             </div>
                             <button type="submit" class="site-btn btn btn-success">Đặt hàng</button>

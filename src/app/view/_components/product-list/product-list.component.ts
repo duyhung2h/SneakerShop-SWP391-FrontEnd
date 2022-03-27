@@ -63,15 +63,9 @@ export class ProductListComponent extends CartController implements OnInit {
         'Lỗi hiển thị list sản phẩm tìm kiếm constructor!'
       );
     }
-    // this.listCart = JSON.parse(localStorage['listCart'])
   }
   async loadSearchedData(parentComponent?: FullProductListComponent) {
     try {
-      this.productController.listProductSearched =
-        await parentComponent?.fetchSearchedList();
-      this.productController.listPages(
-        this.productController.listProductSearched
-      );
       console.log(this.productController.listProductSearched);
     } catch (error) {
       this.notifier.notify('error', 'Lỗi hiển thị list sản phẩm tìm kiếm!');
@@ -87,7 +81,8 @@ export class ProductListComponent extends CartController implements OnInit {
   async reloadListProductSearched() {
     // console.log(this.timeout);
     while (this.timeout > 0) {
-      console.log(this.timeout);
+      // console.log(this.timeout);
+      
       this.listProductSearched = JSON.parse(localStorage['loadedListProductSearched']);
       // console.log(this.listProductSearched);
       // console.log(this.productController.listProductSearched);
