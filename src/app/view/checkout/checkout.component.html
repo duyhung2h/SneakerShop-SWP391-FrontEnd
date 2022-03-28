@@ -8,11 +8,11 @@
             <h4>Thông tin hóa đơn</h4>
             <form novalidate (ngSubmit)="onSubmit()" [formGroup]="rfContact">
                 <div class="row">
-                    <div class="col-lg-7 col-md-6  pr-5">
+                    <div class="col-lg-7 col-md-6">
                         <!-- fullname -->
                         <div>
                             <mat-form-field class="width-100">
-                                <div class="checkout__input">
+                                <div class="checkout__input margin-2remw">
                                     <p>Tên người nhận<span>*</span></p>
                                     <input maxlength="50" matInput type="text" name="formFullname" formControlName="formFullname" [(ngModel)]="customerName" required>
                                 </div>
@@ -28,7 +28,7 @@
                         <!-- address -->
                         <div>
                             <mat-form-field class="width-100">
-                                <div class="checkout__input">
+                                <div class="checkout__input margin-2remw">
                                     <p>Địa chỉ<span>*</span></p>
                                     <input matInput type="text" name="formAddress1" formControlName="formAddress1" [(ngModel)]="address" required />
 
@@ -41,7 +41,7 @@
 
 
 
-                                    <!-- <div class="ng-autocomplete checkout__input ">
+                                    <!-- <div class="ng-autocomplete checkout__input margin-2remw ">
                                         <ng-autocomplete class="mat-input-element" formControlName="formAddress1" [data]="addressOptions" searchKeyword="keyword" placeholder="Nhập địa chỉ..." (selected)='onChangeSearch()' (inputChanged)='onChangeSearch()' historyIdentifier="addressOptions"
                                             [itemTemplate]="itemTemplate" [notFoundTemplate]="notFoundTemplate">
                                         </ng-autocomplete>
@@ -69,7 +69,7 @@
                         <!-- phone  -->
                         <div>
                             <mat-form-field class="width-100">
-                                <div class="checkout__input">
+                                <div class="checkout__input margin-2remw">
                                     <p>Số điện thoại<span>*</span></p>
                                     <input matInput type="phone" name="formPhone" formControlName="formPhone" [(ngModel)]="customerPhone" required>
                                 </div>
@@ -82,11 +82,6 @@
                                 </div>
                             </mat-form-field>
                         </div>
-
-                        <!-- <div class="checkout__input width-100">
-                            <p>Ghi chú</p>
-                            <input maxlength="500" type="text" value="" #formNote>
-                        </div> -->
                     </div>
 
                     <div class="col-lg-5 col-md-6">
@@ -95,16 +90,14 @@
                             <div class="checkout__order__products">Sản phẩm <span>Tổng</span></div>
                             <ul>
                                 <li *ngFor="let item of listCart" class="overflow-hidden row">
-                                    <span class="col-lg-8 checkout-left">{{limitNameLength(item._discountProduct?._product?._name, 20)}}</span>
-                                    <span class="col-lg-4 checkout-right float-right text-right">{{ getPrice( (getPriceProduct(item._discountProduct)) * item?._orderQuantity) }}đ</span>
+                                    <span class="col-lg-8 checkout-left">{{textController.limitNameLength(item._discountProduct?._product?._name, 20)}}</span>
+                                    <span class="col-lg-4 checkout-right float-right text-right">{{ textController.getPrice( (textController.getPriceProduct(item._discountProduct)) * item?._orderQuantity) }}đ</span>
                                 </li>
                             </ul>
                             <!-- <div class="checkout__order__subtotal"></div> -->
                             <div class="line-separator"></div>
-                            <div class="checkout__order__total">Tổng Tiền <span>{{getPrice(totalDue)}}đ</span></div>
-                            <div class="checkout__input__checkbox">
-                            </div>
-                            <button type="submit" class="site-btn btn btn-success">Đặt hàng</button>
+                            <div class="checkout__order__total">Tổng Tiền <span>{{textController.getPrice(totalDue)}}đ</span></div>
+                            <button type="submit" class="site-btn btn primary-btn">Đặt hàng</button>
                         </div>
                     </div>
                 </div>

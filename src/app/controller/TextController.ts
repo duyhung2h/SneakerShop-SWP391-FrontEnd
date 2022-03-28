@@ -42,13 +42,59 @@ export class TextController{
     console.log("%c comparisonName" + txtProduct.indexOf(txtSearch), "color: green;")
     return txtProduct.indexOf(txtSearch) > -1;
   }
-  comparionCategory(listCate: any, txtCategory: any) {
-    return txtCategory.indexOf(listCate) > -1;
+  /**
+   * Filter product list when select a product category item from a drop downlist
+   * 
+   * @param chosenCate 
+   * @param productCate 
+   * @returns 
+   */
+  comparionCategory(chosenCate: any, productCate: any) {
+    // console.log(chosenCate);
+    // console.log(productCate);
+    // console.log(productCate.indexOf(chosenCate) > -1);
+    
+    try {
+      return productCate.indexOf(chosenCate) > -1;
+    } catch (error) {
+      return false
+    }
   }
 
 
 
   getPrice(price: any) {
     return Number(Math.round(price)).toLocaleString();
+  }
+  getPriceProduct(item: any) {
+    try {    
+      // console.log(item._voucher);
+      
+      if (item._voucher?._discountPct > 0) {        
+        let priceAfterDiscount: any = Math.floor(
+          item?._product?._price -
+            (item?._product?._price * item._voucher?._discountPct) / 100
+        );
+        if (typeof priceAfterDiscount != "number") {
+          var errorIn: Error = new Error('Giá / Voucher không hợp lệ!');
+          throw errorIn;
+        }
+        return priceAfterDiscount;
+      } else {
+        return item?._product?._price;
+      }
+    } catch (errorIn) {
+      // this.notifier.notify('error', ''+errorIn)
+      // console.log(errorIn);
+      return item?._product?._price;
+    }
+  }
+  limitNameLength(name: string, lengthLimit: number) {
+    if (name.length > lengthLimit) {
+      name = name.substring(0, lengthLimit);
+      return name + '...';
+    } else {
+      return name;
+    }
   }
 }

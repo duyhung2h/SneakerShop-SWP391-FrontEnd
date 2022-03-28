@@ -1,5 +1,5 @@
 export class Voucher {
-  _voucherId: number;
+  _voucherId: any;
   private _voucherCode: any;
   private _description: any;
   _discountPct: any;

@@ -5,7 +5,7 @@ export class Category {
 
 
 
-  constructor(categoryId?: number, categoryName?: string, categoryDescription?: string) {
+  constructor(categoryId?: any, categoryName?: any, categoryDescription?: any) {
     this._categoryId = categoryId
     this._categoryName = categoryName
     this._categoryDescription = categoryDescription

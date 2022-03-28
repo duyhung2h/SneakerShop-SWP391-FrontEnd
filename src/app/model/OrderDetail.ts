@@ -1,7 +1,5 @@
 import { DiscountProduct } from './DiscountProduct';
 import { DiscountProductService } from '../db/DiscountProductService';
-import { HttpClient } from '@angular/common/http';
-import { NotifierService } from 'angular-notifier';
 import { Voucher } from './Voucher';
 
 export class OrderDetail {

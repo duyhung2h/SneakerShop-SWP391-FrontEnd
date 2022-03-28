@@ -2,7 +2,6 @@ import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { DiscountProduct } from 'src/app/model/DiscountProduct';
 import { OrderDetail } from 'src/app/model/OrderDetail';
-import { Voucher } from '../model/Voucher';
 
 export class CartController {
   listCart: OrderDetail[] = [];

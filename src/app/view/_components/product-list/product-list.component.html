@@ -42,8 +42,13 @@
                 </div>
             </div>
         </div>
+
+        <!-- het hang kekw -->
+        <div class="col-lg-3 col-md-4 col-sm-6" *ngIf="productController.listProductSearched.length == 0"><h4>Không tìm thấy sản phẩm phù hợp.</h4></div>
+        <div class="col-lg-3 col-md-4 col-sm-6" *ngIf="productController.listProductSearched.length == 0"><img src="https://preview.redd.it/w5my8mdk34t61.png?auto=webp&s=005c2ee8cf7acb72c381e8d74464ea0d7ffab7bd" alt=""></div>
+
         <div class="product__pagination" *ngIf="productController.listPage.length == 1 ? false : true">
-            <a *ngFor="let item of productController.listPage" (click)="productController.pageChange(item)" style="{{this.productController.skip/this.productController.pageSize === item ? 'background-color: #3CC032': ''}} ">{{item + 1}}</a>
+            <a *ngFor="let item of productController.listPage" (click)="productController.pageChange(item)" style="{{this.productController.skip/this.productController.pageSize === item ? 'background-color: #ff3863': ''}} ">{{item + 1}}</a>
         </div>
     </div>
 </section>

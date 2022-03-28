@@ -27,6 +27,10 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatInputModule} from '@angular/material/input';
 import { HistoryComponent } from './view/history/history.component';
+import { TextController } from './controller/TextController';
+import { HistorylistComponent } from './view/_components/historylist/historylist.component';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -81,7 +85,8 @@ const customNotifierOptions: NotifierOptions = {
     ErrorPageComponent,
     CheckoutComponent,
     AlertDialogCheckoutComponent,
-    HistoryComponent
+    HistoryComponent,
+    HistorylistComponent
   ],
   imports: [
     BrowserModule,
@@ -94,6 +99,8 @@ const customNotifierOptions: NotifierOptions = {
     MatToolbarModule,
     MatIconModule,
     ReactiveFormsModule,
+    MatPaginatorModule,
+    MatTableModule,
 
 
     NotifierModule.withConfig(customNotifierOptions),
@@ -105,7 +112,10 @@ const customNotifierOptions: NotifierOptions = {
     MatInputModule,
   ],
   providers: [
-    FullProductListComponent
+    FullProductListComponent,
+    TextController,
+    MatPaginator,
+    MatTableDataSource,
   ],
   bootstrap: [AppComponent]
 })

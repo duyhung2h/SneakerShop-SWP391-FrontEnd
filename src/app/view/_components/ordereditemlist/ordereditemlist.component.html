@@ -34,7 +34,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="shoping__cart__promo col-lg-2"> {{getPrice(priceAfterDiscount(item._discountProduct) * item?._orderQuantity) }}đ
+                                <td class="shoping__cart__promo col-lg-2"> {{getPrice(textController.getPriceProduct(item._discountProduct) * item?._orderQuantity) }}đ
                                 </td>
                                 <td class="shoping__cart__item__close col-lg-1">
                                     <span class="icon_close" (click)="remove(item)"></span>
@@ -60,7 +60,7 @@
                         <li><span></span></li>
                         <li>Tổng Tiền <span>{{getPrice(total())}}đ</span></li>
                     </ul>
-                    <button class="primary-btn btn btn-success width-100" (click)="redirectToCheckout()">ĐẶT HÀNG</button>
+                    <button class="primary-btn btn width-100" (click)="redirectToCheckout()">ĐẶT HÀNG</button>
                 </div>
             </div>
         </div>

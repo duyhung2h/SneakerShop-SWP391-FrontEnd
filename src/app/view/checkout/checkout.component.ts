@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { OrderController } from 'src/app/controller/OrderController';
+import { TextController } from 'src/app/controller/TextController';
 import { AuthService } from 'src/app/db/auth.service';
 import { OrderHeaderService } from 'src/app/db/OrderHeaderService';
 
@@ -18,6 +19,7 @@ export class CheckoutComponent extends OrderController implements OnInit {
     router: Router,
     authService: AuthService,
     notifier: NotifierService,
+    public textController: TextController
   ) {
     super(orderHeaderService, dialog, router, authService, notifier);
   }

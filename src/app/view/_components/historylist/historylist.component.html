@@ -1,0 +1,90 @@
+<!-- Shoping Cart Section Begin -->
+<section class="shoping-cart spad ">
+    <div class="container">
+        <div class="row ">
+            <div class="col-lg-2">
+                <select class="hero__search__categories form-control" [ngModel]="selectedSortValue"
+                    (ngModelChange)="onSortCategoryChange($event)">
+                    <option *ngFor="let sort of sortCategory" [value]="sort.id" value="0" selected>{{sort.name}}
+                    </option>
+                </select>
+            </div>
+            <div class="col-lg-5" *ngIf="selectedSortValue == 1">
+                <span class="text-center" style="line-height: 40px; height: 40px;" class="col-lg-1">Ngày:</span>
+                <!-- <mat-form-field class="padding-0 date-picker col-lg-6"> -->
+                <!-- <mat-label>Chọn ngày</mat-label> -->
+                <!-- <input matInput [matDatepicker]="picker" (dateInput)="onInputDateChange($event.value)" (dateChange)="onDatePickerChange($event.value)" format='dd/MM/yyyy'> -->
+                <!-- <input matInput (input)="onInputDateChange()"> -->
+                <!-- <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle> -->
+                <!-- <mat-datepicker touchUi #picker></mat-datepicker> -->
+                <!-- </mat-form-field> -->
+                <input class="date-picker col-lg-5" #dateInput type="date" name="begin" (input)="onInputDateChange()"
+                    format='dd/MM/yyyy'>
+            </div>
+        </div>
+        <div class="shoping__cart__table row mt-5">
+            <table mat-table [dataSource]="listHistoryDataSource">
+                <ng-container matColumnDef="position">
+                    <th mat-header-cell *matHeaderCellDef> STT</th>
+                    <td class="text-left col-lg-1 pr-1" mat-cell *matCellDef="let element; let i = index">
+                        {{listHistoryPaginator.pageIndex == 0 ? i + 1 : 1 + i + listHistoryPaginator.pageIndex *
+                        listHistoryPaginator.pageSize}}</td>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef> Người nhận</th>
+                    <td class="text-left col-lg-2 pr-1" mat-cell *matCellDef="let element">
+                        {{element.orderheaderonl.name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="time">
+                    <th mat-header-cell *matHeaderCellDef> Thời gian</th>
+                    <td class="text-left col-lg-2 pr-1" mat-cell *matCellDef="let element">
+                        {{element.orderheaderonl.orderDate | date: 'hh:mm dd/MM/yyyy' }}</td>
+                </ng-container>
+                <ng-container matColumnDef="address">
+                    <th mat-header-cell *matHeaderCellDef> Địa chỉ</th>
+                    <td class="text-left col-lg-3 pr-1" mat-cell *matCellDef="let element">
+                        {{element.orderheaderonl.shiptoAddress}}</td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef> Trạng thái</th>
+                    <td class="text-left col-lg-2 pr-1" mat-cell *matCellDef="let element">
+                        <span *ngIf="element.orderheaderonl.status == 0">Đã hủy</span>
+                        <span *ngIf="element.orderheaderonl.status == 1">Đang chờ</span>
+                        <span *ngIf="element.orderheaderonl.status == 2">Đã hoàn thành</span>
+                    </td>
+                </ng-container>
+                <ng-container matColumnDef="total">
+                    <th mat-header-cell *matHeaderCellDef> Tổng tiền</th>
+                    <td class="text-left col-lg-1 pr-4" mat-cell *matCellDef="let element">
+                        {{getPrice(element.orderheaderonl.totalDue)}}đ</td>
+                </ng-container>
+                <ng-container matColumnDef="infor">
+                    <th mat-header-cell *matHeaderCellDef> Chi tiết</th>
+                    <td class="text-left col-lg-2" mat-cell *matCellDef="let element">
+                        <button class="btn btn-success" (click)="showConfirmDialog(element)">Xem</button>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            <div class="row col-lg-12 my-4 padding-5" *ngIf="listHistorySearched.length == 0">
+                <div class="col-lg-5 mt-2">
+                    <h3 class="ybwc-title">Không tìm thấy đơn hàng.</h3>
+                </div>
+                <div class="col-lg-6 text-center pt-4">
+                    <div>
+                        <a [routerLink]="['/product-list']" class="ybwc-title primary-btn btn primary-btn">ĐẶT
+                            ĐƠN NGAY</a>
+                    </div>
+
+                </div>
+            </div>
+
+            <mat-paginator (page)="onPaginateChange($event)" #listHistoryPaginator [pageSizeOptions]="[1, 5, 10, 20]"
+                showFirstLastButtons [pageSize]="pageSize">
+            </mat-paginator>
+        </div>
+
+    </div>
+</section>
