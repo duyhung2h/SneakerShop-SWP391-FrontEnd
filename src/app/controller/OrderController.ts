@@ -120,6 +120,8 @@ export class OrderController {
   filterValues(search: string) {
     return this.addressOptions;
   }
+
+  
   total() {
     var totalPrice = 0;
     this.listCart.forEach((item) => {
@@ -164,6 +166,9 @@ export class OrderController {
     }
   }
 
+  /**
+   * This function create a new order / update current order after add item to cart
+   */
   updateOrderHeader() {
     console.log('this.customer');
     console.log(this.customer);
@@ -203,7 +208,7 @@ export class OrderController {
       });
     });
 
-    // localStorage.removeItem('listOrder')************;
+    localStorage.removeItem('listOrder')
 
     //refresh
     const navigationExtras: NavigationExtras = {
@@ -214,10 +219,10 @@ export class OrderController {
     
     // redirect to history page after a successful order
 
-    // setTimeout(
-    //   () => this.router.navigate(['/history'], navigationExtras).then(() => {}),
-    //   2000
-    // );
+    setTimeout(
+      () => this.router.navigate(['/history'], navigationExtras).then(() => {}),
+      2000
+    );
   }
 
   order_validation_messages = {

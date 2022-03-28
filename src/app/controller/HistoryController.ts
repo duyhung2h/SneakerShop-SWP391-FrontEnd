@@ -1,11 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, ElementRef, Injectable,  } from '@angular/core';
+import { ChangeDetectorRef, ElementRef, Injectable } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { AuthService } from '../db/auth.service';
 import { OrderHeaderService } from '../db/OrderHeaderService';
+import { OrderHeader } from '../model/Order';
+import { OrderDetail } from '../model/OrderDetail';
 import { OrderHistory } from '../model/OrderHistory';
 import { UserModel } from '../model/UserModel';
 
@@ -29,7 +31,6 @@ export abstract class HistoryController extends OrderHeaderService {
   listHistorySearched: OrderHistory[] = [];
 
   selectedDate: any = null;
-
 
   constructor(
     http: HttpClient,
@@ -106,30 +107,25 @@ export abstract class HistoryController extends OrderHeaderService {
     });
   }
 
-  
+  /**
+   * Load History list
+   * 
+   * @param listOrderHistory 
+   */
+  async loadHistoryList(listOrderHistory: OrderHistory[]) {
+    // await (listOrderHistory = this.getAllOrderHeader());
 
+    //copied
 
-  async loadHistoryList(orderHistory: OrderHistory[]) {
-    await this.getAllOrderHeader().then((data) => {
-      console.log(data);
-      console.log(data.data.items);
+    console.log('loadHistory');
+    console.log(listOrderHistory);
 
-      
-
-
-      //copied
-
-      orderHistory = data;
-      console.log('loadHistory');
-      console.log(orderHistory);
-
-      orderHistory = orderHistory.sort(function (a, b) {
-        var dateA = new Date(a.orderHeader._orderDate).getTime();
-        var dateB = new Date(b.orderHeader._orderDate).getTime();
-        return dateA < dateB ? 1 : -1;
-      });
-      this.onSortCategoryChange(this.selectedSortValue);
+    listOrderHistory = listOrderHistory.sort(function (a, b) {
+      var dateA = new Date(a.orderHeader._orderDate).getTime();
+      var dateB = new Date(b.orderHeader._orderDate).getTime();
+      return dateA < dateB ? 1 : -1;
     });
+    this.onSortCategoryChange(this.selectedSortValue);
   }
 
   ngAfterContentChecked() {
@@ -161,6 +157,11 @@ export abstract class HistoryController extends OrderHeaderService {
     this.onDatePickerChange(this.selectedDate);
   }
 
+  /**
+   * on changing date filter, update history list
+   * 
+   * @param date 
+   */
   onDatePickerChange(date: any) {
     this.listHistorySearched = [];
     console.log('onDatePickerChange');

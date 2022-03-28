@@ -18,9 +18,9 @@ export class AppComponent {
     console.log(performance.getEntries());
     
     console.log(performance);
-    console.log(localStorage);
-    console.log(JSON.parse(localStorage['loadedListProductSearched']));
-    localStorage['loadedListProductSearched'] = null;
+    // console.log(localStorage);
+    // console.log(JSON.parse(localStorage['loadedListProductSearched']));
+    // localStorage['loadedListProductSearched'] = null;
     
     // this.router.routeReuseStrategy.shouldReuseRoute = () => true;
   }

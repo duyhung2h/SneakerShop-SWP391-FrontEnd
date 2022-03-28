@@ -51,9 +51,4 @@ export class FullProductListComponent
   }
 
   ngOnInit(): void {}
-
-  // async fetchSearchedList() {
-  //   await this.getSearchedProducts();
-  //   return await JSON.parse(localStorage['loadedListProductSearched']);
-  // }
 }

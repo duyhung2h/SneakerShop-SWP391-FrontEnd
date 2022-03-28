@@ -41,13 +41,11 @@ export class CategoryController extends ProductController {
   listCategory: Category[] = [];
 
   textController: TextController = new TextController();
-  
 
-  
   /**
-   * Category controller that fetch a list of Categories through CategoryService, 
+   * Category controller that fetch a list of Categories through CategoryService,
    * and handle product list sorting and searching
-   * 
+   *
    * This section declare services
    *
    * @param activatedRoute
@@ -58,16 +56,20 @@ export class CategoryController extends ProductController {
     private activatedRoute: ActivatedRoute,
     private categoryService: CategoryService,
 
-    
     productService: DiscountProductService,
     authService: AuthService,
     router: Router,
     favoriteProductService: FavoriteProductService,
     notifier: NotifierService
   ) {
-    super(productService, authService, router, favoriteProductService, notifier)
-    this.router.routeReuseStrategy.shouldReuseRoute = () =>
-      false;
+    super(
+      productService,
+      authService,
+      router,
+      favoriteProductService,
+      notifier
+    );
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.activatedRoute.queryParams.subscribe((params) => {
       this.txtSearch =
         params['searchText'] === undefined ? '' : params['searchText'];
@@ -96,14 +98,14 @@ export class CategoryController extends ProductController {
   }
 
   /**
-   * Load product data from ProductController first and then load category data from API through CategoryService 
+   * Load product data from ProductController first and then load category data from API through CategoryService
    */
   async loadAsyncData() {
     this.listProductSearched = await this.loadData();
     console.log(this.listProductSearched);
 
     await this.loadCategory();
-    this.searchByParams();
+    await this.searchByParams();
 
     console.log('begin');
     this.searchBySearchBar();
@@ -112,7 +114,7 @@ export class CategoryController extends ProductController {
   /**
    * search by text
    */
-  searchByParams() {
+  async searchByParams() {
     console.log('this.listCategory');
     console.log(this.listCategory);
     console.log(this.paramCategoryId);
@@ -132,9 +134,9 @@ export class CategoryController extends ProductController {
   }
   /**
    * Get the current selected category name based on selected category index, to be shown in the dropdown list
-   * 
-   * @param categoryIndex 
-   * @returns 
+   *
+   * @param categoryIndex
+   * @returns
    */
   getSelectedCategoryName(categoryIndex: number) {
     console.log(this.listCategory);
@@ -207,8 +209,9 @@ export class CategoryController extends ProductController {
         a._product?._price > b._product?._price ? -1 : 1
       );
     }
+
     // without this, it loop after a reserarch
-    this.refreshProductList(); 
+    this.refreshProductList();
   }
 
   /**
@@ -238,36 +241,6 @@ export class CategoryController extends ProductController {
     this.refreshProductList();
   }
 
-
-  /**
-   * Wait until all products are loaded and filtered, return the list
-   *
-   * @returns loaded product list
-   */
-  // async getSearchedProducts() {
-  //   return await new Promise((resolve) => {
-  //     function checkLoaded(
-  //       IsLoaded: any,
-  //       listProductReturn: DiscountProduct[]
-  //     ) {
-  //       // console.log(253);
-        
-  //       window.setTimeout(checkLoaded, 10000);
-  //       if (IsLoaded == true) {
-  //         resolve(listProductReturn);
-  //       } else {
-  //         window.setTimeout(checkLoaded, 1000);
-  //       }
-  //     }
-  //     // console.log(this.selectedSortValue);
-  //     let loadedListProductSearched = JSON.parse(localStorage['loadedListProductSearched'])
-  //     let listProductSearchedIsLoaded = this.listProductSearchedIsLoaded
-  //     checkLoaded(
-  //       listProductSearchedIsLoaded,
-  //       loadedListProductSearched
-  //     );
-  //   });
-  // }
   /**
    * Search item by text
    */
@@ -276,10 +249,7 @@ export class CategoryController extends ProductController {
     try {
       this.searchByCategory(this.selectedCategoryIndex);
     } catch {
-      this.notifier.notify(
-        'error',
-        'Lỗi hiển thị thể loại2!'
-      );
+      this.notifier.notify('error', 'Lỗi hiển thị thể loại2!');
     }
     try {
       this.searchText();
@@ -294,7 +264,7 @@ export class CategoryController extends ProductController {
       'loadedListProductSearched',
       JSON.stringify(this.listProductSearched)
     );
-    
+
     // this.listProductSearched = this.listProductSearched
     // alert(this.listProductSearched)
   }
@@ -331,13 +301,11 @@ export class CategoryController extends ProductController {
       this.listProductSearched = this.listProduct;
     } else {
       // console.log(this.listProduct);
-      
-      this.listProductSearched = this.listProduct.filter(
-        (value) =>
-          this.textController.comparionCategory(
-            this.listCategory[index]._categoryName,
-            value._product?._category?._categoryName
-          )
+      this.listProductSearched = this.listProduct.filter((value) =>
+        this.textController.comparionCategory(
+          this.listCategory[index]._categoryName,
+          value._product?._category?._categoryName
+        )
       );
     }
 
@@ -353,40 +321,40 @@ export class CategoryController extends ProductController {
    */
   searchText() {
     this.txtSearch = this?.txtSearch?.trim()?.replace(/ + /g, ' ');
-    if (this.txtSearch == null) {
-      console.log('this.txtSearch == null');
-    } else {
-      //sort by name ****
+    console.log(this.listProductSearched);
+    console.log(this.selectedSortValue);
+    if (this.selectedSortValue == 0) {
+      this.listProductSearched = this.listProductSearched.filter(
+        (value: DiscountProduct) =>
+          this.textController.comparisonNameEqual(
+            this.txtSearch,
+            value._product?._name
+          )
+      );
       console.log(this.listProductSearched);
-      console.log(this.selectedSortValue);
-      if (this.selectedSortValue == 0) {
-        this.listProductSearched = this.listProductSearched.filter(
-          (value: DiscountProduct) =>
-            this.textController.comparisonNameEqual(
-              this.txtSearch,
-              value._product?._name
-            )
-        );
-        console.log(this.listProductSearched);
-        this.onSortNameCategoryChange(this.selectedSortNameValue);
-      }
-      //sort by price
-      if (this.selectedSortValue == 1) {
-        this.listProductSearched = this.listProductSearched.filter(
-          (value: DiscountProduct) =>
-            this.textController.comparisonNameEqual(
-              this.txtSearch,
-              value._product?._name
-            )
-        );
-        this.onSortPriceCategoryChange(this.selectedSortPriceValue);
-      }
+      this.onSortNameCategoryChange(this.selectedSortNameValue);
+    }
+    //sort by price
+    if (this.selectedSortValue == 1) {
+      this.listProductSearched = this.listProductSearched.filter(
+        (value: DiscountProduct) =>
+          this.textController.comparisonNameEqual(
+            this.txtSearch,
+            value._product?._name
+          )
+      );
+      this.onSortPriceCategoryChange(this.selectedSortPriceValue);
     }
   }
-/**
- * Refresh the page to get all the parameters
- */
+  /**
+   * Refresh the page to get all the parameters
+   */
   refreshProductList() {
+    console.log(this.listProductSearched);
+    localStorage.setItem(
+      'loadedListProductSearched',
+      JSON.stringify(this.listProductSearched)
+    );
     console.log(this.paramCategoryId);
     if (window.location.pathname == '/product-list') {
       this.router

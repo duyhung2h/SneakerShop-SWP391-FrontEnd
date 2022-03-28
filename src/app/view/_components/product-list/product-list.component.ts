@@ -22,7 +22,6 @@ import { environment } from 'src/environments/environment';
 export class ProductListComponent extends CartController implements OnInit {
   environment = environment;
   listProductSearched: DiscountProduct[] = [];
-  txtSearch: any;
   formGroup = new FormGroup({ search: new FormControl() });
 
   // controller declare
@@ -50,13 +49,10 @@ export class ProductListComponent extends CartController implements OnInit {
     router: Router,
     private favoriteProductService: FavoriteProductService,
     notifier: NotifierService,
-    @Host() parentComponent?: FullProductListComponent
   ) {
     super(router, notifier);
     try {
-      this.loadSearchedData(parentComponent);
-      
-    this.reloadListProductSearched()
+      this.reloadListProductSearched();
     } catch (error) {
       this.notifier.notify(
         'error',
@@ -64,41 +60,54 @@ export class ProductListComponent extends CartController implements OnInit {
       );
     }
   }
-  async loadSearchedData(parentComponent?: FullProductListComponent) {
+  arraysAreEqual(ary1: any[], ary2: any[]) {
     try {
-      console.log(this.productController.listProductSearched);
-    } catch (error) {
-      this.notifier.notify('error', 'Lỗi hiển thị list sản phẩm tìm kiếm!');
+      // console.log(ary1);
+      // console.log(ary2);
+      return ary1.join('') == ary2.join('');
+    } catch(error) {
+      console.log(error)
+      alert()
+      return error
     }
-    // await this.delay(10000);
   }
-  arraysAreEqual(ary1: any[],ary2: any[]){
-    return (ary1.join('') == ary2.join(''));
-  }
-  
 
-  timeout = 10000
+  timeout = 10000;
   async reloadListProductSearched() {
+    this.productController.listProductSearched = []
     // console.log(this.timeout);
-    while (this.timeout > 0) {
+    while (this.timeout > 0 && window.location.pathname == '/product-list') {
       // console.log(this.timeout);
-      
-      this.listProductSearched = JSON.parse(localStorage['loadedListProductSearched']);
+
+      this.listProductSearched = JSON.parse(
+        localStorage['loadedListProductSearched']
+      );
+      // console.log("blablbabalb");
       // console.log(this.listProductSearched);
       // console.log(this.productController.listProductSearched);
       
-      await this.wait(100);
-      if (!this.arraysAreEqual(this.productController.listProductSearched, this.listProductSearched)){
-        this.productController.listProductSearched = this.listProductSearched;
-        console.log(this.productController.listProductSearched != this.listProductSearched);
-        
-        this.productController.listPages(this.productController.listProductSearched)
-        // console.log(this.timeout);
-        
-        this.timeout = 1000
-      }else {
-        this.timeout = this.timeout - 1
-      }
+
+      await this.wait(100).then(() => {
+        if (
+          !this.arraysAreEqual(
+            this.productController.listProductSearched,
+            this.listProductSearched
+          )
+        ) {
+          this.productController.listProductSearched = this.listProductSearched;
+
+          this.productController.listPages(
+            this.productController.listProductSearched
+          );
+          // console.log(this.timeout);
+
+          this.timeout = 1000;
+        } else {
+          this.timeout = this.timeout - 1;
+        }
+      });
+      // console.log(this.listProductSearched);
+      // console.log(this.productController.listProductSearched);
     }
   }
 

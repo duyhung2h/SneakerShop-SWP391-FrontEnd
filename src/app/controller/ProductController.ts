@@ -109,7 +109,9 @@ export class ProductController {
     console.log(data);
     this.listProductCore = data
     this.listProduct = data
-    this.listProductSearched = data
+    if (window.location.pathname == '/home'){
+      this.listProductSearched = data
+    }
     if (this.listProduct.length == 0) {
       this.notifier.notify('error', 'Lỗi hiển thị list sản phẩm!');
     }
@@ -117,7 +119,7 @@ export class ProductController {
     this.isLoading.next(true)
     this.listPages(this.listProductSearched)
     console.log(data)
-    return this.listProductSearched
+    return this.listProduct
   }
 
   /**

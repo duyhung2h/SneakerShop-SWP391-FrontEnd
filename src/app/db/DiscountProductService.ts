@@ -108,7 +108,13 @@ export class DiscountProductService {
               item.category.CategoryName,
               item.category.CategoryDescription
             );
-          } catch {
+          } catch (error) {
+            productCategory = new Category(
+              1,
+              'Giày thể thao',
+              ''
+            );
+            console.log(error);
             console.log(item.ProductId);
           }
           let productAttributes: Attribute[] = [];
@@ -131,6 +137,7 @@ export class DiscountProductService {
             item.ProductImage,
             productAttributes
           );
+          var voucher = new Voucher();
           try {
             var voucher = new Voucher();
             voucher._voucherId = item.voucher.VoucherId;
@@ -138,6 +145,9 @@ export class DiscountProductService {
             voucher._quantity = item.voucher.Quantity;
           } catch {
             var voucher = new Voucher();
+            voucher._voucherId = -1
+            voucher._discountPct = 0
+            voucher._quantity = 0
             console.log('%c item.voucher error!', 'color:red;');
             console.log(item.ProductId);
           }
